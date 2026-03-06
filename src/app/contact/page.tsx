@@ -1,4 +1,15 @@
 import { Mail, MapPin, Phone, Send } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Contact Us | Secretariat & Support",
+    description: "Get in touch with the Osun State Football Association for general inquiries, club registrations, grassroots sponsorships, and press info.",
+    openGraph: {
+        title: "Contact Secretariat | Osun State FA",
+        description: "Get in touch with the Osun State Football Association. Phone, email, and secretariat location details.",
+        url: "https://osunstatefa.org.ng/contact",
+    }
+};
 
 export default function ContactPage() {
     return (

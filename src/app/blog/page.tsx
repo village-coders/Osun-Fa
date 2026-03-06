@@ -1,5 +1,16 @@
 import { Calendar, User, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Latest News & Blog | Official Announcements",
+    description: "Stay up to date with the latest football news, referee developments, match reviews, and official announcements from the Osun State Football Association.",
+    openGraph: {
+        title: "Official News & Blog | Osun State FA",
+        description: "The latest news, announcements, and stories from the Osun State Football Association.",
+        url: "https://osunstatefa.org.ng/blog",
+    }
+};
 
 export default function BlogPage() {
     const posts = [

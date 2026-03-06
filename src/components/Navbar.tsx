@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Menu, X, ChevronDown } from "lucide-react";
+import Image from "next/image";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +31,7 @@ export default function Navbar() {
                     <div className="flex-shrink-0">
                         <Link href="/" className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-gradient-to-br from-accent to-primary rounded-full flex items-center justify-center font-bold text-black border-2 border-accent">
-                                OS
+                                <Image src="/osun-fa-logo.png" alt="Logo" width={50} height={50} />
                             </div>
                             <span className="font-bold text-xl tracking-tight hidden sm:block">
                                 Osun State FA

@@ -1,4 +1,15 @@
 import { Trophy, Shield, Goal, ChevronRight } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Official Competitions & Leagues",
+    description: "Explore the premier football competitions in Osun State, including the FA Cup, State League, Women's League, and grassroots tournaments.",
+    openGraph: {
+        title: "Official Competitions | Osun State FA",
+        description: "Explore all official football competitions and leagues organized by the Osun State Football Association.",
+        url: "https://osunstatefa.org.ng/affiliations/competition",
+    }
+};
 
 export default function CompetitionPage() {
     const competitions = [
@@ -10,18 +21,60 @@ export default function CompetitionPage() {
             status: "Registration Ongoing"
         },
         {
-            title: "State League Division 1",
-            type: "League Setup",
-            desc: "The top-tier state football league. Featuring the finest amateur clubs competing for the prestigious state trophy.",
+            title: "Osun State Football League",
+            type: "State League",
+            desc: "Immerses young players (U-17) into a regulated competitive environment, allowing them to advance their careers from grassroots to professional level. Unites players from all demographics.",
             icon: <Shield className="w-8 h-8 text-primary" />,
-            status: "Mid-Season"
+            status: "Active"
         },
         {
-            title: "Under-15 Youth League",
-            type: "Youth Development",
-            desc: "Grassroots competition designed to scout, nurture, and develop the next generation of football prodigies.",
+            title: "Osun Women’s Football League",
+            type: "Women's Football",
+            desc: "Promotes and develops women's football by providing a competitive environment. Fosters growth, develops talented players, and promotes equality and inclusivity.",
             icon: <Goal className="w-8 h-8 text-accent" />,
-            status: "Upcoming in Jan"
+            status: "Upcoming"
+        },
+        {
+            title: "Osun Kiddies Football League",
+            type: "Youth Development (U-12)",
+            desc: "Provides a fun, safe, and developmental environment for U-12 players. Promotes physical activity, teamwork, discipline, sportsmanship, and fundamental skills.",
+            icon: <Shield className="w-8 h-8 text-secondary" />,
+            status: "Registration"
+        },
+        {
+            title: "Osun Inter-Collegiate Football League",
+            type: "Tertiary Institutions",
+            desc: "An inter-higher institutions football league. Provides a place for Universities, Polytechnics, and Colleges of Education to play amateur football at a competitive standard.",
+            icon: <Trophy className="w-8 h-8 text-primary" />,
+            status: "Active"
+        },
+        {
+            title: "Osun State Principals’ Cup",
+            type: "Secondary Schools",
+            desc: "An age-long competition among secondary schools aimed at discovering talent. Now revived for both males and females, promoting the FA's inclusive policy.",
+            icon: <Goal className="w-8 h-8 text-secondary" />,
+            status: "Upcoming"
+        },
+        {
+            title: "Osun State Headmasters’ Cup",
+            type: "Primary Schools",
+            desc: "A 7-a-side tournament among primary schools aimed at unearthing young budding soccer talents in a safe and inclusive environment.",
+            icon: <Trophy className="w-8 h-8 text-accent" />,
+            status: "Upcoming"
+        },
+        {
+            title: "Osun Corporate Football League",
+            type: "Corporate/Amateur",
+            desc: "Playing the game we love under the colours we embrace. A league for corporate workers and professionals.",
+            icon: <Shield className="w-8 h-8 text-primary" />,
+            status: "Registration"
+        },
+        {
+            title: "Osogbo Street Soccer Challenge",
+            type: "Street/Grassroots",
+            desc: "Promises to deliver unparalleled excitement for football stakeholders in Osogbo, the fastest-developing city in the South West.",
+            icon: <Goal className="w-8 h-8 text-secondary" />,
+            status: "Upcoming"
         }
     ];
 

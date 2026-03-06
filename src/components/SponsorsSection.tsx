@@ -12,8 +12,8 @@ export default function SponsorsSection() {
         <section className="py-20 bg-white border-t border-border">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-12">
-                    <h2 className="text-sm font-bold tracking-widest text-primary uppercase">Our Proud Partners</h2>
-                    <p className="mt-2 text-3xl font-extrabold text-text-main">Empowering Osun Football</p>
+                    <span className="text-sm font-bold tracking-widest text-primary uppercase">Our Proud Partners</span>
+                    <h2 className="mt-2 text-3xl font-extrabold text-text-main">Empowering Osun Football</h2>
                 </div>
 
                 <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">

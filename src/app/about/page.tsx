@@ -1,6 +1,17 @@
 import AboutSection from "@/components/AboutSection";
 import Image from "next/image";
 import { CircleCheckBig } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "About Us | Mission, Vision & Core Values",
+    description: "Learn about the Osun State Football Association's history, our commitment to grassroots empowerment, and our core values of transparency and integrity.",
+    openGraph: {
+        title: "About Us | Osun State Football Association",
+        description: "Learn about the Osun State Football Association's history and our commitment to grassroots football.",
+        url: "https://osunstatefa.org.ng/about",
+    }
+};
 
 export default function AboutPage() {
     const values = [

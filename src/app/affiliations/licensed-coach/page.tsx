@@ -1,4 +1,15 @@
 import { GraduationCap, Award, PlaySquare } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Licensed Coaches | Technical Department",
+    description: "Information for football coaches in Osun State. Grassroots certification, tactical licenses, and elite pro diploma preparation seminars.",
+    openGraph: {
+        title: "Licensed Coaches | Osun State FA",
+        description: "Coaching pathways, seminars, and certification under the Osun State Football Association.",
+        url: "https://osunstatefa.org.ng/affiliations/licensed-coach",
+    }
+};
 
 export default function LicensedCoachPage() {
     const programs = [

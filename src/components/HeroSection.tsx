@@ -26,14 +26,26 @@ export default function HeroSection() {
     return (
         <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-surface-dark text-white">
             {/* Dynamic Background Elements */}
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary rounded-full mix-blend-screen filter blur-[100px] opacity-30 animate-pulse"></div>
-                <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-accent rounded-full mix-blend-screen filter blur-[120px] opacity-20"></div>
-                <div className="absolute top-[20%] right-[20%] w-[30%] h-[30%] bg-secondary rounded-full mix-blend-screen filter blur-[80px] opacity-10"></div>
+            <div className="absolute inset-0 bg-cover bg-center bg-no-repeat top-0 left-0 w-full h-full overflow-hidden z-0"
+            style={{ backgroundImage: "url('/bg-image.jpeg')" }}
+            >
+                {/* Athletic Image Background */}
+                <div
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40"
+                    // style={{ backgroundImage: "url('/bg-image.jpeg')" }}
+                ></div>
+
+                {/* Overlays to ensure text remains readable */}
+                <div className="absolute inset-0 bg-gradient-to-r from-surface-dark via-surface-dark/80 to-surface-dark/30"></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-surface-dark/50 to-surface-dark"></div>
 
                 {/* Abstract pattern overlay */}
-                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
-                <div className="absolute inset-0 bg-gradient-to-b from-surface-dark/90 via-surface-dark/80 to-surface-dark/100"></div>
+                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-30 mix-blend-overlay"></div>
+
+                {/* Brand color glows */}
+                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary rounded-full mix-blend-screen filter blur-[100px] opacity-40 animate-pulse"></div>
+                <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-accent rounded-full mix-blend-screen filter blur-[120px] opacity-20"></div>
+                <div className="absolute top-[20%] right-[20%] w-[30%] h-[30%] bg-secondary rounded-full mix-blend-screen filter blur-[80px] opacity-10"></div>
             </div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -60,14 +72,14 @@ export default function HeroSection() {
 
                         <div className="flex flex-col sm:flex-row gap-4 pt-4">
                             <Link
-                                href="#about"
+                                href="/about"
                                 className="inline-flex justify-center items-center gap-2 bg-accent text-primary-dark font-bold px-8 py-4 rounded-full hover:bg-secondary hover:shadow-[0_0_20px_rgba(229,168,35,0.4)] transition-all duration-300 transform hover:-translate-y-1"
                             >
                                 Discover Our Vision
                                 <ArrowRight className="w-5 h-5" />
                             </Link>
                             <Link
-                                href="#contact"
+                                href="/contact"
                                 className="inline-flex justify-center items-center gap-2 bg-transparent text-white border-2 border-[rgba(255,255,255,0.2)] hover:border-accent hover:text-accent font-bold px-8 py-4 rounded-full transition-all duration-300"
                             >
                                 Contact Us
@@ -91,14 +103,14 @@ export default function HeroSection() {
                                     </h2>
                                     <p className="text-sm text-gray-400 mt-1">Official news from OSFA</p>
                                 </div>
-                                <Link href="#blog" className="text-sm text-accent hover:text-white flex items-center gap-1 transition-colors">
+                                <Link href="/blog" className="text-sm text-accent hover:text-white flex items-center gap-1 transition-colors cursor-pointer">
                                     View All <ChevronRight className="w-4 h-4" />
                                 </Link>
                             </div>
 
                             <div className="space-y-6">
                                 {latestNews.map((news) => (
-                                    <Link href={`#news-${news.id}`} key={news.id} className="block group/item relative pl-4 border-l-2 border-[rgba(255,255,255,0.1)] hover:border-accent transition-colors">
+                                    <Link href={`/news-${news.id}`} key={news.id} className="block group/item relative pl-4 border-l-2 border-[rgba(255,255,255,0.1)] hover:border-accent transition-colors">
                                         <span className="text-xs font-semibold text-secondary uppercase tracking-wider mb-1 block">
                                             {news.category}
                                         </span>

@@ -1,4 +1,5 @@
 import { Facebook, Twitter, Instagram, Youtube, MapPin, Phone, Mail, ArrowRight } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Footer() {
@@ -12,7 +13,7 @@ export default function Footer() {
                     <div className="space-y-6">
                         <Link href="/" className="flex items-center gap-3">
                             <div className="w-12 h-12 bg-gradient-to-br from-accent to-primary rounded-full flex items-center justify-center font-bold text-black border-2 border-accent text-xl">
-                                OS
+                                <Image src="/osun-fa-logo.png" alt="Logo" width={50} height={50} />
                             </div>
                             <span className="font-bold text-2xl tracking-tight">Osun State FA</span>
                         </Link>

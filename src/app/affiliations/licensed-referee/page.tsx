@@ -1,4 +1,15 @@
 import { Activity, BookOpen, ScrollText } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Licensed Referees | Officiating Pathway",
+    description: "The path to officiating football in Osun State. Learn about referee grades, upcoming fitness tests, and the Osun State Referees Council.",
+    openGraph: {
+        title: "Licensed Referees | Osun State FA",
+        description: "Training, assessment, and certification for football referees in Osun State.",
+        url: "https://osunstatefa.org.ng/affiliations/licensed-referee",
+    }
+};
 
 export default function LicensedRefereePage() {
     const steps = [

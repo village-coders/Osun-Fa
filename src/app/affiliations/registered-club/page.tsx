@@ -1,4 +1,15 @@
 import { ShieldCheck, FileText, CheckCircle2, ChevronRight } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Registered Clubs | Affiliation Requirements",
+    description: "Learn how to officially register your football club with the Osun State Football Association to participate in sanctioned state leagues and competitions.",
+    openGraph: {
+        title: "Club Registration | Osun State FA",
+        description: "Requirements and benefits of registering your football club with the Osun State Football Association.",
+        url: "https://osunstatefa.org.ng/affiliations/registered-club",
+    }
+};
 
 export default function RegisteredClubPage() {
     const requirements = [
