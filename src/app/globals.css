@@ -80,7 +80,7 @@ body {
   outline-offset: 2px;
 }
 
-a {
+a, button {
   text-decoration: none;
   /* color: inherit; */
   cursor: pointer;
