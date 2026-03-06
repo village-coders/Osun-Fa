@@ -31,7 +31,7 @@ export default function LicensedRefereePage() {
     ];
 
     return (
-        <div className="bg-surface-light min-h-screen pt-20">
+        <div className="bg-surface-light min-h-screen pt-20 md:pt-28">
             <div className="bg-[#1f2937] py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
                 <div className="absolute top-1/2 left-1/4 w-96 h-96 bg-accent rounded-full mix-blend-overlay filter blur-[150px] opacity-20"></div>

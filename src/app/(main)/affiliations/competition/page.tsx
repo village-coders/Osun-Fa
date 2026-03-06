@@ -79,7 +79,7 @@ export default function CompetitionPage() {
     ];
 
     return (
-        <div className="bg-surface-light min-h-screen pt-20">
+        <div className="bg-surface-light min-h-screen pt-20 md:pt-28">
             <div className="bg-surface-dark py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
                 <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-accent rounded-full mix-blend-screen filter blur-[120px] opacity-10"></div>

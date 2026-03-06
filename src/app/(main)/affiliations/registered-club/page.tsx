@@ -22,7 +22,7 @@ export default function RegisteredClubPage() {
     ];
 
     return (
-        <div className="bg-surface-light min-h-screen pt-20">
+        <div className="bg-surface-light min-h-screen pt-20 md:pt-28">
             <div className="bg-primary-dark py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
                 <div className="absolute top-[-20%] right-[-10%] w-[50%] h-[50%] bg-primary rounded-full mix-blend-screen filter blur-[120px] opacity-30"></div>
                 <div className="max-w-7xl mx-auto text-center relative z-10">

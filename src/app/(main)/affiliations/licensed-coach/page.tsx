@@ -31,7 +31,7 @@ export default function LicensedCoachPage() {
     ];
 
     return (
-        <div className="bg-surface-light min-h-screen pt-20">
+        <div className="bg-surface-light min-h-screen pt-20 md:pt-28">
             <div className="bg-[#013618] py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
                 <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-secondary rounded-full mix-blend-screen filter blur-[120px] opacity-20"></div>
                 <div className="max-w-7xl mx-auto text-center relative z-10">
