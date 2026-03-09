@@ -13,9 +13,9 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
     return (
-        <div className="bg-surface-light min-h-screen pt-20">
+        <div className="bg-surface-light min-h-screen pt-28">
             {/* Page Header */}
-            <div className="bg-surface-dark py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden text-center">
+            <div className="bg-surface-dark py-28 px-4 sm:px-6 lg:px-8 relative overflow-hidden text-center">
                 <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6">
                     Get in <span className="text-accent">Touch</span>
                 </h1>

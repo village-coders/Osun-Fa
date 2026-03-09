@@ -1,22 +1,70 @@
-import { Users, UserCog, Activity, Trophy, CalendarDays, TrendingUp } from "lucide-react";
+"use client";
+
+import { Users, UserCog, Activity, Trophy, CalendarDays, TrendingUp, Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import api from "@/lib/api";
+import toast from "react-hot-toast";
+import { Shield } from "lucide-react";
 
 export default function AdminDashboard() {
+    const [counts, setCounts] = useState<any>({
+        clubs: { pending: 0, approved: 0, rejected: 0 },
+        players: { pending: 0, approved: 0, rejected: 0 },
+        coaches: 0,
+        referees: 0,
+        matches: 0,
+        totalClubs: 0,
+        totalPlayers: 0
+    });
+    const [attentionItems, setAttentionItems] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchDashboardData = async () => {
+            try {
+                const [statsRes, attentionRes] = await Promise.all([
+                    api.get('/admin/stats'),
+                    api.get('/admin/needs-attention')
+                ]);
+
+                setCounts(statsRes.data);
+                setAttentionItems(attentionRes.data);
+
+            } catch (error) {
+                console.error("Failed to load dashboard data", error);
+                toast.error("Failed to load some dashboard statistics");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchDashboardData();
+    }, []);
+
     const stats = [
-        { title: "Registered Clubs", value: "124", icon: Users, color: "text-blue-600", bg: "bg-blue-100" },
-        { title: "Licensed Coaches", value: "85", icon: UserCog, color: "text-green-600", bg: "bg-green-100" },
-        { title: "Active Referees", value: "62", icon: Activity, color: "text-purple-600", bg: "bg-purple-100" },
-        { title: "Competitions", value: "8", icon: Trophy, color: "text-yellow-600", bg: "bg-yellow-100" },
-        { title: "Total Players", value: "2,450", icon: TrendingUp, color: "text-emerald-600", bg: "bg-emerald-100" },
-        { title: "Upcoming Matches", value: "12", icon: CalendarDays, color: "text-rose-600", bg: "bg-rose-100" },
+        { title: "Registered Clubs", value: counts.totalClubs.toString(), subValue: `${counts.clubs.pending} Pending`, icon: Users, color: "text-blue-600", bg: "bg-blue-100" },
+        { title: "Active Players", value: counts.totalPlayers.toString(), subValue: `${counts.players.pending} Pending`, icon: TrendingUp, color: "text-emerald-600", bg: "bg-emerald-100" },
+        { title: "Licensed Coaches", value: counts.coaches.toString(), icon: UserCog, color: "text-green-600", bg: "bg-green-100" },
+        { title: "Active Referees", value: counts.referees.toString(), icon: Activity, color: "text-purple-600", bg: "bg-purple-100" },
+        { title: "Total Matches", value: counts.matches.toString(), icon: CalendarDays, color: "text-rose-600", bg: "bg-rose-100" },
     ];
 
     const recentActions = [
-        { action: "Osun United Registration", status: "Pending Approval", time: "2 hours ago" },
-        { action: "Referee Seminar Scheduled", status: "Published", time: "5 hours ago" },
-        { action: "Adeboye Samson (Coach)", status: "Approved", time: "1 day ago" },
-        { action: "U-15 Youth League Match Data", status: "Updated", time: "1 day ago" },
-        { action: "Ijesha Warriors FC", status: "Rejected (Incomplete)", time: "2 days ago" },
+        { action: "Dashboard Data Loaded", status: "Live", time: "Just now" },
+        // Placeholder for future real-time activity feed
     ];
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center min-h-[400px]">
+                <div className="flex flex-col items-center gap-4 text-gray-500">
+                    <Loader2 className="w-10 h-10 animate-spin text-primary" />
+                    <p className="font-medium animate-pulse">Loading Operation Metrics...</p>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className="max-w-7xl mx-auto space-y-6">
@@ -40,6 +88,7 @@ export default function AdminDashboard() {
                             <div>
                                 <p className="text-sm font-semibold text-gray-500 mb-1">{stat.title}</p>
                                 <h3 className="text-3xl font-extrabold text-gray-800">{stat.value}</h3>
+                                {stat.subValue && <p className="text-xs text-yellow-600 font-medium mt-1">{stat.subValue}</p>}
                             </div>
                             <div className={`w-14 h-14 rounded-full flex items-center justify-center ${stat.bg} ${stat.color}`}>
                                 <Icon className="w-7 h-7" />
@@ -53,25 +102,39 @@ export default function AdminDashboard() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
                 {/* Recent Activity Feed */}
-                <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full">
                     <div className="p-6 border-b border-gray-100 bg-gray-50">
                         <h3 className="font-bold text-gray-800">Needs Attention / Recent Activity</h3>
                     </div>
-                    <div className="divide-y divide-gray-100">
-                        {recentActions.map((action, idx) => (
-                            <div key={idx} className="p-6 flex items-center justify-between hover:bg-gray-50 transition-colors">
-                                <div className="flex items-center gap-4">
-                                    <div className={`w-2 h-2 rounded-full ${action.status.includes('Pending') ? 'bg-yellow-400' : action.status.includes('Approved') || action.status.includes('Published') ? 'bg-green-500' : action.status.includes('Rejected') ? 'bg-red-500' : 'bg-blue-500'}`}></div>
-                                    <div>
-                                        <p className="font-semibold text-gray-800">{action.action}</p>
-                                        <p className="text-xs text-gray-500 mt-1">{action.time}</p>
-                                    </div>
-                                </div>
-                                <span className={`text-xs font-bold px-3 py-1 rounded-full ${action.status.includes('Pending') ? 'bg-yellow-100 text-yellow-800' : action.status.includes('Approved') || action.status.includes('Published') ? 'bg-green-100 text-green-800' : action.status.includes('Rejected') ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'}`}>
-                                    {action.status}
-                                </span>
+                    <div className="divide-y divide-gray-100 flex-1 flex flex-col">
+                        {attentionItems.length === 0 ? (
+                            <div className="p-12 text-center text-gray-500 italic">
+                                No pending items requiring immediate attention.
                             </div>
-                        ))}
+                        ) : (
+                            attentionItems.map((item, idx) => (
+                                <div key={idx} className="p-6 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 shrink-0">
+                                            {item.type === 'Club' ? <Shield size={20} /> : <Users size={20} />}
+                                        </div>
+                                        <div>
+                                            <p className="font-semibold text-gray-800">{item.name}</p>
+                                            <p className="text-xs text-gray-500 mt-1">{item.type} • {item.details} • {new Date(item.date).toLocaleDateString()}</p>
+                                        </div>
+                                    </div>
+                                    <Link
+                                        href={item.type === 'Club' ? '/admin/teams' : '/admin/players'}
+                                        className="text-primary text-xs font-bold hover:underline py-1 px-3 bg-primary/5 rounded-lg"
+                                    >
+                                        Review
+                                    </Link>
+                                </div>
+                            ))
+                        )}
+                        <div className="p-4 text-center text-xs text-gray-500 mt-auto bg-gray-50/50">
+                            System is monitoring all new affiliations and registrations.
+                        </div>
                     </div>
                 </div>
 

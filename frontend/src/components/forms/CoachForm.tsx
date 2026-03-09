@@ -1,11 +1,15 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { coachFormSchema, CoachFormValues } from "@/lib/validations/coach";
+import { CoachFormValues } from "@/types/form-values";
 import { useState } from "react";
+import userApi from "@/lib/api";
+import { toast } from "react-hot-toast";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 export default function CoachForm() {
+    const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitSuccess, setSubmitSuccess] = useState(false);
 
@@ -13,21 +17,47 @@ export default function CoachForm() {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<CoachFormValues>({
-        resolver: zodResolver(coachFormSchema),
-    });
+    } = useForm<CoachFormValues>();
 
     const onSubmit = async (data: CoachFormValues) => {
         setIsSubmitting(true);
         try {
-            console.log("Coach Form Data Submitted:", data);
-            await new Promise((resolve) => setTimeout(resolve, 1500));
+            const formData = new FormData();
+            Object.entries(data).forEach(([key, value]) => {
+                if (value instanceof FileList) {
+                    if (value.length > 0) formData.append(key, value[0]);
+                } else if (value !== undefined && value !== null && value !== '') {
+                    formData.append(key, String(value));
+                }
+            });
+
+            const token = Cookies.get("portalToken");
+
+            const res = await userApi.put("/coaches/update-profile", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    "Authorization": `Bearer ${token}`
+                },
+            });
+            console.log(res.data);
+            toast.success("Coach profile created successfully!");
             setSubmitSuccess(true);
-        } catch (error) {
+
+            // Redirect to dashboard after a short delay
+            setTimeout(() => {
+                router.push("/portal/coach");
+            }, 1000);
+        } catch (error: any) {
             console.error(error);
+            toast.error(error.response?.data?.message || "Registration failed. Please try again. Are you logged in?");
         } finally {
             setIsSubmitting(false);
         }
+    };
+
+    const onError = (errors: any) => {
+        console.error("Form validation errors:", errors);
+        toast.error("Please fill all required fields correctly.");
     };
 
     if (submitSuccess) {
@@ -38,13 +68,13 @@ export default function CoachForm() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-2">Registration Successful!</h3>
-                <p className="text-gray-400">Your coach registration details have been submitted and are pending review by OSFA administrators.</p>
+                <h3 className="text-2xl font-bold text-white mb-2">Profile Created!</h3>
+                <p className="text-gray-400">Your coach profile has been saved. Redirecting you to your dashboard...</p>
                 <button
-                    onClick={() => window.location.href = '/'}
+                    onClick={() => router.push('/portal/coach')}
                     className="mt-6 bg-accent text-primary-dark hover:bg-secondary px-6 py-2 rounded-full font-bold transition-colors"
                 >
-                    Return Home
+                    Go to Dashboard
                 </button>
             </div>
         );
@@ -63,7 +93,7 @@ export default function CoachForm() {
                 <p className="text-gray-400">Complete the form below to register as an official OSFA coach.</p>
             </div>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 relative">
+            <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-8 relative">
                 {/* SECTION A: PERSONAL INFO */}
                 <div className={sectionClass}>
                     <h2 className={headingClass}>Section A: Personal Information</h2>
@@ -89,13 +119,13 @@ export default function CoachForm() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
                         <div className="relative">
                             <label className={labelClass}>Surname <span className="text-red-500">*</span></label>
-                            <input {...register("surname")} className={`${inputClass} ${errors.surname ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.surname && <p className={errorClass}>{errors.surname.message as string}</p>}
+                            <input {...register("surname", { required: "Surname is required" })} className={`${inputClass} ${errors.surname ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.surname && <p className={errorClass}>{errors.surname.message}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>First Name <span className="text-red-500">*</span></label>
-                            <input {...register("firstName")} className={`${inputClass} ${errors.firstName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.firstName && <p className={errorClass}>{errors.firstName.message as string}</p>}
+                            <input {...register("firstName", { required: "First name is required" })} className={`${inputClass} ${errors.firstName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.firstName && <p className={errorClass}>{errors.firstName.message}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Other Name(s)</label>
@@ -103,43 +133,43 @@ export default function CoachForm() {
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Gender <span className="text-red-500">*</span></label>
-                            <select {...register("gender")} className={`${inputClass} ${errors.gender ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`}>
+                            <select {...register("gender", { required: "Gender is required" })} className={`${inputClass} ${errors.gender ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`}>
                                 <option value="">Select Gender</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
                                 <option value="Prefer not to say">Prefer not to say</option>
                             </select>
-                            {errors.gender && <p className={errorClass}>{errors.gender.message as string}</p>}
+                            {errors.gender && <p className={errorClass}>{errors.gender.message}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Date of Birth <span className="text-red-500">*</span></label>
-                            <input type="date" {...register("dateOfBirth")} className={`${inputClass} ${errors.dateOfBirth ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.dateOfBirth && <p className={errorClass}>{errors.dateOfBirth.message as string}</p>}
+                            <input type="date" {...register("dateOfBirth", { required: "Date of birth is required" })} className={`${inputClass} ${errors.dateOfBirth ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.dateOfBirth && <p className={errorClass}>{errors.dateOfBirth.message}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Place of Birth <span className="text-red-500">*</span></label>
-                            <input {...register("placeOfBirth")} className={`${inputClass} ${errors.placeOfBirth ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.placeOfBirth && <p className={errorClass}>{errors.placeOfBirth.message as string}</p>}
+                            <input {...register("placeOfBirth", { required: "Place of birth is required" })} className={`${inputClass} ${errors.placeOfBirth ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.placeOfBirth && <p className={errorClass}>{errors.placeOfBirth.message}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Nationality <span className="text-red-500">*</span></label>
-                            <input {...register("nationality")} defaultValue="Nigerian" className={`${inputClass} ${errors.nationality ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.nationality && <p className={errorClass}>{errors.nationality.message as string}</p>}
+                            <input {...register("nationality", { required: "Nationality is required" })} defaultValue="Nigerian" className={`${inputClass} ${errors.nationality ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.nationality && <p className={errorClass}>{errors.nationality.message}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>State of Origin <span className="text-red-500">*</span></label>
-                            <input {...register("stateOfOrigin")} className={`${inputClass} ${errors.stateOfOrigin ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.stateOfOrigin && <p className={errorClass}>{errors.stateOfOrigin.message as string}</p>}
+                            <input {...register("stateOfOrigin", { required: "State is required" })} className={`${inputClass} ${errors.stateOfOrigin ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.stateOfOrigin && <p className={errorClass}>{errors.stateOfOrigin.message}</p>}
                         </div>
                         <div className="relative md:col-span-2">
                             <label className={labelClass}>Residential Address <span className="text-red-500">*</span></label>
-                            <textarea {...register("residentialAddress")} rows={2} className={`${inputClass} ${errors.residentialAddress ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.residentialAddress && <p className={errorClass}>{errors.residentialAddress.message as string}</p>}
+                            <textarea {...register("residentialAddress", { required: "Address is required" })} rows={2} className={`${inputClass} ${errors.residentialAddress ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.residentialAddress && <p className={errorClass}>{errors.residentialAddress.message}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>LGA <span className="text-red-500">*</span></label>
-                            <input {...register("lga")} className={`${inputClass} ${errors.lga ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.lga && <p className={errorClass}>{errors.lga.message as string}</p>}
+                            <input {...register("lga", { required: "LGA is required" })} className={`${inputClass} ${errors.lga ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.lga && <p className={errorClass}>{errors.lga.message}</p>}
                         </div>
                     </div>
                 </div>
@@ -150,23 +180,27 @@ export default function CoachForm() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
                         <div className="relative">
                             <label className={labelClass}>Phone Number <span className="text-red-500">*</span></label>
-                            <input type="tel" {...register("phoneNumber")} className={`${inputClass} ${errors.phoneNumber ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.phoneNumber && <p className={errorClass}>{errors.phoneNumber.message as string}</p>}
+                            <input type="tel" {...register("phoneNumber", { required: "Phone is required" })} className={`${inputClass} ${errors.phoneNumber ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.phoneNumber && <p className={errorClass}>{errors.phoneNumber.message}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Email Address <span className="text-red-500">*</span></label>
-                            <input type="email" {...register("emailAddress")} className={`${inputClass} ${errors.emailAddress ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.emailAddress && <p className={errorClass}>{errors.emailAddress.message as string}</p>}
+                            <input type="email" {...register("emailAddress", { required: "Email is required" })} className={`${inputClass} ${errors.emailAddress ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.emailAddress && <p className={errorClass}>{errors.emailAddress.message}</p>}
+                        </div>
+                        <div className="relative">
+                            <label className={labelClass}>Alternative Phone (Optional)</label>
+                            <input type="tel" {...register("alternativePhone")} className={`${inputClass} border-[rgba(255,255,255,0.1)]`} />
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Emergency Contact Name <span className="text-red-500">*</span></label>
-                            <input {...register("emergencyContactName")} className={`${inputClass} ${errors.emergencyContactName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.emergencyContactName && <p className={errorClass}>{errors.emergencyContactName.message as string}</p>}
+                            <input {...register("emergencyContactName", { required: "Emergency contact name is required" })} className={`${inputClass} ${errors.emergencyContactName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.emergencyContactName && <p className={errorClass}>{errors.emergencyContactName.message}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Emergency Contact Phone <span className="text-red-500">*</span></label>
-                            <input type="tel" {...register("emergencyContactPhone")} className={`${inputClass} ${errors.emergencyContactPhone ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.emergencyContactPhone && <p className={errorClass}>{errors.emergencyContactPhone.message as string}</p>}
+                            <input type="tel" {...register("emergencyContactPhone", { required: "Emergency contact phone is required" })} className={`${inputClass} ${errors.emergencyContactPhone ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.emergencyContactPhone && <p className={errorClass}>{errors.emergencyContactPhone.message}</p>}
                         </div>
                     </div>
                 </div>
@@ -196,7 +230,7 @@ export default function CoachForm() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
                         <div className="relative">
                             <label className={labelClass}>Highest Coaching Qualification <span className="text-red-500">*</span></label>
-                            <select {...register("highestCoachingQualification")} className={`${inputClass} ${errors.highestCoachingQualification ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`}>
+                            <select {...register("highestCoachingQualification", { required: "Qualification is required" })} className={`${inputClass} ${errors.highestCoachingQualification ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`}>
                                 <option value="">Select Qualification</option>
                                 <option value="CAF D">CAF D</option>
                                 <option value="CAF C">CAF C</option>
@@ -205,7 +239,7 @@ export default function CoachForm() {
                                 <option value="CAF Pro">CAF Pro</option>
                                 <option value="Other">Other</option>
                             </select>
-                            {errors.highestCoachingQualification && <p className={errorClass}>{errors.highestCoachingQualification.message as string}</p>}
+                            {errors.highestCoachingQualification && <p className={errorClass}>{errors.highestCoachingQualification.message}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>If Other (Qualification)</label>
@@ -213,14 +247,14 @@ export default function CoachForm() {
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Issuing Body <span className="text-red-500">*</span></label>
-                            <select {...register("issuingBody")} className={`${inputClass} ${errors.issuingBody ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`}>
+                            <select {...register("issuingBody", { required: "Issuing body is required" })} className={`${inputClass} ${errors.issuingBody ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`}>
                                 <option value="">Select Issuing Body</option>
                                 <option value="NFF">NFF</option>
                                 <option value="CAF">CAF</option>
                                 <option value="FIFA">FIFA</option>
                                 <option value="Other">Other</option>
                             </select>
-                            {errors.issuingBody && <p className={errorClass}>{errors.issuingBody.message as string}</p>}
+                            {errors.issuingBody && <p className={errorClass}>{errors.issuingBody.message}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>If Other (Issuing Body)</label>
@@ -234,6 +268,14 @@ export default function CoachForm() {
                             <label className={labelClass}>Year Obtained</label>
                             <input type="number" {...register("yearObtained")} className={`${inputClass} border-[rgba(255,255,255,0.1)]`} />
                         </div>
+                        <div className="relative">
+                            <label className={labelClass}>License Expiry Date</label>
+                            <input type="date" {...register("licenseExpiryDate")} className={`${inputClass} border-[rgba(255,255,255,0.1)]`} />
+                        </div>
+                        <div className="relative">
+                            <label className={labelClass}>Certificate Upload</label>
+                            <input type="file" {...register("certificateUpload")} className={`${inputClass} border-[rgba(255,255,255,0.1)] text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-dark file:text-accent hover:file:bg-black transition-colors cursor-pointer`} />
+                        </div>
                     </div>
                 </div>
 
@@ -243,7 +285,7 @@ export default function CoachForm() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
                         <div className="relative">
                             <label className={labelClass}>Primary Coaching Role <span className="text-red-500">*</span></label>
-                            <select {...register("primaryCoachingRole")} className={`${inputClass} ${errors.primaryCoachingRole ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`}>
+                            <select {...register("primaryCoachingRole", { required: "Primary role is required" })} className={`${inputClass} ${errors.primaryCoachingRole ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`}>
                                 <option value="">Select Role</option>
                                 <option value="Head Coach">Head Coach</option>
                                 <option value="Assistant Coach">Assistant Coach</option>
@@ -253,16 +295,28 @@ export default function CoachForm() {
                                 <option value="Technical Director">Technical Director</option>
                                 <option value="Other">Other</option>
                             </select>
-                            {errors.primaryCoachingRole && <p className={errorClass}>{errors.primaryCoachingRole.message as string}</p>}
+                            {errors.primaryCoachingRole && <p className={errorClass}>{errors.primaryCoachingRole.message}</p>}
+                        </div>
+                        <div className="relative">
+                            <label className={labelClass}>If Other (Role)</label>
+                            <input {...register("roleOther")} className={`${inputClass} border-[rgba(255,255,255,0.1)]`} />
+                        </div>
+                        <div className="relative">
+                            <label className={labelClass}>Specialization</label>
+                            <input {...register("specialization")} className={`${inputClass} border-[rgba(255,255,255,0.1)]`} />
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Years of Experience <span className="text-red-500">*</span></label>
-                            <input type="number" {...register("yearsOfExperience")} className={`${inputClass} ${errors.yearsOfExperience ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.yearsOfExperience && <p className={errorClass}>{errors.yearsOfExperience.message as string}</p>}
+                            <input type="number" {...register("yearsOfExperience", { required: "Experience is required" })} className={`${inputClass} ${errors.yearsOfExperience ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.yearsOfExperience && <p className={errorClass}>{errors.yearsOfExperience.message}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Current Club</label>
                             <input {...register("currentClub")} className={`${inputClass} border-[rgba(255,255,255,0.1)]`} />
+                        </div>
+                        <div className="relative">
+                            <label className={labelClass}>Club Registration Number</label>
+                            <input {...register("clubRegistrationNumber")} className={`${inputClass} border-[rgba(255,255,255,0.1)]`} />
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Previous Club(s)</label>
@@ -338,26 +392,26 @@ export default function CoachForm() {
                         <div className="space-y-4">
                             <div>
                                 <label className="flex items-start gap-3 text-white cursor-pointer">
-                                    <input type="checkbox" {...register("declarationAccepted")} className="mt-1 w-5 h-5 accent-accent rounded" />
+                                    <input type="checkbox" {...register("declarationAccepted", { required: "You must accept the declaration" })} className="mt-1 w-5 h-5 accent-accent rounded" />
                                     <span>I confirm the above declaration and accept the terms and conditions. <span className="text-red-500">*</span></span>
                                 </label>
-                                {errors.declarationAccepted && <p className="text-red-500 text-xs mt-1">{errors.declarationAccepted.message as string}</p>}
+                                {errors.declarationAccepted && <p className="text-red-500 text-xs mt-1">{errors.declarationAccepted.message}</p>}
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div className="relative">
                                     <label className={labelClass}>Coach Full Name <span className="text-red-500">*</span></label>
-                                    <input {...register("coachFullName")} className={`${inputClass} ${errors.coachFullName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                                    {errors.coachFullName && <p className={errorClass}>{errors.coachFullName.message as string}</p>}
+                                    <input {...register("coachFullName", { required: "Coach name is required" })} className={`${inputClass} ${errors.coachFullName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                                    {errors.coachFullName && <p className={errorClass}>{errors.coachFullName.message}</p>}
                                 </div>
                                 <div className="relative">
                                     <label className={labelClass}>Digital Signature <span className="text-red-500">*</span></label>
-                                    <input {...register("digitalSignature")} placeholder="Type Full Name" className={`${inputClass} ${errors.digitalSignature ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                                    {errors.digitalSignature && <p className={errorClass}>{errors.digitalSignature.message as string}</p>}
+                                    <input {...register("digitalSignature", { required: "Signature is required" })} placeholder="Type Full Name" className={`${inputClass} ${errors.digitalSignature ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                                    {errors.digitalSignature && <p className={errorClass}>{errors.digitalSignature.message}</p>}
                                 </div>
                                 <div className="relative">
                                     <label className={labelClass}>Date <span className="text-red-500">*</span></label>
-                                    <input type="date" {...register("date")} className={`${inputClass} ${errors.date ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                                    {errors.date && <p className={errorClass}>{errors.date.message as string}</p>}
+                                    <input type="date" {...register("date", { required: "Date is required" })} className={`${inputClass} ${errors.date ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                                    {errors.date && <p className={errorClass}>{errors.date.message}</p>}
                                 </div>
                             </div>
                         </div>

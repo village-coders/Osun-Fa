@@ -24,7 +24,7 @@ export default function AboutPage() {
     ];
 
     return (
-        <div className="bg-background min-h-screen pt-20">
+        <div className="bg-background min-h-screen pt-28">
             {/* Page Header */}
             <div className="bg-surface-dark py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden border-b border-white/5">
                 <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent opacity-50"></div>

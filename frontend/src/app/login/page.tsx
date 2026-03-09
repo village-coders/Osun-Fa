@@ -1,14 +1,39 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { Mail, Lock, ArrowRight } from "lucide-react";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-    title: "Admin Login",
-    description: "Secure login portal for Osun State Football Association administration.",
-};
+import { Mail, Lock, ArrowRight, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import Cookies from "js-cookie";
+import api from "@/lib/api";
 
 export default function LoginPage() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
+
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+
+        try {
+            const res = await api.post("/auth/login", { email, password });
+            if (res.data.token) {
+                Cookies.set("token", res.data.token, { expires: 30 }); // expires in 30 days
+                toast.success("Login successful!");
+                router.push("/admin");
+                router.refresh();
+            }
+        } catch (error: any) {
+            toast.error(error.response?.data?.message || "Invalid credentials");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-surface-dark py-12">
             {/* Background Image with Overlay */}
@@ -61,8 +86,7 @@ export default function LoginPage() {
                             <p className="text-gray-500 font-medium">Please sign in to your administrator account.</p>
                         </div>
 
-                        {/* Note: This form just navigates to /admin for demonstration */}
-                        <form className="space-y-5" action="/admin">
+                        <form className="space-y-5" onSubmit={handleLogin}>
 
                             {/* Email */}
                             <div className="space-y-2">
@@ -71,9 +95,12 @@ export default function LoginPage() {
                                     <Mail className="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                                     <input
                                         type="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
                                         placeholder="admin@osunstatefa.org.ng"
                                         className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-900 placeholder-gray-400 font-medium"
                                         required
+                                        disabled={loading}
                                     />
                                 </div>
                             </div>
@@ -88,9 +115,12 @@ export default function LoginPage() {
                                     <Lock className="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                                     <input
                                         type="password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
                                         placeholder="••••••••"
                                         className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-900 font-medium tracking-widest placeholder-gray-400"
                                         required
+                                        disabled={loading}
                                     />
                                 </div>
                             </div>
@@ -101,6 +131,7 @@ export default function LoginPage() {
                                     type="checkbox"
                                     id="remember"
                                     className="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2 cursor-pointer"
+                                    defaultChecked
                                 />
                                 <label htmlFor="remember" className="ml-2 text-sm text-gray-600 font-medium cursor-pointer select-none">Remember me for 30 days</label>
                             </div>
@@ -108,10 +139,20 @@ export default function LoginPage() {
                             {/* Submit */}
                             <button
                                 type="submit"
-                                className="w-full mt-4 bg-primary hover:bg-primary-dark text-white font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:-translate-y-0.5 group"
+                                disabled={loading}
+                                className="w-full mt-4 bg-primary hover:bg-primary-dark text-white font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:-translate-y-0.5 group disabled:opacity-70 disabled:hover:translate-y-0 disabled:cursor-not-allowed"
                             >
-                                Sign In to Dashboard
-                                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                {loading ? (
+                                    <>
+                                        <Loader2 className="w-5 h-5 animate-spin" />
+                                        Authenticating...
+                                    </>
+                                ) : (
+                                    <>
+                                        Sign In to Dashboard
+                                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                    </>
+                                )}
                             </button>
 
                         </form>

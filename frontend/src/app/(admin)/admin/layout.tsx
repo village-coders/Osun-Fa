@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
     LayoutDashboard, Newspaper, Users, UserCog,
-    Activity, Trophy, CalendarDays, LogOut, Menu, X
+    Activity, Trophy, CalendarDays, LogOut, Menu, X, Settings
 } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
@@ -26,6 +26,7 @@ export default function AdminLayout({
         { name: "Competitions", href: "/admin/competitions", icon: Trophy },
         { name: "Registered Players", href: "/admin/players", icon: Users },
         { name: "Match Fixtures", href: "/admin/matches", icon: CalendarDays },
+        { name: "Settings", href: "/admin/settings", icon: Settings },
     ];
 
     return (
@@ -66,8 +67,8 @@ export default function AdminLayout({
                                 href={item.href}
                                 onClick={() => setIsSidebarOpen(false)}
                                 className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${isActive
-                                        ? "bg-primary text-white font-bold shadow-md border border-[rgba(255,255,255,0.1)]"
-                                        : "text-gray-400 hover:bg-[rgba(255,255,255,0.05)] hover:text-white"
+                                    ? "bg-primary text-white font-bold shadow-md border border-[rgba(255,255,255,0.1)]"
+                                    : "text-gray-400 hover:bg-[rgba(255,255,255,0.05)] hover:text-white"
                                     }`}
                             >
                                 <Icon className={`w-5 h-5 ${isActive ? 'text-accent' : 'text-gray-400'}`} />
@@ -79,7 +80,12 @@ export default function AdminLayout({
 
                 {/* Bottom Profile Area */}
                 <div className="p-4 border-t border-[rgba(255,255,255,0.05)]">
-                    <button className="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-gray-400 hover:bg-red-500/10 hover:text-red-500 transition-colors">
+                    <button onClick={() => {
+                        import('js-cookie').then(Cookies => {
+                            Cookies.default.remove('token');
+                            window.location.href = '/login';
+                        });
+                    }} className="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-gray-400 hover:bg-red-500/10 hover:text-red-500 transition-colors">
                         <LogOut className="w-5 h-5" />
                         <span className="text-sm font-medium">Secure Logout</span>
                     </button>
@@ -87,7 +93,7 @@ export default function AdminLayout({
             </aside>
 
             {/* Main Content Area */}
-            <main className="flex-1 lg:ml-64 flex flex-col min-h-screen">
+            <main className="flex-1 lg:ml-64 flex flex-col min-h-screen min-w-0">
                 {/* Top Header */}
                 <header className="h-20 bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 lg:px-8 z-30 sticky top-0">
                     <div className="flex items-center gap-4">
