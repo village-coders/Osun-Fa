@@ -1,33 +1,87 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { clubFormSchema, ClubFormValues } from "@/lib/validations/club";
+import { ClubFormValues } from "@/types/form-values";
 import { useState } from "react";
+import userApi from "@/lib/api";
+import { toast } from "react-hot-toast";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 export default function ClubForm() {
+    const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitSuccess, setSubmitSuccess] = useState(false);
 
     const {
         register,
         handleSubmit,
+        watch,
         formState: { errors },
     } = useForm<ClubFormValues>({
-        resolver: zodResolver(clubFormSchema),
+        // CRITICAL: Initialize as an empty array to prevent .includes() errors
+        defaultValues: {
+            youthTeamsAvailable: [],
+            clubCategory: "",
+            leagueLevel: "",
+        }
     });
+
+    // Watch the checkboxes for the UI check
+    const watchedYouthTeams = watch("youthTeamsAvailable") || [];
 
     const onSubmit = async (data: ClubFormValues) => {
         setIsSubmitting(true);
         try {
-            console.log("Club Form Data Submitted:", data);
-            await new Promise((resolve) => setTimeout(resolve, 1500));
+            const formData = new FormData();
+
+            // Clean handling of all fields
+            Object.entries(data).forEach(([key, value]) => {
+                if (value instanceof FileList) {
+                    if (value.length > 0) formData.append(key, value[0]);
+                }
+                // Handle Arrays (Checkboxes) correctly for FormData
+                else if (Array.isArray(value)) {
+                    value.forEach((item) => formData.append(key, item));
+                }
+                else if (value !== undefined && value !== null && value !== '') {
+                    formData.append(key, String(value));
+                }
+            });
+
+            // Backward compatibility aliases
+            if (data.clubName) formData.append('name', data.clubName);
+            if (data.townCity) formData.append('city', data.townCity);
+            if (data.yearOfEstablishment) formData.append('establishmentYear', String(data.yearOfEstablishment));
+            if (data.officialPhoneNumber) formData.append('officialPhone', data.officialPhoneNumber);
+            if (data.officialEmailAddress) formData.append('officialEmail', data.officialEmailAddress);
+
+            const token = Cookies.get("portalToken");
+
+            const res = await userApi.put("/clubs/update-profile", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    "Authorization": `Bearer ${token}`
+                },
+            });
+
+            toast.success("Club profile created successfully!");
             setSubmitSuccess(true);
-        } catch (error) {
+
+            setTimeout(() => {
+                router.push("/portal/team");
+            }, 1000);
+        } catch (error: any) {
             console.error(error);
+            toast.error(error.response?.data?.message || "Registration failed. Please check your connection.");
         } finally {
             setIsSubmitting(false);
         }
+    };
+
+    const onError = (errors: any) => {
+        console.error("Form validation errors:", errors);
+        toast.error("Please fill all required fields correctly.");
     };
 
     if (submitSuccess) {
@@ -38,13 +92,13 @@ export default function ClubForm() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-2">Registration Successful!</h3>
-                <p className="text-gray-400">Your club registration details have been submitted and are pending review by OSFA administrators.</p>
+                <h3 className="text-2xl font-bold text-white mb-2">Profile Created!</h3>
+                <p className="text-gray-400">Your club profile has been saved. Redirecting you to your dashboard...</p>
                 <button
-                    onClick={() => window.location.href = '/'}
+                    onClick={() => router.push('/portal/team')}
                     className="mt-6 bg-accent text-primary-dark hover:bg-secondary px-6 py-2 rounded-full font-bold transition-colors"
                 >
-                    Return Home
+                    Go to Dashboard
                 </button>
             </div>
         );
@@ -63,7 +117,7 @@ export default function ClubForm() {
                 <p className="text-gray-400">Complete the form below to register your club with the OSFA.</p>
             </div>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 relative">
+            <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-8 relative">
                 {/* SECTION A: CLUB IDENTIFICATION */}
                 <div className={sectionClass}>
                     <h2 className={headingClass}>Section A: Club Identification</h2>
@@ -89,8 +143,8 @@ export default function ClubForm() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
                         <div className="relative">
                             <label className={labelClass}>Club Name (Registered Name) <span className="text-red-500">*</span></label>
-                            <input {...register("clubName")} className={`${inputClass} ${errors.clubName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.clubName && <p className={errorClass}>{errors.clubName.message as string}</p>}
+                            <input {...register("clubName", { required: "Club name is required" })} className={`${inputClass} ${errors.clubName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.clubName && <p className={errorClass}>{errors.clubName.message}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Short Name / Nickname</label>
@@ -98,12 +152,12 @@ export default function ClubForm() {
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Year of Establishment <span className="text-red-500">*</span></label>
-                            <input type="number" {...register("yearOfEstablishment")} className={`${inputClass} ${errors.yearOfEstablishment ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.yearOfEstablishment && <p className={errorClass}>{errors.yearOfEstablishment.message as string}</p>}
+                            <input type="number" {...register("yearOfEstablishment", { required: "Year is required" })} className={`${inputClass} ${errors.yearOfEstablishment ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.yearOfEstablishment && <p className={errorClass}>{errors.yearOfEstablishment.message}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Club Category <span className="text-red-500">*</span></label>
-                            <select {...register("clubCategory")} className={`${inputClass} ${errors.clubCategory ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`}>
+                            <select {...register("clubCategory", { required: "Category is required" })} className={`${inputClass} ${errors.clubCategory ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`}>
                                 <option value="">Select Category</option>
                                 <option value="Professional">Professional</option>
                                 <option value="Semi-Professional">Semi-Professional</option>
@@ -112,11 +166,11 @@ export default function ClubForm() {
                                 <option value="School Team">School Team</option>
                                 <option value="Community Club">Community Club</option>
                             </select>
-                            {errors.clubCategory && <p className={errorClass}>{errors.clubCategory.message as string}</p>}
+                            {errors.clubCategory && <p className={errorClass}>{errors.clubCategory.message}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>League / Competition Level <span className="text-red-500">*</span></label>
-                            <select {...register("leagueLevel")} className={`${inputClass} ${errors.leagueLevel ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`}>
+                            <select {...register("leagueLevel", { required: "League is required" })} className={`${inputClass} ${errors.leagueLevel ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`}>
                                 <option value="">Select League</option>
                                 <option value="NPFL">NPFL</option>
                                 <option value="NNL">NNL</option>
@@ -127,71 +181,89 @@ export default function ClubForm() {
                                 <option value="Grassroots">Grassroots</option>
                                 <option value="Others">Others</option>
                             </select>
-                            {errors.leagueLevel && <p className={errorClass}>{errors.leagueLevel.message as string}</p>}
+                            {errors.leagueLevel && <p className={errorClass}>{errors.leagueLevel.message}</p>}
+                        </div>
+                        <div className="relative">
+                            <label className={labelClass}>If Others (League)</label>
+                            <input {...register("leagueOther")} className={`${inputClass} border-[rgba(255,255,255,0.1)]`} />
                         </div>
                     </div>
                 </div>
 
-                {/* SECTION B: CLUB LOCATION */}
+                {/* SECTION B: LOCATION */}
                 <div className={sectionClass}>
                     <h2 className={headingClass}>Section B: Location & Contact Details</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
                         <div className="relative md:col-span-2">
                             <label className={labelClass}>Registered Address <span className="text-red-500">*</span></label>
-                            <textarea {...register("registeredAddress")} rows={2} className={`${inputClass} ${errors.registeredAddress ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.registeredAddress && <p className={errorClass}>{errors.registeredAddress.message as string}</p>}
+                            <textarea {...register("registeredAddress", { required: "Address is required" })} rows={2} className={`${inputClass} ${errors.registeredAddress ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.registeredAddress && <p className={errorClass}>{errors.registeredAddress.message}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>LGA <span className="text-red-500">*</span></label>
-                            <input {...register("lga")} className={`${inputClass} ${errors.lga ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.lga && <p className={errorClass}>{errors.lga.message as string}</p>}
+                            <input {...register("lga", { required: "LGA is required" })} className={`${inputClass} ${errors.lga ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.lga && <p className={errorClass}>{errors.lga.message}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Town / City <span className="text-red-500">*</span></label>
-                            <input {...register("townCity")} className={`${inputClass} ${errors.townCity ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.townCity && <p className={errorClass}>{errors.townCity.message as string}</p>}
+                            <input {...register("townCity", { required: "Town/City is required" })} className={`${inputClass} ${errors.townCity ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.townCity && <p className={errorClass}>{errors.townCity.message}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Official Phone Number <span className="text-red-500">*</span></label>
-                            <input type="tel" {...register("officialPhoneNumber")} className={`${inputClass} ${errors.officialPhoneNumber ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.officialPhoneNumber && <p className={errorClass}>{errors.officialPhoneNumber.message as string}</p>}
+                            <input type="tel" {...register("officialPhoneNumber", { required: "Phone is required" })} className={`${inputClass} ${errors.officialPhoneNumber ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.officialPhoneNumber && <p className={errorClass}>{errors.officialPhoneNumber.message}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Official Email Address <span className="text-red-500">*</span></label>
-                            <input type="email" {...register("officialEmailAddress")} className={`${inputClass} ${errors.officialEmailAddress ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.officialEmailAddress && <p className={errorClass}>{errors.officialEmailAddress.message as string}</p>}
+                            <input type="email" {...register("officialEmailAddress", { required: "Email is required" })} className={`${inputClass} ${errors.officialEmailAddress ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.officialEmailAddress && <p className={errorClass}>{errors.officialEmailAddress.message}</p>}
+                        </div>
+                        <div className="relative col-span-1 md:col-span-2">
+                            <label className={labelClass}>Website or Social Media Page</label>
+                            <input {...register("websiteSocialMedia")} className={`${inputClass} border-[rgba(255,255,255,0.1)]`} />
                         </div>
                     </div>
                 </div>
 
-                {/* SECTION C: CLUB MANAGEMENT */}
+                {/* SECTION C: MANAGEMENT */}
                 <div className={sectionClass}>
                     <h2 className={headingClass}>Section C: Club Management & Officials</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
                         <div className="relative">
                             <label className={labelClass}>Chairman / President Name <span className="text-red-500">*</span></label>
-                            <input {...register("chairmanName")} className={`${inputClass} ${errors.chairmanName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.chairmanName && <p className={errorClass}>{errors.chairmanName.message as string}</p>}
+                            <input {...register("chairmanName", { required: "Chairman name is required" })} className={`${inputClass} ${errors.chairmanName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.chairmanName && <p className={errorClass}>{errors.chairmanName.message}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Chairman Phone <span className="text-red-500">*</span></label>
-                            <input type="tel" {...register("chairmanPhone")} className={`${inputClass} ${errors.chairmanPhone ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.chairmanPhone && <p className={errorClass}>{errors.chairmanPhone.message as string}</p>}
+                            <input type="tel" {...register("chairmanPhone", { required: "Chairman phone is required" })} className={`${inputClass} ${errors.chairmanPhone ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.chairmanPhone && <p className={errorClass}>{errors.chairmanPhone.message}</p>}
+                        </div>
+                        <div className="relative">
+                            <label className={labelClass}>Chairman Email</label>
+                            <input type="email" {...register("chairmanEmail")} className={`${inputClass} ${errors.chairmanEmail ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.chairmanEmail && <p className={errorClass}>{errors.chairmanEmail.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Secretary Name <span className="text-red-500">*</span></label>
-                            <input {...register("secretaryName")} className={`${inputClass} ${errors.secretaryName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.secretaryName && <p className={errorClass}>{errors.secretaryName.message as string}</p>}
+                            <input {...register("secretaryName", { required: "Secretary name is required" })} className={`${inputClass} ${errors.secretaryName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.secretaryName && <p className={errorClass}>{errors.secretaryName.message}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Secretary Phone <span className="text-red-500">*</span></label>
-                            <input type="tel" {...register("secretaryPhone")} className={`${inputClass} ${errors.secretaryPhone ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.secretaryPhone && <p className={errorClass}>{errors.secretaryPhone.message as string}</p>}
+                            <input type="tel" {...register("secretaryPhone", { required: "Secretary phone is required" })} className={`${inputClass} ${errors.secretaryPhone ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.secretaryPhone && <p className={errorClass}>{errors.secretaryPhone.message}</p>}
+                        </div>
+                        <div className="relative">
+                            <label className={labelClass}>Secretary Email</label>
+                            <input type="email" {...register("secretaryEmail")} className={`${inputClass} ${errors.secretaryEmail ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.secretaryEmail && <p className={errorClass}>{errors.secretaryEmail.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Head Coach Name <span className="text-red-500">*</span></label>
-                            <input {...register("headCoachName")} className={`${inputClass} ${errors.headCoachName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.headCoachName && <p className={errorClass}>{errors.headCoachName.message as string}</p>}
+                            <input {...register("headCoachName", { required: "Head coach name is required" })} className={`${inputClass} ${errors.headCoachName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.headCoachName && <p className={errorClass}>{errors.headCoachName.message}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Head Coach License Level <span className="text-red-500">*</span></label>
@@ -199,9 +271,14 @@ export default function ClubForm() {
                             {errors.headCoachLicenseLevel && <p className={errorClass}>{errors.headCoachLicenseLevel.message as string}</p>}
                         </div>
                         <div className="relative">
+                            <label className={labelClass}>Head Coach Phone <span className="text-red-500">*</span></label>
+                            <input type="tel" {...register("headCoachPhone")} className={`${inputClass} ${errors.headCoachPhone ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.headCoachPhone && <p className={errorClass}>{errors.headCoachPhone.message as string}</p>}
+                        </div>
+                        <div className="relative">
                             <label className={labelClass}>Team Manager Name <span className="text-red-500">*</span></label>
-                            <input {...register("teamManagerName")} className={`${inputClass} ${errors.teamManagerName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.teamManagerName && <p className={errorClass}>{errors.teamManagerName.message as string}</p>}
+                            <input {...register("teamManagerName", { required: "Team manager name is required" })} className={`${inputClass} ${errors.teamManagerName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.teamManagerName && <p className={errorClass}>{errors.teamManagerName.message}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Team Manager Phone <span className="text-red-500">*</span></label>
@@ -211,7 +288,7 @@ export default function ClubForm() {
                     </div>
                 </div>
 
-                {/* SECTION D: LEGAL & AFFILIATION */}
+                {/* SECTION D: DOCUMENTS */}
                 <div className={sectionClass}>
                     <h2 className={headingClass}>Section D: Legal & Affiliation Documents</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
@@ -240,8 +317,8 @@ export default function ClubForm() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
                         <div className="relative">
                             <label className={labelClass}>Home Ground / Stadium Name <span className="text-red-500">*</span></label>
-                            <input {...register("homeGroundName")} className={`${inputClass} ${errors.homeGroundName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.homeGroundName && <p className={errorClass}>{errors.homeGroundName.message as string}</p>}
+                            <input {...register("homeGroundName", { required: "Home ground is required" })} className={`${inputClass} ${errors.homeGroundName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.homeGroundName && <p className={errorClass}>{errors.homeGroundName.message}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Stadium Address <span className="text-red-500">*</span></label>
@@ -268,13 +345,30 @@ export default function ClubForm() {
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Number of Players <span className="text-red-500">*</span></label>
-                            <input type="number" {...register("numberOfPlayers")} className={`${inputClass} ${errors.numberOfPlayers ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.numberOfPlayers && <p className={errorClass}>{errors.numberOfPlayers.message as string}</p>}
+                            <input type="number" {...register("numberOfPlayers", { required: "Number of players is required" })} className={`${inputClass} ${errors.numberOfPlayers ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
+                            {errors.numberOfPlayers && <p className={errorClass}>{errors.numberOfPlayers.message}</p>}
+                        </div>
+                        <div className="relative col-span-1 md:col-span-2">
+                            <label className={labelClass}>Youth Teams Available</label>
+                            <div className="flex flex-wrap gap-4 mt-2">
+                                {["U-13", "U-15", "U-17", "U-19", "Women's Team"].map((team) => (
+                                    <label key={team} className="flex items-center gap-2 text-white cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            value={team}
+                                            {...register("youthTeamsAvailable")}
+                                            // DEFENSIVE CHECK: Ensure we only call .includes on an array
+                                            checked={Array.isArray(watchedYouthTeams) && watchedYouthTeams.includes(team)}
+                                            className="w-4 h-4 accent-accent rounded"
+                                        /> {team}
+                                    </label>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                {/* SECTION F: BANKING & PAYMENT DETAILS */}
+                {/* SECTION F: BANKING */}
                 <div className={sectionClass}>
                     <h2 className={headingClass}>Section F: Banking Information</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
@@ -302,15 +396,15 @@ export default function ClubForm() {
                     <h2 className={headingClass}>Section G: Declaration & Consent</h2>
                     <div className="pb-4">
                         <p className="text-gray-400 text-sm mb-4">
-                            I hereby declare that all information provided is true and correct to the best of my knowledge. I agree to abide by the rules and regulations of Osun State Football Association and related football bodies.
+                            I hereby declare that all information provided is true and correct to the best of my knowledge.
                         </p>
                         <div className="space-y-4">
                             <div>
                                 <label className="flex items-start gap-3 text-white cursor-pointer">
-                                    <input type="checkbox" {...register("declarationAccepted")} className="mt-1 w-5 h-5 accent-accent rounded" />
+                                    <input type="checkbox" {...register("declarationAccepted", { required: "You must accept the declaration" })} className="mt-1 w-5 h-5 accent-accent rounded" />
                                     <span>I confirm the above declaration and accept the terms and conditions. <span className="text-red-500">*</span></span>
                                 </label>
-                                {errors.declarationAccepted && <p className="text-red-500 text-xs mt-1">{errors.declarationAccepted.message as string}</p>}
+                                {errors.declarationAccepted && <p className="text-red-500 text-xs mt-1">{errors.declarationAccepted.message}</p>}
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="relative">
@@ -344,15 +438,7 @@ export default function ClubForm() {
                         disabled={isSubmitting}
                         className="bg-accent text-primary-dark hover:bg-secondary px-8 py-3 rounded-full text-lg font-bold shadow-[0_0_15px_rgba(0,255,136,0.2)] transition-all disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed flex items-center gap-2"
                     >
-                        {isSubmitting ? (
-                            <>
-                                <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-primary-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
-                                Submitting Form...
-                            </>
-                        ) : "Submit Registration"}
+                        {isSubmitting ? "Submitting Form..." : "Submit Registration"}
                     </button>
                 </div>
             </form>
