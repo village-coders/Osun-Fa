@@ -110,7 +110,7 @@ export default function PlayerForm() {
                                 onChange(event as any);
                             }}
                         />
-                        {errors.passportPhotograph && <p className={errorClass + " relative mt-1"}>{errors?.passportPhotograph?.message}</p>}
+                        {errors.passportPhotograph && <p className={errorClass + " relative mt-1"}>{errors?.passportPhotograph?.message?.toString()}</p>}
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
