@@ -144,7 +144,7 @@ export default function ClubForm() {
                         <div className="relative">
                             <label className={labelClass}>Club Name (Registered Name) <span className="text-red-500">*</span></label>
                             <input {...register("clubName", { required: "Club name is required" })} className={`${inputClass} ${errors.clubName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.clubName && <p className={errorClass}>{errors.clubName.message}</p>}
+                            {errors.clubName && <p className={errorClass}>{errors.clubName.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Short Name / Nickname</label>
@@ -153,7 +153,7 @@ export default function ClubForm() {
                         <div className="relative">
                             <label className={labelClass}>Year of Establishment <span className="text-red-500">*</span></label>
                             <input type="number" {...register("yearOfEstablishment", { required: "Year is required" })} className={`${inputClass} ${errors.yearOfEstablishment ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.yearOfEstablishment && <p className={errorClass}>{errors.yearOfEstablishment.message}</p>}
+                            {errors.yearOfEstablishment && <p className={errorClass}>{errors.yearOfEstablishment.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Club Category <span className="text-red-500">*</span></label>
@@ -166,7 +166,7 @@ export default function ClubForm() {
                                 <option value="School Team">School Team</option>
                                 <option value="Community Club">Community Club</option>
                             </select>
-                            {errors.clubCategory && <p className={errorClass}>{errors.clubCategory.message}</p>}
+                            {errors.clubCategory && <p className={errorClass}>{errors.clubCategory.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>League / Competition Level <span className="text-red-500">*</span></label>
@@ -181,7 +181,7 @@ export default function ClubForm() {
                                 <option value="Grassroots">Grassroots</option>
                                 <option value="Others">Others</option>
                             </select>
-                            {errors.leagueLevel && <p className={errorClass}>{errors.leagueLevel.message}</p>}
+                            {errors.leagueLevel && <p className={errorClass}>{errors.leagueLevel.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>If Others (League)</label>
@@ -197,27 +197,27 @@ export default function ClubForm() {
                         <div className="relative md:col-span-2">
                             <label className={labelClass}>Registered Address <span className="text-red-500">*</span></label>
                             <textarea {...register("registeredAddress", { required: "Address is required" })} rows={2} className={`${inputClass} ${errors.registeredAddress ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.registeredAddress && <p className={errorClass}>{errors.registeredAddress.message}</p>}
+                            {errors.registeredAddress && <p className={errorClass}>{errors.registeredAddress.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>LGA <span className="text-red-500">*</span></label>
                             <input {...register("lga", { required: "LGA is required" })} className={`${inputClass} ${errors.lga ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.lga && <p className={errorClass}>{errors.lga.message}</p>}
+                            {errors.lga && <p className={errorClass}>{errors.lga.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Town / City <span className="text-red-500">*</span></label>
                             <input {...register("townCity", { required: "Town/City is required" })} className={`${inputClass} ${errors.townCity ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.townCity && <p className={errorClass}>{errors.townCity.message}</p>}
+                            {errors.townCity && <p className={errorClass}>{errors.townCity.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Official Phone Number <span className="text-red-500">*</span></label>
                             <input type="tel" {...register("officialPhoneNumber", { required: "Phone is required" })} className={`${inputClass} ${errors.officialPhoneNumber ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.officialPhoneNumber && <p className={errorClass}>{errors.officialPhoneNumber.message}</p>}
+                            {errors.officialPhoneNumber && <p className={errorClass}>{errors.officialPhoneNumber.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Official Email Address <span className="text-red-500">*</span></label>
                             <input type="email" {...register("officialEmailAddress", { required: "Email is required" })} className={`${inputClass} ${errors.officialEmailAddress ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.officialEmailAddress && <p className={errorClass}>{errors.officialEmailAddress.message}</p>}
+                            {errors.officialEmailAddress && <p className={errorClass}>{errors.officialEmailAddress.message as string}</p>}
                         </div>
                         <div className="relative col-span-1 md:col-span-2">
                             <label className={labelClass}>Website or Social Media Page</label>
@@ -233,12 +233,12 @@ export default function ClubForm() {
                         <div className="relative">
                             <label className={labelClass}>Chairman / President Name <span className="text-red-500">*</span></label>
                             <input {...register("chairmanName", { required: "Chairman name is required" })} className={`${inputClass} ${errors.chairmanName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.chairmanName && <p className={errorClass}>{errors.chairmanName.message}</p>}
+                            {errors.chairmanName && <p className={errorClass}>{errors.chairmanName.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Chairman Phone <span className="text-red-500">*</span></label>
                             <input type="tel" {...register("chairmanPhone", { required: "Chairman phone is required" })} className={`${inputClass} ${errors.chairmanPhone ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.chairmanPhone && <p className={errorClass}>{errors.chairmanPhone.message}</p>}
+                            {errors.chairmanPhone && <p className={errorClass}>{errors.chairmanPhone.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Chairman Email</label>
@@ -248,12 +248,12 @@ export default function ClubForm() {
                         <div className="relative">
                             <label className={labelClass}>Secretary Name <span className="text-red-500">*</span></label>
                             <input {...register("secretaryName", { required: "Secretary name is required" })} className={`${inputClass} ${errors.secretaryName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.secretaryName && <p className={errorClass}>{errors.secretaryName.message}</p>}
+                            {errors.secretaryName && <p className={errorClass}>{errors.secretaryName.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Secretary Phone <span className="text-red-500">*</span></label>
                             <input type="tel" {...register("secretaryPhone", { required: "Secretary phone is required" })} className={`${inputClass} ${errors.secretaryPhone ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.secretaryPhone && <p className={errorClass}>{errors.secretaryPhone.message}</p>}
+                            {errors.secretaryPhone && <p className={errorClass}>{errors.secretaryPhone.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Secretary Email</label>
@@ -263,7 +263,7 @@ export default function ClubForm() {
                         <div className="relative">
                             <label className={labelClass}>Head Coach Name <span className="text-red-500">*</span></label>
                             <input {...register("headCoachName", { required: "Head coach name is required" })} className={`${inputClass} ${errors.headCoachName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.headCoachName && <p className={errorClass}>{errors.headCoachName.message}</p>}
+                            {errors.headCoachName && <p className={errorClass}>{errors.headCoachName.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Head Coach License Level <span className="text-red-500">*</span></label>
@@ -278,7 +278,7 @@ export default function ClubForm() {
                         <div className="relative">
                             <label className={labelClass}>Team Manager Name <span className="text-red-500">*</span></label>
                             <input {...register("teamManagerName", { required: "Team manager name is required" })} className={`${inputClass} ${errors.teamManagerName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.teamManagerName && <p className={errorClass}>{errors.teamManagerName.message}</p>}
+                            {errors.teamManagerName && <p className={errorClass}>{errors.teamManagerName.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Team Manager Phone <span className="text-red-500">*</span></label>
@@ -318,7 +318,7 @@ export default function ClubForm() {
                         <div className="relative">
                             <label className={labelClass}>Home Ground / Stadium Name <span className="text-red-500">*</span></label>
                             <input {...register("homeGroundName", { required: "Home ground is required" })} className={`${inputClass} ${errors.homeGroundName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.homeGroundName && <p className={errorClass}>{errors.homeGroundName.message}</p>}
+                            {errors.homeGroundName && <p className={errorClass}>{errors.homeGroundName.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Stadium Address <span className="text-red-500">*</span></label>
@@ -346,7 +346,7 @@ export default function ClubForm() {
                         <div className="relative">
                             <label className={labelClass}>Number of Players <span className="text-red-500">*</span></label>
                             <input type="number" {...register("numberOfPlayers", { required: "Number of players is required" })} className={`${inputClass} ${errors.numberOfPlayers ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.numberOfPlayers && <p className={errorClass}>{errors.numberOfPlayers.message}</p>}
+                            {errors.numberOfPlayers && <p className={errorClass}>{errors.numberOfPlayers.message as string}</p>}
                         </div>
                         <div className="relative col-span-1 md:col-span-2">
                             <label className={labelClass}>Youth Teams Available</label>
@@ -404,7 +404,7 @@ export default function ClubForm() {
                                     <input type="checkbox" {...register("declarationAccepted", { required: "You must accept the declaration" })} className="mt-1 w-5 h-5 accent-accent rounded" />
                                     <span>I confirm the above declaration and accept the terms and conditions. <span className="text-red-500">*</span></span>
                                 </label>
-                                {errors.declarationAccepted && <p className="text-red-500 text-xs mt-1">{errors.declarationAccepted.message}</p>}
+                                {errors.declarationAccepted && <p className="text-red-500 text-xs mt-1">{errors.declarationAccepted.message as string}</p>}
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="relative">

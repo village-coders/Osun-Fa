@@ -114,19 +114,19 @@ export default function RefereeForm() {
                                 className="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-dark file:text-accent hover:file:bg-black transition-colors cursor-pointer"
                             />
                         </div>
-                        {errors.passportPhotograph && <p className={errorClass + " relative mt-1"}>{errors.passportPhotograph.message}</p>}
+                        {errors.passportPhotograph && <p className={errorClass + " relative mt-1"}>{errors.passportPhotograph.message as string}</p>}
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
                         <div className="relative">
                             <label className={labelClass}>Surname <span className="text-red-500">*</span></label>
                             <input {...register("surname", { required: "Surname is required" })} className={`${inputClass} ${errors.surname ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.surname && <p className={errorClass}>{errors.surname.message}</p>}
+                            {errors.surname && <p className={errorClass}>{errors.surname.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>First Name <span className="text-red-500">*</span></label>
                             <input {...register("firstName", { required: "First name is required" })} className={`${inputClass} ${errors.firstName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.firstName && <p className={errorClass}>{errors.firstName.message}</p>}
+                            {errors.firstName && <p className={errorClass}>{errors.firstName.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Other Name(s)</label>
@@ -140,37 +140,37 @@ export default function RefereeForm() {
                                 <option value="Female">Female</option>
                                 <option value="Prefer not to say">Prefer not to say</option>
                             </select>
-                            {errors.gender && <p className={errorClass}>{errors.gender.message}</p>}
+                            {errors.gender && <p className={errorClass}>{errors.gender.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Date of Birth <span className="text-red-500">*</span></label>
                             <input type="date" {...register("dateOfBirth", { required: "Date of birth is required" })} className={`${inputClass} ${errors.dateOfBirth ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.dateOfBirth && <p className={errorClass}>{errors.dateOfBirth.message}</p>}
+                            {errors.dateOfBirth && <p className={errorClass}>{errors.dateOfBirth.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Place of Birth <span className="text-red-500">*</span></label>
                             <input {...register("placeOfBirth", { required: "Place of birth is required" })} className={`${inputClass} ${errors.placeOfBirth ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.placeOfBirth && <p className={errorClass}>{errors.placeOfBirth.message}</p>}
+                            {errors.placeOfBirth && <p className={errorClass}>{errors.placeOfBirth.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Nationality <span className="text-red-500">*</span></label>
                             <input {...register("nationality", { required: "Nationality is required" })} defaultValue="Nigerian" className={`${inputClass} ${errors.nationality ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.nationality && <p className={errorClass}>{errors.nationality.message}</p>}
+                            {errors.nationality && <p className={errorClass}>{errors.nationality.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>State of Origin <span className="text-red-500">*</span></label>
                             <input {...register("stateOfOrigin", { required: "State is required" })} className={`${inputClass} ${errors.stateOfOrigin ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.stateOfOrigin && <p className={errorClass}>{errors.stateOfOrigin.message}</p>}
+                            {errors.stateOfOrigin && <p className={errorClass}>{errors.stateOfOrigin.message as string}</p>}
                         </div>
                         <div className="relative md:col-span-2">
                             <label className={labelClass}>Residential Address <span className="text-red-500">*</span></label>
                             <textarea {...register("residentialAddress", { required: "Address is required" })} rows={2} className={`${inputClass} ${errors.residentialAddress ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.residentialAddress && <p className={errorClass}>{errors.residentialAddress.message}</p>}
+                            {errors.residentialAddress && <p className={errorClass}>{errors.residentialAddress.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>LGA <span className="text-red-500">*</span></label>
                             <input {...register("lga", { required: "LGA is required" })} className={`${inputClass} ${errors.lga ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.lga && <p className={errorClass}>{errors.lga.message}</p>}
+                            {errors.lga && <p className={errorClass}>{errors.lga.message as string}</p>}
                         </div>
                     </div>
                 </div>
@@ -182,12 +182,12 @@ export default function RefereeForm() {
                         <div className="relative">
                             <label className={labelClass}>Phone Number <span className="text-red-500">*</span></label>
                             <input type="tel" {...register("phoneNumber", { required: "Phone is required" })} className={`${inputClass} ${errors.phoneNumber ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.phoneNumber && <p className={errorClass}>{errors.phoneNumber.message}</p>}
+                            {errors.phoneNumber && <p className={errorClass}>{errors.phoneNumber.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Email Address <span className="text-red-500">*</span></label>
                             <input type="email" {...register("emailAddress", { required: "Email is required" })} className={`${inputClass} ${errors.emailAddress ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.emailAddress && <p className={errorClass}>{errors.emailAddress.message}</p>}
+                            {errors.emailAddress && <p className={errorClass}>{errors.emailAddress.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Alternative Phone</label>
@@ -196,17 +196,17 @@ export default function RefereeForm() {
                         <div className="relative">
                             <label className={labelClass}>Emergency Contact Name <span className="text-red-500">*</span></label>
                             <input {...register("emergencyContactName", { required: "Emergency contact name is required" })} className={`${inputClass} ${errors.emergencyContactName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.emergencyContactName && <p className={errorClass}>{errors.emergencyContactName.message}</p>}
+                            {errors.emergencyContactName && <p className={errorClass}>{errors.emergencyContactName.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Emergency Contact Phone <span className="text-red-500">*</span></label>
                             <input type="tel" {...register("emergencyContactPhone", { required: "Emergency contact phone is required" })} className={`${inputClass} ${errors.emergencyContactPhone ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.emergencyContactPhone && <p className={errorClass}>{errors.emergencyContactPhone.message}</p>}
+                            {errors.emergencyContactPhone && <p className={errorClass}>{errors.emergencyContactPhone.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Relationship to Contact <span className="text-red-500">*</span></label>
                             <input {...register("relationshipToEmergencyContact", { required: "Relationship is required" })} className={`${inputClass} ${errors.relationshipToEmergencyContact ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.relationshipToEmergencyContact && <p className={errorClass}>{errors.relationshipToEmergencyContact.message}</p>}
+                            {errors.relationshipToEmergencyContact && <p className={errorClass}>{errors.relationshipToEmergencyContact.message as string}</p>}
                         </div>
                     </div>
                 </div>
@@ -244,7 +244,7 @@ export default function RefereeForm() {
                                 <option value="Beach Soccer Referee">Beach Soccer Referee</option>
                                 <option value="Instructor / Assessor">Instructor / Assessor</option>
                             </select>
-                            {errors.refereeCategory && <p className={errorClass}>{errors.refereeCategory.message}</p>}
+                            {errors.refereeCategory && <p className={errorClass}>{errors.refereeCategory.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Current Grade/Level <span className="text-red-500">*</span></label>
@@ -256,7 +256,7 @@ export default function RefereeForm() {
                                 <option value="Youth Referee">Youth Referee</option>
                                 <option value="Beginner">Beginner</option>
                             </select>
-                            {errors.currentGrade && <p className={errorClass}>{errors.currentGrade.message}</p>}
+                            {errors.currentGrade && <p className={errorClass}>{errors.currentGrade.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Certification Body <span className="text-red-500">*</span></label>
@@ -267,7 +267,7 @@ export default function RefereeForm() {
                                 <option value="CAF">CAF</option>
                                 <option value="FIFA">FIFA</option>
                             </select>
-                            {errors.certificationBody && <p className={errorClass}>{errors.certificationBody.message}</p>}
+                            {errors.certificationBody && <p className={errorClass}>{errors.certificationBody.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Certificate Number</label>
@@ -283,7 +283,7 @@ export default function RefereeForm() {
                         <div className="relative">
                             <label className={labelClass}>Years of Experience <span className="text-red-500">*</span></label>
                             <input type="number" {...register("yearsOfExperience", { required: "Experience is required" })} className={`${inputClass} ${errors.yearsOfExperience ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                            {errors.yearsOfExperience && <p className={errorClass}>{errors.yearsOfExperience.message}</p>}
+                            {errors.yearsOfExperience && <p className={errorClass}>{errors.yearsOfExperience.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Highest Competition Officiated <span className="text-red-500">*</span></label>
@@ -297,7 +297,7 @@ export default function RefereeForm() {
                                 <option value="NWFL">NWFL</option>
                                 <option value="International">International</option>
                             </select>
-                            {errors.highestCompetitionOfficiated && <p className={errorClass}>{errors.highestCompetitionOfficiated.message}</p>}
+                            {errors.highestCompetitionOfficiated && <p className={errorClass}>{errors.highestCompetitionOfficiated.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Total Matches Officiated</label>
@@ -358,7 +358,7 @@ export default function RefereeForm() {
                                     <input type="radio" value="No" {...register("underSuspension", { required: "Selection required" })} className="w-4 h-4 accent-accent" /> No
                                 </label>
                             </div>
-                            {errors.underSuspension && <p className={errorClass + " -bottom-5"}>{errors.underSuspension.message}</p>}
+                            {errors.underSuspension && <p className={errorClass + " -bottom-5"}>{errors.underSuspension.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Suspension Details (if any)</label>
@@ -374,7 +374,7 @@ export default function RefereeForm() {
                                     <input type="radio" value="No" {...register("previousDisciplinaryAction", { required: "Selection required" })} className="w-4 h-4 accent-accent" /> No
                                 </label>
                             </div>
-                            {errors.previousDisciplinaryAction && <p className={errorClass + " -bottom-5"}>{errors.previousDisciplinaryAction.message}</p>}
+                            {errors.previousDisciplinaryAction && <p className={errorClass + " -bottom-5"}>{errors.previousDisciplinaryAction.message as string}</p>}
                         </div>
                         <div className="relative">
                             <label className={labelClass}>Disciplinary Details (if any)</label>
@@ -419,23 +419,23 @@ export default function RefereeForm() {
                                     <input type="checkbox" {...register("declarationAccepted", { required: "You must accept the declaration" })} className="mt-1 w-5 h-5 accent-accent rounded" />
                                     <span>I confirm the above declaration and accept the terms and conditions. <span className="text-red-500">*</span></span>
                                 </label>
-                                {errors.declarationAccepted && <p className="text-red-500 text-xs mt-1">{errors.declarationAccepted.message}</p>}
+                                {errors.declarationAccepted && <p className="text-red-500 text-xs mt-1">{errors.declarationAccepted.message as string}</p>}
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                 <div className="relative">
                                     <label className={labelClass}>Referee Full Name <span className="text-red-500">*</span></label>
                                     <input {...register("refereeFullName", { required: "Name is required" })} className={`${inputClass} ${errors.refereeFullName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                                    {errors.refereeFullName && <p className={errorClass}>{errors.refereeFullName.message}</p>}
+                                    {errors.refereeFullName && <p className={errorClass}>{errors.refereeFullName.message as string}</p>}
                                 </div>
                                 <div className="relative">
                                     <label className={labelClass}>Digital Signature <span className="text-red-500">*</span></label>
                                     <input {...register("digitalSignature", { required: "Signature is required" })} placeholder="Type Full Name" className={`${inputClass} ${errors.digitalSignature ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                                    {errors.digitalSignature && <p className={errorClass}>{errors.digitalSignature.message}</p>}
+                                    {errors.digitalSignature && <p className={errorClass}>{errors.digitalSignature.message as string}</p>}
                                 </div>
                                 <div className="relative">
                                     <label className={labelClass}>Date <span className="text-red-500">*</span></label>
                                     <input type="date" {...register("date", { required: "Date is required" })} className={`${inputClass} ${errors.date ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
-                                    {errors.date && <p className={errorClass}>{errors.date.message}</p>}
+                                    {errors.date && <p className={errorClass}>{errors.date.message as string}</p>}
                                 </div>
                             </div>
                         </div>
