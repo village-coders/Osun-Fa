@@ -11,7 +11,7 @@ export default function Marquee() {
     const scrollItems = [...newsItems, ...newsItems, ...newsItems];
 
     return (
-        <div className="bg-primary-dark mt-29 text-white py-3 border-y border-accent/20 overflow-hidden relative flex items-center w-full z-20 shadow-lg">
+        <div className="bg-primary-dark mt-20 lg:mt-29 text-white py-3 border-y border-accent/20 overflow-hidden relative flex items-center w-full z-20 shadow-lg">
             <div className="absolute left-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-r from-primary-dark to-transparent"></div>
 
             <div className="flex-shrink-0 px-4 py-1 bg-accent text-primary-dark font-bold text-sm z-20 uppercase tracking-wider h-full flex items-center">

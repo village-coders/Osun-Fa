@@ -59,7 +59,7 @@ export default function Navbar() {
             </div>
 
             {/* Main Navbar */}
-            <div className="glass-dark text-white border-b border-[rgba(255,255,255,0.1)] w-full w-full">
+            <div className="glass-dark text-white border-b border-[rgba(255,255,255,0.1)] w-full">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-20">
                         {/* Logo */}

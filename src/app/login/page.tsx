@@ -12,6 +12,7 @@ import api from "@/lib/api";
 export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [rememberMe, setRememberMe] = useState(true);
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
@@ -22,7 +23,7 @@ export default function LoginPage() {
         try {
             const res = await api.post("/auth/login", { email, password });
             if (res.data.token) {
-                Cookies.set("token", res.data.token, { expires: 30 }); // expires in 30 days
+                Cookies.set("token", res.data.token, { expires: rememberMe ? 30 : 1 }); // expires in 30 days or 1 day
                 toast.success("Login successful!");
                 router.push("/admin");
                 router.refresh();
@@ -44,7 +45,7 @@ export default function LoginPage() {
                     fill
                     className="object-cover opacity-20"
                 />
-                <div className="absolute inset-0 bg-gradient-to-br from-primary-dark/95 to-black/95 mix-blend-multiply"></div>
+                <div className="absolute inset-0 bg-linear-to-br from-primary-dark/95 to-black/95 mix-blend-multiply"></div>
             </div>
 
             <div className="relative z-10 w-full max-w-5xl mx-auto px-4 flex flex-col md:flex-row shadow-2xl rounded-3xl overflow-hidden bg-white/5 backdrop-blur-xl border border-white/10">
@@ -130,8 +131,9 @@ export default function LoginPage() {
                                 <input
                                     type="checkbox"
                                     id="remember"
+                                    checked={rememberMe}
+                                    onChange={(e) => setRememberMe(e.target.checked)}
                                     className="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2 cursor-pointer"
-                                    defaultChecked
                                 />
                                 <label htmlFor="remember" className="ml-2 text-sm text-gray-600 font-medium cursor-pointer select-none">Remember me for 30 days</label>
                             </div>

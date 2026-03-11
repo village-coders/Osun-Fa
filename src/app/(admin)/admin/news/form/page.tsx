@@ -160,26 +160,30 @@ function NewsFormContent() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Image Upload */}
-                        <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        <div className="space-y-2">
+                            <label className="block text-sm font-semibold text-gray-700">
                                 <div className="flex items-center gap-2">
-                                    <ImageIcon className="w-4 h-4" />
+                                    <ImageIcon className="w-4 h-4 text-primary" />
                                     Featured Image
                                 </div>
                             </label>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={(e) => {
-                                    if (e.target.files && e.target.files.length > 0) {
-                                        setImageFile(e.target.files[0]);
-                                    }
-                                }}
-                                className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/5 file:text-primary hover:file:bg-primary/10 cursor-pointer"
-                            />
-                            {formData.imageUrl && !imageFile && (
-                                <p className="text-xs text-gray-500 mt-2 truncate">Current image: {formData.imageUrl.substring(formData.imageUrl.lastIndexOf('/') + 1)}</p>
-                            )}
+                            <div className="relative group">
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => {
+                                        if (e.target.files && e.target.files.length > 0) {
+                                            setImageFile(e.target.files[0]);
+                                        }
+                                    }}
+                                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all file:mr-4 file:py-1.5 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 cursor-pointer"
+                                />
+                                {formData.imageUrl && !imageFile && (
+                                    <p className="text-[11px] text-gray-500 mt-1.5 pl-1 italic">
+                                        Current: {formData.imageUrl.split('/').pop()}
+                                    </p>
+                                )}
+                            </div>
                         </div>
 
                         {/* Author */}
