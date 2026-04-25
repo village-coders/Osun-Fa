@@ -57,11 +57,11 @@ function VerifyContent() {
 
             <div className="relative z-10 w-full max-w-md bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-12 text-center shadow-2xl">
 
-                <div className="flex justify-center mb-8">
+                {/* <div className="flex justify-center mb-8">
                     <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg p-2 border-2 border-accent/20">
                         <Image src="/osun-fa-logo.png" alt="OSFA Logo" width={48} height={48} className="object-contain" />
                     </div>
-                </div>
+                </div> */}
 
                 {status === "verifying" && (
                     <div className="space-y-6">

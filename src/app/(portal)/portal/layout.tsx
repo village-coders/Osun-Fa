@@ -102,7 +102,7 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
                 md:translate-x-0
                 ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
             `}>
-                <Link href={`/`} className="flex items-center gap-4 p-8">
+                <Link href={`/`} className="flex items-center gap-4 p-6">
                     <div className="bg-white p-1.5 rounded-2xl shadow-xl shadow-white/5 w-14 h-14 flex items-center justify-center overflow-hidden">
                         {(userData?.clubLogoUrl || userData?.passportPhotographUrl) ? (
                             <img 
@@ -123,8 +123,8 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
                     </div>
                 </Link>
 
-                <div className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto hide-scrollbar">
-                    <p className="px-4 pb-4 text-[10px] font-black text-white/20 uppercase tracking-[0.4em]">Command Center</p>
+                <div className="flex-1 px-4 py-4 space-y-1.5 overflow-y-auto hide-scrollbar">
+                    {/* <p className="px-4 pb-4 text-[10px] font-black text-white/20 uppercase tracking-[0.4em]">Command Center</p> */}
                     {getNavItems().map((item) => {
                         const isActive = pathname === item.href;
                         return (
@@ -145,7 +145,7 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
                     })}
                 </div>
 
-                <div className="p-6">
+                <div className="p-4">
                     <button
                         onClick={handleLogout}
                         className="w-full flex items-center justify-center gap-3 px-4 py-4 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white rounded-2xl transition-all duration-300 font-black text-[10px] uppercase tracking-[0.2em] border border-red-500/10 shadow-lg shadow-red-500/5 mb-4"

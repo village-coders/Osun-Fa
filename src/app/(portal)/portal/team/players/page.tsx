@@ -5,6 +5,7 @@ import { Users, Plus, Search, MoreVertical, Edit, Trash2, Loader2, User, Eye, Us
 import Link from "next/link";
 import userApi from "@/lib/api";
 import toast from "react-hot-toast";
+import { TableSkeleton } from "@/components/PortalSkeletons";
 
 export default function TeamPlayersPage() {
     const [searchQuery, setSearchQuery] = useState("");
@@ -68,6 +69,8 @@ export default function TeamPlayersPage() {
             setIsActionLoading(false);
         }
     };
+
+    if (loading) return <TableSkeleton />;
 
     return (
         <div className="max-w-7xl mx-auto space-y-12">

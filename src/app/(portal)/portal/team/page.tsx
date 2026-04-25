@@ -5,6 +5,7 @@ import { Users, Calendar, Trophy, FileText, ArrowRight, Handshake, Activity } fr
 import Link from "next/link";
 import userApi from "@/lib/api";
 import Cookies from "js-cookie";
+import { DashboardSkeleton } from "@/components/PortalSkeletons";
 
 export default function TeamDashboard() {
     const [loading, setLoading] = useState(true);
@@ -41,6 +42,8 @@ export default function TeamDashboard() {
         };
         fetchStats();
     }, []);
+
+    if (loading) return <DashboardSkeleton />;
 
     return (
         <div className="max-w-7xl mx-auto space-y-12">
