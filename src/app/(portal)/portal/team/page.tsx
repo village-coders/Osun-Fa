@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Users, Calendar, Trophy, FileText, ArrowRight, Handshake } from "lucide-react";
+import { Users, Calendar, Trophy, FileText, ArrowRight, Handshake, Activity } from "lucide-react";
 import Link from "next/link";
 import userApi from "@/lib/api";
 import Cookies from "js-cookie";
@@ -43,100 +43,127 @@ export default function TeamDashboard() {
     }, []);
 
     return (
-        <div className="max-w-6xl mx-auto space-y-8">
-            <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold text-white">Club Dashboard</h1>
-                {clubStatus !== 'Approved' && (
-                    <div className="bg-yellow-500/10 border border-yellow-500/30 px-4 py-2 rounded-full flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></div>
-                        <span className="text-yellow-500 text-sm font-medium uppercase tracking-wider">Pending Approval</span>
-                    </div>
-                )}
-                {clubStatus === 'Approved' && (
-                    <div className="bg-green-500/10 border border-green-500/30 px-4 py-2 rounded-full flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                        <span className="text-green-500 text-sm font-medium uppercase tracking-wider">Approved</span>
-                    </div>
-                )}
-            </div>
-
-            {clubStatus !== 'Approved' && (
-                <div className="bg-yellow-500/5 border border-yellow-500/20 p-4 rounded-xl flex items-start gap-3">
-                    <FileText className="text-yellow-500 mt-0.5" size={20} />
-                    <div>
-                        <p className="text-yellow-500 font-medium">Club Not Yet Approved</p>
-                        <p className="text-gray-400 text-sm">
-                            Your club registration is currently being reviewed by the OSFA administrators.
-                            You will have full access to player registration and transfer market features once approved.
-                        </p>
+        <div className="max-w-7xl mx-auto space-y-12">
+            {/* Page Header */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div className="space-y-1">
+                    <span className="text-accent font-black uppercase text-[10px] tracking-[0.4em] mb-2 block">— OVERVIEW —</span>
+                    <h1 className="text-5xl font-black text-white tracking-tighter uppercase leading-none">Club <span className="text-accent">Dashboard</span></h1>
+                </div>
+                <div className="flex items-center gap-3">
+                    <div className={`px-4 py-2 rounded-2xl border flex items-center gap-2 ${clubStatus === 'Approved' ? 'bg-green-500/10 border-green-500/20 text-green-400' : 'bg-yellow-500/10 border-yellow-500/20 text-yellow-400'}`}>
+                        <div className={`w-2 h-2 rounded-full ${clubStatus === 'Approved' ? 'bg-green-500' : 'bg-yellow-500 animate-pulse'}`}></div>
+                        <span className="text-[10px] font-black uppercase tracking-widest">{clubStatus === 'Approved' ? 'Verified Club' : 'Pending Verification'}</span>
                     </div>
                 </div>
-            )}
+            </div>
 
             {/* Quick Actions / Registration CTA */}
             {clubStatus !== 'Approved' ? (
-                <div className="bg-accent/10 border border-accent/30 p-8 rounded-[2.5rem] flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 p-10 opacity-5 group-hover:scale-110 transition-transform">
-                        <FileText size={120} />
+                <div className="bg-linear-to-br from-accent/20 via-primary-dark to-black border border-accent/20 p-8 md:p-12 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-12 relative overflow-hidden group shadow-2xl">
+                    <div className="absolute top-0 right-0 p-20 opacity-5 group-hover:scale-110 group-hover:rotate-12 transition-all duration-1000">
+                        <FileText size={200} />
                     </div>
-                    <div className="relative z-10 space-y-3">
-                        <div className="flex items-center gap-2">
-                             <div className="w-2 h-2 rounded-full bg-accent animate-ping"></div>
-                             <h2 className="text-xl font-black text-white uppercase tracking-tight">Complete Official Registration</h2>
+                    <div className="relative z-10 space-y-4 text-center md:text-left">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-accent/20 rounded-full border border-accent/30 mb-2">
+                             <div className="w-1.5 h-1.5 rounded-full bg-accent animate-ping"></div>
+                             <span className="text-[9px] font-black text-accent uppercase tracking-widest leading-none">Action Required</span>
                         </div>
-                        <p className="text-gray-400 max-w-xl font-medium">
-                            Your club registration is currently incomplete or pending. Please fill out the official <span className="text-accent">OSFA Digital Registration Form</span> (Sections A-G) to proceed with affiliation.
+                        <h2 className="text-3xl font-black text-white uppercase tracking-tight leading-tight">Registration <br/> <span className="text-accent">Incomplete</span></h2>
+                        <p className="text-gray-400 max-w-xl font-medium leading-relaxed">
+                            Your club registration is currently pending. Please fill out the official <span className="text-accent">OSFA Digital Registration Form</span> to proceed with full membership.
                         </p>
                     </div>
                     <Link
                         href="/portal/team/registration"
-                        className="bg-accent text-primary-dark font-black px-8 py-4 rounded-2xl flex items-center gap-3 hover:-translate-y-1 transition-all shadow-xl shadow-accent/20 shrink-0 uppercase text-xs tracking-[0.2em] relative z-10"
+                        className="bg-accent text-primary-dark font-black px-10 py-5 rounded-2xl flex items-center gap-4 hover:-translate-y-1 active:scale-95 transition-all shadow-2xl shadow-accent/20 shrink-0 uppercase text-xs tracking-[0.3em] relative z-10"
                     >
-                        <FileText size={18} />
-                        Complete Now
-                        <ArrowRight size={18} />
+                        <FileText size={20} />
+                        Complete Registration
+                        <ArrowRight size={20} />
                     </Link>
                 </div>
             ) : (
-                <div className="bg-primary/20 border border-primary/30 p-8 rounded-[2.5rem] flex flex-col md:flex-row items-center justify-between gap-8 group">
-                    <div className="space-y-3">
-                        <h2 className="text-xl font-black text-white uppercase tracking-tight">Manage Your Squad</h2>
-                        <p className="text-gray-400 max-w-xl font-medium">
-                            Explore the transfer market, manage your current roster, and prepare for upcoming OSFA league matches.
+                <div className="bg-linear-to-br from-white/5 to-transparent border border-white/10 p-8 md:p-12 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-12 group shadow-2xl relative overflow-hidden">
+                     <div className="absolute -top-24 -right-24 w-64 h-64 bg-accent/5 rounded-full blur-[100px] pointer-events-none"></div>
+                    <div className="space-y-4 text-center md:text-left relative z-10">
+                        <h2 className="text-3xl font-black text-white uppercase tracking-tight leading-tight">Manage Your <span className="text-accent">Club</span></h2>
+                        <p className="text-gray-400 max-w-xl font-medium leading-relaxed">
+                            You can now manage your player lineup, participate in the transfer market, and view your upcoming match fixtures.
                         </p>
                     </div>
                     <Link
                         href="/portal/team/players"
-                        className="bg-accent text-primary-dark font-black px-8 py-4 rounded-2xl flex items-center gap-3 hover:-translate-y-1 transition-all shadow-xl shadow-accent/20 shrink-0 uppercase text-xs tracking-[0.2em]"
+                        className="bg-accent text-primary-dark font-black px-10 py-5 rounded-2xl flex items-center gap-4 hover:-translate-y-1 active:scale-95 transition-all shadow-2xl shadow-accent/20 shrink-0 uppercase text-xs tracking-[0.3em]"
                     >
-                        <Users size={18} />
-                        Manage Players
-                        <ArrowRight size={18} />
+                        <Users size={20} />
+                        View Players
+                        <ArrowRight size={20} />
                     </Link>
                 </div>
             )}
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 {stats.map((stat, i) => (
-                    <div key={i} className="bg-white/5 border border-white/5 p-6 rounded-2xl hover:bg-white/10 transition-colors">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className={`p-3 rounded-xl ${stat.bg}`}>
+                    <div key={i} className="bg-white/5 border border-white/5 p-6 rounded-2xl hover:bg-white/[0.08] transition-all duration-300 group shadow-xl">
+                        <div className="flex items-center justify-between mb-8">
+                            <div className={`p-4 rounded-2xl ${stat.bg} group-hover:scale-110 transition-transform duration-500`}>
                                 <stat.icon className={`w-6 h-6 ${stat.color}`} />
                             </div>
                         </div>
-                        <h3 className="text-gray-400 font-medium text-sm mb-1">{stat.label}</h3>
-                        <p className="text-3xl font-bold text-white">{stat.value}</p>
+                        <div className="space-y-1">
+                             <h3 className="text-gray-500 font-black text-[10px] uppercase tracking-[0.2em]">{stat.label}</h3>
+                             <p className="text-4xl font-black text-white tracking-tighter tabular-nums">{stat.value}</p>
+                        </div>
                     </div>
                 ))}
             </div>
 
-            {/* Recent Activity */}
-            <div className="bg-white/5 border border-white/5 rounded-2xl p-6">
-                <h3 className="text-xl font-bold text-white mb-6">Recent Activity</h3>
-                <div className="text-center py-12 text-gray-500">
-                    <Calendar className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                    <p>No recent activity yet. Added players and matches will appear here.</p>
+            {/* Bottom Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                 {/* Recent Activity */}
+                <div className="lg:col-span-2 bg-white/5 border border-white/5 rounded-3xl p-8 md:p-10 shadow-2xl relative overflow-hidden group">
+                    <div className="flex items-center justify-between mb-10 pb-4 border-b border-white/5">
+                        <h3 className="text-xs font-black text-white uppercase tracking-[0.3em]">Recent Activity</h3>
+                        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-white/40 cursor-help group-hover:text-accent transition-colors">
+                            <Activity size={14} />
+                        </div>
+                    </div>
+                    <div className="flex flex-col items-center justify-center py-20 text-center space-y-6">
+                        <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center text-white/10 group-hover:text-accent/20 transition-all duration-500 group-hover:scale-110">
+                             <Calendar size={40} />
+                        </div>
+                        <div className="space-y-2">
+                             <p className="text-white/60 font-black text-sm uppercase tracking-widest italic">No Activity</p>
+                             <p className="text-white/20 text-xs font-medium max-w-xs uppercase tracking-tighter">Your recent registrations and match updates will appear here.</p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Quick Reminders */}
+                <div className="bg-linear-to-b from-primary-dark/40 to-transparent border border-white/5 rounded-3xl p-8 md:p-10 shadow-2xl">
+                    <h3 className="text-xs font-black text-white uppercase tracking-[0.3em] mb-10 pb-4 border-b border-white/5">Quick Actions</h3>
+                    <div className="space-y-6">
+                         <div className="flex gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-accent/40 transition-all cursor-pointer group">
+                              <div className="w-10 h-10 shrink-0 rounded-xl bg-accent/10 flex items-center justify-center text-accent group-hover:rotate-12 transition-transform">
+                                   <Users size={20} />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                   <p className="text-[11px] font-black text-white uppercase">New Player Entry</p>
+                                   <p className="text-[9px] text-white/40 font-bold uppercase tracking-tight">Add a new athlete to your official roster.</p>
+                              </div>
+                         </div>
+                         <div className="flex gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-accent/40 transition-all cursor-pointer group">
+                              <div className="w-10 h-10 shrink-0 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-400 group-hover:rotate-12 transition-transform">
+                                   <Trophy size={20} />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                   <p className="text-[11px] font-black text-white uppercase">Competition Tenders</p>
+                                   <p className="text-[9px] text-white/40 font-bold uppercase tracking-tight">Register your team for upcoming FA leagues.</p>
+                              </div>
+                         </div>
+                    </div>
                 </div>
             </div>
         </div>

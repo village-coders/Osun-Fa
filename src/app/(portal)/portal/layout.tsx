@@ -5,12 +5,14 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import Cookies from "js-cookie";
-import { LayoutDashboard, Users, User, Calendar, Settings, LogOut, Menu, X, Handshake, MessageSquare, LayoutGrid } from "lucide-react";
+import { LayoutDashboard, Users, User, Calendar, Settings, LogOut, Menu, X, Handshake, MessageSquare, LayoutGrid, Activity } from "lucide-react";
+import api from "@/lib/api";
 
 export default function PortalLayout({ children }: { children: React.ReactNode }) {
     const router = useRouter();
     const pathname = usePathname();
     const [role, setRole] = useState<string | null>(null);
+    const [userData, setUserData] = useState<any>(null);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const isPublicPath = pathname?.startsWith("/portal/login") ||
@@ -26,10 +28,19 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
         if (!token) {
             router.push("/portal/login");
         } else {
-            // eslint-disable-next-line react-hooks/exhaustive-deps
             setRole(userRole || null);
+            fetchUserData();
         }
     }, [router, pathname, isPublicPath]);
+
+    const fetchUserData = async () => {
+        try {
+            const res = await api.get('/portal-auth/me');
+            setUserData(res.data);
+        } catch (error) {
+            console.error("Failed to fetch user data for layout");
+        }
+    };
 
     const handleLogout = () => {
         Cookies.remove("portalToken");
@@ -67,36 +78,53 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
     if (!role) return null; // Or a loading spinner
 
     return (
-        <div className="min-h-screen bg-surface-dark flex flex-col md:flex-row">
+        <div className="min-h-screen bg-[#050907] text-white flex flex-col md:flex-row font-inter">
+            {/* Ambient Background Glow */}
+            <div className="fixed top-0 right-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px] pointer-events-none z-0"></div>
+            <div className="fixed bottom-0 left-0 w-[400px] h-[400px] bg-secondary/5 rounded-full blur-[100px] pointer-events-none z-0"></div>
 
             {/* Mobile Header */}
-            <div className="md:hidden bg-primary-dark border-b border-white/10 p-4 flex items-center justify-between z-30">
-                <Link href={`/portal/${role}`} className="flex items-center gap-2">
-                    <Image src="/osun-fa-logo.png" alt="Logo" width={32} height={32} />
-                    <span className="text-white font-bold">OSFA Portal</span>
+            <div className="md:hidden bg-primary-dark/80 backdrop-blur-xl border-b border-white/5 p-4 flex items-center justify-between z-40 sticky top-0">
+                <Link href={`/portal/${role}`} className="flex items-center gap-3">
+                    <div className="bg-white p-1 rounded-lg">
+                         <Image src="/osun-fa-logo.png" alt="Logo" width={28} height={28} />
+                    </div>
+                    <span className="text-white font-black tracking-tighter text-lg uppercase">OSFA<span className="text-accent underline decoration-2 underline-offset-4 ml-1">Portal</span></span>
                 </Link>
-                <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-white">
-                    {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="p-2 bg-white/5 rounded-xl border border-white/5 text-white active:scale-95 transition-all">
+                    {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
                 </button>
             </div>
 
             {/* Sidebar */}
             <aside className={`
-                fixed inset-y-0 left-0 w-64 bg-primary-dark border-r border-white/5 flex flex-col z-20 transition-transform duration-300
-                md:relative md:translate-x-0
+                fixed inset-y-0 left-0 w-72 bg-[#0a0f0d]/80 backdrop-blur-3xl border-r border-white/5 flex flex-col z-50 transition-all duration-500 ease-in-out shadow-2xl h-screen md:sticky md:top-0
+                md:translate-x-0
                 ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
             `}>
-                <div className="hidden md:flex items-center gap-3 p-6 border-b border-white/5">
-                    <div className="bg-white p-1 rounded-full">
-                        <Image src="/osun-fa-logo.png" alt="OSFA" width={40} height={40} className="w-10 h-10 object-contain" />
+                <Link href={`/`} className="flex items-center gap-4 p-8">
+                    <div className="bg-white p-1.5 rounded-2xl shadow-xl shadow-white/5 w-14 h-14 flex items-center justify-center overflow-hidden">
+                        {(userData?.clubLogoUrl || userData?.passportPhotographUrl) ? (
+                            <img 
+                                src={userData.clubLogoUrl || userData.passportPhotographUrl} 
+                                alt="Logo" 
+                                className="w-full h-full object-contain" 
+                            />
+                        ) : (
+                            <Image src="/osun-fa-logo.png" alt="OSFA" width={42} height={42} className="w-10 h-10 object-contain" />
+                        )}
                     </div>
                     <div>
-                        <h2 className="text-white font-bold text-lg leading-tight">OSFA</h2>
-                        <span className="text-accent text-xs font-semibold uppercase tracking-wider">{role} Portal</span>
+                        <h2 className="text-white font-black text-xl leading-none tracking-tighter uppercase whitespace-nowrap overflow-hidden text-ellipsis max-w-[140px]">
+                            {userData?.name || userData?.clubName || userData?.playerName || 'OSFA'}
+                        </h2>
+                        <div className="h-1 w-8 bg-accent mt-1 rounded-full"></div>
+                        <span className="text-accent/60 text-[9px] font-black uppercase tracking-[0.3em] mt-2 block">{role} Profile</span>
                     </div>
-                </div>
+                </Link>
 
-                <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
+                <div className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto hide-scrollbar">
+                    <p className="px-4 pb-4 text-[10px] font-black text-white/20 uppercase tracking-[0.4em]">Command Center</p>
                     {getNavItems().map((item) => {
                         const isActive = pathname === item.href;
                         return (
@@ -104,44 +132,45 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
                                 key={item.name}
                                 href={item.href}
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium ${isActive
-                                    ? "bg-accent/10 text-accent border border-accent/20"
-                                    : "text-gray-400 hover:text-white hover:bg-white/5"
+                                className={`flex items-center gap-4 px-5 py-4 rounded-2xl transition-all duration-300 group relative overflow-hidden ${isActive
+                                    ? "bg-accent/10 text-accent"
+                                    : "text-white/40 hover:text-white hover:bg-white/5"
                                     }`}
                             >
-                                <item.icon size={20} className={isActive ? "text-accent" : ""} />
-                                {item.name}
+                                {isActive && <div className="absolute left-0 w-1 h-6 bg-accent rounded-r-full"></div>}
+                                <item.icon size={20} className={`transition-transform duration-500 ${isActive ? "scale-110" : "group-hover:scale-110"}`} />
+                                <span className="text-[11px] font-black uppercase tracking-widest leading-none">{item.name}</span>
                             </Link>
                         );
                     })}
-                </nav>
+                </div>
 
-                <div className="p-4 border-t border-white/5">
+                <div className="p-6">
                     <button
                         onClick={handleLogout}
-                        className="w-full flex items-center gap-3 px-4 py-3 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl transition-colors font-medium"
+                        className="w-full flex items-center justify-center gap-3 px-4 py-4 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white rounded-2xl transition-all duration-300 font-black text-[10px] uppercase tracking-[0.2em] border border-red-500/10 shadow-lg shadow-red-500/5 mb-4"
                     >
-                        <LogOut size={20} />
-                        Sign Out
+                        <LogOut size={16} />
+                        Logout
                     </button>
+                    <p className="text-[8px] text-center font-bold text-white/10 uppercase tracking-[0.2em]">&copy; {new Date().getFullYear()} OSFA Portal v1.0</p>
                 </div>
             </aside>
 
             {/* Main Content Overlay for Mobile */}
             {isMobileMenuOpen && (
                 <div
-                    className="fixed inset-0 bg-black/50 z-10 md:hidden"
+                    className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden transition-all duration-500"
                     onClick={() => setIsMobileMenuOpen(false)}
                 />
             )}
 
             {/* Main Content */}
-            <main className="flex-1 w-full min-w-0 flex flex-col h-screen overflow-hidden">
-                <div className="flex-1 overflow-y-auto p-4 md:p-8">
+            <main className="flex-1 w-full min-w-0 flex flex-col h-screen overflow-hidden relative z-10">
+                <div className="flex-1 overflow-y-auto px-6 py-8 md:px-10 md:py-12 scroll-smooth">
                     {children}
                 </div>
             </main>
-
         </div>
     );
 }

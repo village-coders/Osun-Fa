@@ -70,108 +70,119 @@ export default function TeamPlayersPage() {
     };
 
     return (
-        <div className="max-w-6xl mx-auto space-y-8">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <h1 className="text-3xl font-bold text-white mb-2">My Players</h1>
-                    <p className="text-gray-400">Manage your club roster and player registrations.</p>
+        <div className="max-w-7xl mx-auto space-y-12">
+            {/* Page Header */}
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+                <div className="space-y-1">
+                    <span className="text-accent font-black uppercase text-[10px] tracking-[0.4em] mb-2 block">— MANAGEMENT —</span>
+                    <h1 className="text-5xl font-black text-white tracking-tighter uppercase leading-none">My <span className="text-accent">Players</span></h1>
+                    <p className="text-white/40 text-xs font-bold uppercase tracking-wider mt-4">Manage your squad and player registrations.</p>
                 </div>
-                {/* The link to a new portal-side registration form allows teams to self-register players */}
                 <Link href="/portal/team/players/new">
-                    <button className="bg-accent text-primary-dark font-bold px-4 py-2.5 rounded-xl flex items-center gap-2 hover:-translate-y-1 transition-transform shadow-[0_0_15px_rgba(0,255,136,0.2)]">
-                        <Plus size={20} />
+                    <button className="bg-accent text-primary-dark font-black px-10 py-5 rounded-2xl flex items-center gap-3 hover:-translate-y-1 active:scale-95 transition-all shadow-2xl shadow-accent/20 shrink-0 uppercase text-[10px] tracking-[0.2em] relative z-10">
+                        <Plus size={18} strokeWidth={3} />
                         Register New Player
                     </button>
                 </Link>
             </div>
 
-            <div className="bg-white/5 border border-white/5 rounded-2xl overflow-hidden flex flex-col">
-                <div className="p-4 border-b border-white/5 flex items-center gap-4">
-                    <div className="relative flex-1 max-w-md">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            {/* Content Card */}
+            <div className="bg-[#0a0f0d]/40 backdrop-blur-3xl border border-white/5 rounded-3xl overflow-hidden shadow-2xl">
+                {/* Search Bar */}
+                <div className="p-8 border-b border-white/5 bg-white/5 flex flex-col md:flex-row items-center gap-6">
+                    <div className="relative flex-1 w-full">
+                        <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-accent/40" />
                         <input
                             type="text"
-                            placeholder="Search players by name or position..."
+                            placeholder="SEARCH BY NAME OR POSITION..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent"
+                            className="w-full pl-14 pr-6 py-5 bg-black/40 border border-white/5 rounded-2xl text-white text-[10px] uppercase font-black tracking-widest focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent/40 transition-all placeholder:text-white/10"
                         />
                     </div>
                 </div>
 
-                <div className="overflow-x-auto w-full">
+                {/* Table Section */}
+                <div className="overflow-x-auto">
                     <table className="w-full text-left whitespace-nowrap">
-                        <thead className="bg-white/5 border-b border-white/5 text-gray-400 text-sm font-semibold uppercase tracking-wider">
+                        <thead className="bg-white/5 text-[9px] font-black text-white/20 uppercase tracking-[0.3em]">
                             <tr>
-                                <th className="px-6 py-4">Player</th>
-                                <th className="px-6 py-4">Position</th>
-                                <th className="px-6 py-4">Status</th>
-                                <th className="px-6 py-4 text-right">Actions</th>
+                                <th className="px-10 py-6">Player</th>
+                                <th className="px-10 py-6">Position</th>
+                                <th className="px-10 py-6">Status</th>
+                                <th className="px-10 py-6 text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-white/5">
                             {loading ? (
                                 <tr>
-                                    <td colSpan={4} className="px-6 py-12 text-center text-gray-500">
-                                        <Loader2 className="w-8 h-8 mx-auto mb-3 animate-spin text-accent" />
-                                        <p>Loading your roster...</p>
+                                    <td colSpan={4} className="px-10 py-32 text-center">
+                                        <Loader2 className="w-12 h-12 mx-auto mb-6 animate-spin text-accent/20" />
+                                        <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">Synchronizing Registry...</p>
                                     </td>
                                 </tr>
                             ) : filteredPlayers.length === 0 ? (
                                 <tr>
-                                    <td colSpan={4} className="px-6 py-12 text-center text-gray-500">
-                                        <Users className="w-12 h-12 mx-auto mb-3 opacity-20" />
-                                        <p>No players found matching your criteria.</p>
+                                    <td colSpan={4} className="px-10 py-32 text-center text-gray-500">
+                                        <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-6">
+                                            <Users className="w-10 h-10 opacity-10" />
+                                        </div>
+                                        <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">No Players Found</p>
                                     </td>
                                 </tr>
                             ) : (
                                 filteredPlayers.map((player) => (
-                                    <tr key={player._id} className="hover:bg-white/5 transition-colors">
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 rounded-full bg-surface-dark border border-white/10 flex items-center justify-center font-bold text-gray-300 overflow-hidden shrink-0">
+                                    <tr key={player._id} className="group hover:bg-white/[0.03] transition-colors relative">
+                                        <td className="px-10 py-6">
+                                            <div className="flex items-center gap-6">
+                                                <div className="w-14 h-14 rounded-2xl bg-black/40 border border-white/5 flex items-center justify-center font-black text-gray-300 overflow-hidden shrink-0 group-hover:scale-105 transition-transform duration-500 relative shadow-xl">
                                                     {player.passportPhotographUrl ? (
                                                         <img src={player.passportPhotographUrl} alt={player.playerName} className="w-full h-full object-cover" />
                                                     ) : (
-                                                        <User className="w-5 h-5 opacity-50" />
+                                                        <User className="w-6 h-6 text-accent/20" />
                                                     )}
                                                 </div>
-                                                <span className="font-bold text-white truncate max-w-[200px]">{player.playerName}</span>
+                                                <div className="space-y-0.5">
+                                                    <p className="font-black text-white text-[11px] uppercase tracking-wider">{player.playerName}</p>
+                                                    <p className="text-[8px] text-white/20 font-bold uppercase tracking-widest leading-none">ID: {player._id.slice(-8).toUpperCase()}</p>
+                                                </div>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 text-gray-300">{player.playingPosition}</td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex flex-col gap-1">
-                                                <span className={`px-3 py-1 text-[10px] font-bold rounded-full border w-fit ${player.status === 'Approved'
-                                                    ? 'bg-green-500/10 text-green-400 border-green-500/20'
+                                        <td className="px-10 py-6">
+                                            <span className="text-[10px] font-black text-accent/60 uppercase tracking-widest">{player.playingPosition}</span>
+                                        </td>
+                                        <td className="px-10 py-6">
+                                            <div className="flex flex-col gap-2">
+                                                <span className={`px-4 py-1.5 text-[8px] font-black rounded-full border w-fit uppercase tracking-widest ${player.status === 'Approved'
+                                                    ? 'bg-green-500/10 text-green-400 border-green-500/10'
                                                     : player.status === 'Verified'
-                                                        ? 'bg-blue-500/10 text-blue-400 border-blue-500/20'
+                                                        ? 'bg-blue-500/10 text-blue-400 border-blue-500/10'
                                                         : player.status === 'Pending'
-                                                            ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'
-                                                            : 'bg-red-500/10 text-red-400 border-red-500/20'
+                                                            ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/10'
+                                                            : 'bg-red-500/10 text-red-400 border-red-500/10'
                                                     }`}>
-                                                    {player.status.toUpperCase()}
+                                                    {player.status}
                                                 </span>
                                                 {player.transferStatus && player.transferStatus !== 'None' && (
-                                                    <span className={`px-3 py-1 text-[10px] font-bold rounded-full border w-fit ${player.transferStatus === 'OnMarket'
-                                                        ? 'bg-blue-500/10 text-blue-400 border-blue-500/20'
-                                                        : 'bg-purple-500/10 text-purple-400 border-purple-500/20'
+                                                    <span className={`px-4 py-1.5 text-[8px] font-black rounded-full border w-fit uppercase tracking-widest ${player.transferStatus === 'OnMarket'
+                                                        ? 'bg-accent/10 text-accent border-accent/10'
+                                                        : 'bg-purple-500/10 text-purple-400 border-purple-500/10'
                                                         }`}>
-                                                        {player.transferStatus.toUpperCase()}
+                                                        On Market
                                                     </span>
                                                 )}
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <div className="flex items-center justify-end gap-2">
+                                        <td className="px-10 py-6 text-right">
+                                            <div className="flex items-center justify-end gap-3 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-300">
                                                 <Link href={`/portal/team/players/view/${player._id}`}>
-                                                    <button className="p-2 text-gray-400 hover:text-accent hover:bg-accent/10 rounded-lg transition-colors" title="View Profile">
-                                                        <Eye size={18} />
+                                                    <button className="p-3 bg-white/5 border border-white/5 text-white/40 hover:text-accent hover:border-accent/40 rounded-xl transition-all" title="View Profile">
+                                                        <Eye size={16} />
                                                     </button>
                                                 </Link>
                                                 <Link href={`/portal/team/players/edit/${player._id}`}>
-                                                    <button className="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors" title="Edit Player">
-                                                        <Edit size={18} />
+                                                    <button className="p-3 bg-white/5 border border-white/5 text-white/40 hover:text-white hover:border-white/20 rounded-xl transition-all" title="Edit Player">
+                                                        <Edit size={16} />
                                                     </button>
                                                 </Link>
 
@@ -179,13 +190,13 @@ export default function TeamPlayersPage() {
                                                     <button
                                                         onClick={() => handleListOnMarket(player._id, player.playerName)}
                                                         disabled={isActionLoading || !['Approved', 'Verified'].includes(player.status)}
-                                                        className="p-2 text-gray-400 hover:text-yellow-400 hover:bg-yellow-400/10 rounded-lg transition-colors disabled:opacity-30"
-                                                        title={['Approved', 'Verified'].includes(player.status) ? "List on Market" : "Wait for Approval/Verification"}
+                                                        className="p-3 bg-white/5 border border-white/5 text-white/40 hover:text-orange-400 hover:border-orange-400/40 rounded-xl transition-all disabled:opacity-10"
+                                                        title={['Approved', 'Verified'].includes(player.status) ? "List on Market" : "Pending Approval"}
                                                     >
-                                                        <Trophy size={18} />
+                                                        <Trophy size={16} />
                                                     </button>
                                                 ) : (
-                                                    <div className="px-2 py-1 bg-yellow-500/10 text-yellow-500 text-[10px] font-bold rounded border border-yellow-500/20">
+                                                    <div className="px-4 py-2.5 bg-accent/10 border border-accent/20 text-accent text-[8px] font-black rounded-xl uppercase tracking-[0.2em]">
                                                         ON MARKET
                                                     </div>
                                                 )}
@@ -193,10 +204,10 @@ export default function TeamPlayersPage() {
                                                 <button
                                                     onClick={() => handleRelease(player._id, player.playerName)}
                                                     disabled={isActionLoading || !['Approved', 'Verified'].includes(player.status)}
-                                                    className="p-2 text-gray-400 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors disabled:opacity-30"
-                                                    title={['Approved', 'Verified'].includes(player.status) ? "Release as Free Agent" : "Wait for Approval/Verification"}
+                                                    className="p-3 bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500 hover:text-white rounded-xl transition-all disabled:opacity-10"
+                                                    title={['Approved', 'Verified'].includes(player.status) ? "Release Player" : "Pending Approval"}
                                                 >
-                                                    <UserMinus size={18} />
+                                                    <UserMinus size={16} />
                                                 </button>
                                             </div>
                                         </td>

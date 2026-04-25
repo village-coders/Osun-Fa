@@ -10,43 +10,63 @@ export default function RefereeDashboard() {
     ];
 
     return (
-        <div className="max-w-6xl mx-auto space-y-8">
-            <h1 className="text-3xl font-bold text-white">Referee Dashboard</h1>
-
-            {/* Quick Actions */}
-            <div className="bg-primary/20 border border-primary/30 p-6 flex flex-col md:flex-row items-center justify-between gap-6 rounded-2xl">
-                <div>
-                    <h2 className="text-xl font-bold text-white mb-2">Welcome to your Portal</h2>
-                    <p className="text-gray-400 max-w-lg">
-                        View matches you've been allocated to, submit match reports, and manage your referee certifications and fitness test records.
-                    </p>
+        <div className="max-w-7xl mx-auto space-y-12">
+            {/* Page Header */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div className="space-y-1">
+                    <span className="text-accent font-black uppercase text-[10px] tracking-[0.4em] mb-2 block">— OFFICIAL —</span>
+                    <h1 className="text-5xl font-black text-white tracking-tighter uppercase leading-none">Referee <span className="text-accent">Dashboard</span></h1>
                 </div>
-                <div className="flex items-center gap-2 bg-green-500/10 text-green-500 px-4 py-2 rounded-full border border-green-500/20 font-medium shrink-0">
-                    <CheckCircle2 size={18} />
-                    Profile Approved
+                <div className="flex items-center gap-2 bg-green-500/10 text-green-400 px-4 py-2 rounded-2xl border border-green-500/10 font-black text-[9px] uppercase tracking-widest shrink-0">
+                    <CheckCircle2 size={14} />
+                    OSFA Certified official
                 </div>
             </div>
 
+            {/* Quick Actions */}
+            <div className="bg-linear-to-br from-white/5 to-transparent border border-white/5 p-8 md:p-12 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-12 group shadow-2xl relative overflow-hidden">
+                <div className="absolute -top-24 -right-24 w-64 h-64 bg-accent/5 rounded-full blur-[100px] pointer-events-none"></div>
+                <div className="space-y-4 text-center md:text-left relative z-10">
+                    <h2 className="text-3xl font-black text-white uppercase tracking-tight leading-tight">Official <span className="text-accent">Portal</span></h2>
+                    <p className="text-gray-400 max-w-lg font-medium leading-relaxed">
+                        View matches you've been allocated to, submit match reports, and manage your referee certifications and fitness test records.
+                    </p>
+                </div>
+                <button className="bg-accent text-primary-dark font-black px-10 py-5 rounded-2xl flex items-center gap-4 hover:-translate-y-1 active:scale-95 transition-all shadow-2xl shadow-accent/20 shrink-0 uppercase text-[10px] tracking-[0.2em] relative z-10">
+                    Submit Match Report
+                </button>
+            </div>
+
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {stats.map((stat, i) => (
-                    <div key={i} className="bg-white/5 border border-white/5 p-6 rounded-2xl hover:bg-white/10 transition-colors">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className={`p-3 rounded-xl ${stat.bg}`}>
+                    <div key={i} className="bg-white/5 border border-white/5 p-8 rounded-2xl hover:bg-white/[0.08] transition-all duration-300 group shadow-xl">
+                        <div className="flex items-center justify-between mb-8">
+                            <div className={`p-4 rounded-2xl ${stat.bg} group-hover:scale-110 transition-transform duration-500`}>
                                 <stat.icon className={`w-6 h-6 ${stat.color}`} />
                             </div>
                         </div>
-                        <h3 className="text-gray-400 font-medium text-sm mb-1">{stat.label}</h3>
-                        <p className="text-2xl font-bold text-white">{stat.value}</p>
+                        <div className="space-y-1">
+                             <h3 className="text-gray-500 font-black text-[10px] uppercase tracking-[0.2em]">{stat.label}</h3>
+                             <p className="text-4xl font-black text-white tracking-tighter tabular-nums truncate">{stat.value}</p>
+                        </div>
                     </div>
                 ))}
             </div>
 
-            <div className="bg-white/5 border border-white/5 rounded-2xl p-6">
-                <h3 className="text-xl font-bold text-white mb-6">Upcoming Allocations</h3>
-                <div className="text-center py-12 text-gray-500">
-                    <Calendar className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                    <p>No match allocations pending. The referees committee will assign you matches soon.</p>
+            {/* Recent Activity */}
+            <div className="bg-white/5 border border-white/5 rounded-3xl p-8 md:p-10 shadow-2xl relative overflow-hidden group">
+                 <div className="flex items-center justify-between mb-10 pb-4 border-b border-white/5">
+                    <h3 className="text-xs font-black text-white uppercase tracking-[0.3em]">Upcoming Allocations</h3>
+                </div>
+                <div className="flex flex-col items-center justify-center py-24 text-center space-y-6">
+                    <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center text-white/10 group-hover:text-accent/20 transition-all duration-500 group-hover:scale-110">
+                         <Calendar size={40} />
+                    </div>
+                    <div className="space-y-2">
+                         <p className="text-white/60 font-black text-sm uppercase tracking-widest italic">No Allocations</p>
+                         <p className="text-white/20 text-[10px] font-bold max-w-xs uppercase tracking-tighter">OSFA Referees Committee will assign matches here soon.</p>
+                    </div>
                 </div>
             </div>
         </div>
