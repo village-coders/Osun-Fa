@@ -1,13 +1,90 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { Menu, X, ChevronDown, MapPin, Phone, Mail, Facebook, Twitter, Instagram, Youtube, UserCog } from "lucide-react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import api from "@/lib/api";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [isAffiliationsOpen, setIsAffiliationsOpen] = useState(false);
+    const [user, setUser] = useState<any>(null);
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+        const fetchUserSession = async () => {
+            const portalToken = Cookies.get('portalToken');
+            const adminToken = Cookies.get('token');
+
+            if (!portalToken && !adminToken) return;
+
+            try {
+                // Try portal session if portalToken exists
+                if (portalToken) {
+                    try {
+                        const res = await api.get('/portal-auth/me', {
+                            headers: { Authorization: `Bearer ${portalToken}` }
+                        });
+                        console.log("response from navbar", res)
+                        if (res.data) {
+                            setUser(res.data);
+                            return;
+                        }
+                    } catch (e) {
+                        console.warn("Portal session check failed, trying Admin or falling back.");
+                    }
+                }
+
+                // Try admin session if adminToken exists
+                // if (adminToken) {
+                //     try {
+                //         const res = await api.get('/auth/me', {
+                //             headers: { Authorization: `Bearer ${adminToken}` }
+                //         });
+                //         if (res.data) {
+                //             setUser(res.data);
+                //             return;
+                //         }
+                //     } catch (e) {
+                //         console.warn("Admin session check failed.");
+                //     }
+                // }
+
+                // If we reach here, both failed or were missing
+                setUser(null);
+            } catch (error) {
+                console.error("Session verification failed:", error);
+                setUser(null);
+            }
+        };
+
+        fetchUserSession();
+    }, []);
+
+    const getDashboardLink = (role: string) => {
+        switch (role?.toLowerCase()) {
+            case 'team': return '/portal/team';
+            case 'coach': return '/portal/coach';
+            case 'referee': return '/portal/referee';
+            case 'player': return '/portal/complete-profile';
+            case 'admin': return '/admin';
+            default: return '/portal/login';
+        }
+    };
+
+    const getRoleDisplayName = (role: string) => {
+        switch (role?.toLowerCase()) {
+            case 'team': return 'Club Admin';
+            case 'coach': return 'Licensed Coach';
+            case 'referee': return 'Licensed Referee';
+            case 'player': return 'Member Player';
+            case 'admin': return 'System Admin';
+            default: return 'User';
+        }
+    };
 
     const navLinks = [
         { name: "Home", href: "/" },
@@ -125,14 +202,29 @@ export default function Navbar() {
                             </div>
                         </div>
 
-                        {/* CTA Button */}
+                        {/* CTA Button or User Profile */}
                         <div className="hidden md:block">
-                            <Link
-                                href="/portal/register"
-                                className="bg-accent text-primary-dark hover:bg-secondary px-6 py-2.5 rounded-full text-sm font-bold shadow-[0_0_15px_rgba(0,255,136,0.3)] hover:shadow-[0_0_20px_rgba(229,168,35,0.5)] transition-all duration-300"
-                            >
-                                Join Us
-                            </Link>
+                            {isMounted && user ? (
+                                <Link
+                                    href={getDashboardLink(user.role)}
+                                    className="flex items-center gap-3 bg-white/10 hover:bg-white/20 border border-white/20 px-4 py-2 rounded-full transition-all duration-300 group"
+                                >
+                                    <div className="text-right hidden lg:block">
+                                        <p className="text-xs font-bold text-accent uppercase tracking-tighter leading-none mb-2">{getRoleDisplayName(user.role)}</p>
+                                        <p className="text-[10px] font-bold text-white leading-none whitespace-nowrap">Go to Dashboard</p>
+                                    </div>
+                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent to-primary flex items-center justify-center text-primary-dark font-black text-lg border-2 border-accent group-hover:scale-105 transition-transform">
+                                        {user.name?.charAt(0) || user.role?.charAt(0).toUpperCase()}
+                                    </div>
+                                </Link>
+                            ) : (
+                                <Link
+                                    href="/portal/register"
+                                    className="bg-accent text-primary-dark hover:bg-secondary px-6 py-2.5 rounded-full text-sm font-bold shadow-[0_0_15px_rgba(0,255,136,0.3)] hover:shadow-[0_0_20px_rgba(229,168,35,0.5)] transition-all duration-300"
+                                >
+                                    Join Us
+                                </Link>
+                            )}
                         </div>
 
                         {/* Mobile menu button */}
@@ -197,13 +289,29 @@ export default function Navbar() {
                                 </Link>
                             ))}
 
-                            <Link
-                                href="/portal/register"
-                                className="mt-4 block w-full text-center bg-accent text-primary-dark hover:bg-secondary px-6 py-3 rounded-md text-base font-bold transition-all"
-                                onClick={() => setIsOpen(false)}
-                            >
-                                Join Us
-                            </Link>
+                            {isMounted && user ? (
+                                <Link
+                                    href={getDashboardLink(user.role)}
+                                    className="mt-4 flex items-center justify-center gap-3 bg-white/10 border border-accent/30 py-3 rounded-lg"
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-primary-dark font-bold border-2 border-white">
+                                    {user.name?.charAt(0) || user.role?.charAt(0).toUpperCase()}
+                                    </div>
+                                    <div className="text-left">
+                                        <p className="text-xs font-bold text-accent">{getRoleDisplayName(user.role)}</p>
+                                        <p className="text-sm font-medium text-white">Go to Dashboard</p>
+                                    </div>
+                                </Link>
+                            ) : (
+                                <Link
+                                    href="/portal/register"
+                                    className="mt-4 block w-full text-center bg-accent text-primary-dark hover:bg-secondary px-6 py-3 rounded-md text-base font-bold transition-all"
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    Join Us
+                                </Link>
+                            )}
                         </div>
                     </div>
                 )}

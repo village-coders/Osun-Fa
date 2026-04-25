@@ -13,7 +13,7 @@ export default function AdminNewsPage() {
     useEffect(() => {
         const fetchNews = async () => {
             try {
-                const res = await api.get('/news');
+                const res = await api.get('/news?all=true');
                 setNewsItems(res.data);
             } catch (error) {
                 toast.error("Failed to load news");
@@ -113,7 +113,7 @@ export default function AdminNewsPage() {
                                         <td className="px-6 py-4 text-gray-500">{item.category || 'General'}</td>
                                         <td className="px-6 py-4 text-gray-500">{new Date(item.createdAt).toLocaleDateString()}</td>
                                         <td className="px-6 py-4">
-                                            <span className={`px-3 py-1 rounded-full text-xs font-bold ${item.status === 'Published' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
+                                            <span className={`px-3 py-1 rounded-full text-xs font-bold ${item.status === 'published' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
                                                 }`}>
                                                 {item.status}
                                             </span>

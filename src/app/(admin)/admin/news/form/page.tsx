@@ -30,7 +30,7 @@ function NewsFormContent() {
         if (isEditing) {
             const fetchArticle = async () => {
                 try {
-                    const res = await api.get(`/news/${id}`);
+                    const res = await api.get(`/news/${id}?all=true`);
                     setFormData({
                         title: res.data.title || "",
                         excerpt: res.data.excerpt || "",

@@ -109,17 +109,44 @@ export default function RegisterPlayerPage() {
         }
     };
 
+    const validateStep = (step: number) => {
+        const requiredFields: any = {
+            1: ['surname', 'firstName', 'gender', 'dateOfBirth', 'placeOfBirth', 'nationality', 'stateOfOrigin', 'lga', 'residentialAddress'],
+            2: ['phoneNumber', 'emergencyContactName', 'emergencyContactPhone', 'relationshipToPlayer'],
+            4: ['playingPosition', 'dominantFoot', 'yearsOfExperience', 'registrationSeason'],
+            8: ['declarationAccepted', 'dataProtectionConsent', 'playerName', 'digitalSignature']
+        };
+
+        const fieldsToValidate = requiredFields[step] || [];
+        for (const field of fieldsToValidate) {
+            if (!formData[field] || formData[field] === '') {
+                toast.error(`Please complete all required fields in this section`);
+                return false;
+            }
+        }
+        return true;
+    };
+
+    const handleNext = () => {
+        if (validateStep(currentStep)) {
+            setCurrentStep(prev => Math.min(9, prev + 1));
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+    };
+
+    const handlePrev = () => {
+        setCurrentStep(prev => Math.max(1, prev - 1));
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!formData.declarationAccepted || !formData.dataProtectionConsent) {
-            toast.error("Please accept the declaration and data consent");
-            return;
-        }
+        if (!validateStep(currentStep)) return;
 
         if (!photo) {
             toast.error("Passport photograph is required");
-            setCurrentStep(4); // Move to documents section
+            setCurrentStep(9); // Move to documents section
             return;
         }
 
@@ -158,12 +185,12 @@ export default function RegisterPlayerPage() {
         { id: 1, label: "Personal", icon: User },
         { id: 2, label: "Contact", icon: Phone },
         { id: 3, label: "Parent/Guardian", icon: Shield },
-        { id: 4, label: "Documents", icon: FileText },
-        { id: 5, label: "Football", icon: Trophy },
-        { id: 6, label: "History", icon: History },
-        { id: 7, label: "Medical", icon: HeartPulse },
-        { id: 8, label: "Education", icon: Briefcase },
-        { id: 9, label: "Consent", icon: Save }
+        { id: 4, label: "Football", icon: Trophy },
+        { id: 5, label: "History", icon: History },
+        { id: 6, label: "Medical", icon: HeartPulse },
+        { id: 7, label: "Education", icon: Briefcase },
+        { id: 8, label: "Consent", icon: Save },
+        { id: 9, label: "Documents", icon: FileText }
     ];
 
     return (
@@ -197,7 +224,11 @@ export default function RegisterPlayerPage() {
                     {sections.map((s, i) => (
                         <div key={s.id} className="flex items-center flex-1 last:flex-none">
                             <button
-                                onClick={() => setCurrentStep(s.id)}
+                                onClick={() => {
+                                    if (s.id < currentStep || validateStep(currentStep)) {
+                                        setCurrentStep(s.id);
+                                    }
+                                }}
                                 className={`flex flex-col items-center gap-2 group transition-all ${currentStep === s.id ? 'scale-110' : 'opacity-60 hover:opacity-100'}`}
                             >
                                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all border-2 ${currentStep === s.id
@@ -272,29 +303,8 @@ export default function RegisterPlayerPage() {
                     </FormCard>
                 )}
 
-                {/* Section D: Player Identification (Uploads) */}
-                {currentStep === 4 && (
-                    <FormCard title="Section D: Player Identification" icon={FileText}>
-                        <div className="space-y-10">
-                            <div className="p-8 bg-black/20 rounded-3xl border border-white/5">
-                                <label className="text-sm font-black text-white uppercase tracking-widest mb-4 block">1. Passport Photograph (Facial Capture) *</label>
-                                <p className="text-xs text-gray-400 mb-6 italic">Secure white background headshot required for AI facial recognition.</p>
-                                <PhotoCapture onPhotoCaptured={(file) => setPhoto(file)} />
-                                {photo && <div className="mt-4 flex items-center gap-2 text-accent text-xs font-bold"><Check size={14} /> Photo Captured Successfully</div>}
-                            </div>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                                <FileUpload label="Birth Certificate / Declaration" fieldName="birthCertificate" file={files.birthCertificate} onChange={handleFileChange} />
-                                <FileUpload label="NIN Slip / Identification" fieldName="ninDocument" file={files.ninDocument} onChange={handleFileChange} />
-                                <FileUpload label="School ID (Youth Players)" fieldName="schoolId" file={files.schoolId} onChange={handleFileChange} />
-                                <FileUpload label="Consent Form (Minors)" fieldName="consentFormUpload" file={files.consentFormUpload} onChange={handleFileChange} />
-                            </div>
-                        </div>
-                    </FormCard>
-                )}
-
                 {/* Section E: Football Profile */}
-                {currentStep === 5 && (
+                {currentStep === 4 && (
                     <FormCard title="Section E: Football Profile" icon={Trophy}>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <InputField label="Current Club Name (Auto-filled)" name="currentClubName" value={formData.currentClubName} readOnly placeholder="Will be set by system" />
@@ -324,7 +334,7 @@ export default function RegisterPlayerPage() {
                 )}
 
                 {/* Section F: Registration & Transfer History */}
-                {currentStep === 6 && (
+                {currentStep === 5 && (
                     <FormCard title="Section F: Registration & Transfer History" icon={History}>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <SelectField
@@ -357,7 +367,7 @@ export default function RegisterPlayerPage() {
                 )}
 
                 {/* Section G: Medical & Fitness */}
-                {currentStep === 7 && (
+                {currentStep === 6 && (
                     <FormCard title="Section G: Medical & Fitness (Confidential)" icon={HeartPulse}>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <InputField label="Blood Group (Optional)" name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} placeholder="e.g. O+, AB-" />
@@ -373,7 +383,7 @@ export default function RegisterPlayerPage() {
                 )}
 
                 {/* Section H: Education / Occupation */}
-                {currentStep === 8 && (
+                {currentStep === 7 && (
                     <FormCard title="Section H: Education / Occupation (Optional)" icon={Briefcase}>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <SelectField
@@ -389,7 +399,7 @@ export default function RegisterPlayerPage() {
                 )}
 
                 {/* Section I: Declaration & Consent */}
-                {currentStep === 9 && (
+                {currentStep === 8 && (
                     <FormCard title="Section I: Declaration & Consent" icon={Save}>
                         <div className="space-y-10">
                             <div className="bg-white/5 p-8 rounded-4xl border border-white/5 space-y-4">
@@ -443,11 +453,32 @@ export default function RegisterPlayerPage() {
                     </FormCard>
                 )}
 
+                {/* Section D: Player Identification (Uploads) */}
+                {currentStep === 9 && (
+                    <FormCard title="Section D: Player Identification" icon={FileText}>
+                        <div className="space-y-10">
+                            <div className="p-8 bg-black/20 rounded-3xl border border-white/5">
+                                <label className="text-sm font-black text-white uppercase tracking-widest mb-4 block">1. Passport Photograph (Facial Capture) *</label>
+                                <p className="text-xs text-gray-400 mb-6 italic">Secure white background headshot required for AI facial recognition.</p>
+                                <PhotoCapture onPhotoCaptured={(file) => setPhoto(file)} />
+                                {photo && <div className="mt-4 flex items-center gap-2 text-accent text-xs font-bold"><Check size={14} /> Photo Captured Successfully</div>}
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <FileUpload label="Birth Certificate / Declaration" fieldName="birthCertificate" file={files.birthCertificate} onChange={handleFileChange} />
+                                <FileUpload label="NIN Slip / Identification" fieldName="ninDocument" file={files.ninDocument} onChange={handleFileChange} />
+                                <FileUpload label="School ID (Youth Players)" fieldName="schoolId" file={files.schoolId} onChange={handleFileChange} />
+                                <FileUpload label="Consent Form (Minors)" fieldName="consentFormUpload" file={files.consentFormUpload} onChange={handleFileChange} />
+                            </div>
+                        </div>
+                    </FormCard>
+                )}
+
                 {/* Navigation Buttons */}
                 <div className="flex items-center justify-between pt-8 border-t border-white/10">
                     <button
                         type="button"
-                        onClick={() => setCurrentStep(prev => Math.max(1, prev - 1))}
+                        onClick={handlePrev}
                         className={`flex items-center gap-2 text-gray-400 font-black uppercase text-[10px] tracking-[0.3em] px-8 py-5 rounded-3xl transition-all ${currentStep === 1 ? 'opacity-0 pointer-events-none' : 'hover:bg-white/5 hover:text-white'}`}
                     >
                         <ArrowLeft size={16} />
@@ -457,7 +488,7 @@ export default function RegisterPlayerPage() {
                     {currentStep < 9 ? (
                         <button
                             type="button"
-                            onClick={() => setCurrentStep(prev => Math.min(9, prev + 1))}
+                            onClick={handleNext}
                             className="bg-white/10 text-white font-black uppercase text-[10px] tracking-[0.3em] px-12 py-5 rounded-3xl hover:bg-white/20 hover:-translate-y-1 transition-all active:scale-95 shadow-xl"
                         >
                             Next Section
