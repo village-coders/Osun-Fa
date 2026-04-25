@@ -17,6 +17,7 @@ export default function BlogContent() {
                 const res = await api.get("/news");
                 const formattedPosts = res.data.map((item: any) => ({
                     id: item._id,
+                    slug: item.slug,
                     title: item.title,
                     excerpt: item.excerpt,
                     category: item.category || 'Official Announcement',
@@ -66,7 +67,7 @@ export default function BlogContent() {
                 <>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {posts.map((post) => (
-                            <Link href={`/blog/${post.id}`} key={post.id} className="group">
+                            <Link href={`/blog/${post.slug || post.id}`} key={post.id} className="group">
                                 <article className="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 flex flex-col h-full hover:-translate-y-2">
                                     <div className={`h-48 w-full ${post.imageColor} relative overflow-hidden flex items-center justify-center`}>
                                         {post.imageUrl ? (

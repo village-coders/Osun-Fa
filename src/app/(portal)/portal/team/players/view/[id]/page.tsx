@@ -72,10 +72,11 @@ export default function ViewPlayerPage() {
                 </button>
                 <div className="flex items-center gap-3">
                     <div className={`px-4 py-2 rounded-xl border flex items-center gap-2 ${player.status === 'Approved' ? 'bg-green-500/10 border-green-500/20 text-green-400' :
+                        player.status === 'Verified' ? 'bg-blue-500/10 border-blue-500/20 text-blue-400' :
                             player.status === 'Pending' ? 'bg-yellow-500/10 border-yellow-500/20 text-yellow-400' :
                                 'bg-red-500/10 border-red-500/20 text-red-500'
                         }`}>
-                        {player.status === 'Approved' ? <BadgeCheck size={18} /> : <Activity size={18} />}
+                        {player.status === 'Approved' || player.status === 'Verified' ? <BadgeCheck size={18} /> : <Activity size={18} />}
                         <span className="text-xs font-black uppercase tracking-widest">Status: {player.status}</span>
                     </div>
                     <Link href={`/portal/team/players/edit/${player._id}`}>

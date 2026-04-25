@@ -41,7 +41,7 @@ export default function AdminLayout({
             )}
 
             {/* Sidebar */}
-            <aside className={`fixed top-0 left-0 h-screen w-64 bg-surface-dark text-white z-50 transform transition-transform duration-300 ease-in-out flex flex-col ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+            <aside className={`fixed top-0 left-0 h-screen w-64 bg-surface-dark text-white z-50  transform transition-transform duration-300 ease-in-out flex flex-col ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
                 {/* Logo Area */}
                 <div className="h-20 flex items-center gap-3 px-6 border-b border-[rgba(255,255,255,0.05)] bg-primary-dark">
                     <Link href="/">
@@ -56,7 +56,7 @@ export default function AdminLayout({
                 </div>
 
                 {/* Navigation Links */}
-                <div className="flex-1 overflow-y-auto py-6 px-4 space-y-2">
+                <div className="flex-1 overflow-y-auto hide-scrollbar py-6 px-4 space-y-2">
                     {navItems.map((item) => {
                         const Icon = item.icon;
                         const isActive = pathname === item.href;

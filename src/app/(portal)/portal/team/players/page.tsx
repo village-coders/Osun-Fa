@@ -144,9 +144,11 @@ export default function TeamPlayersPage() {
                                             <div className="flex flex-col gap-1">
                                                 <span className={`px-3 py-1 text-[10px] font-bold rounded-full border w-fit ${player.status === 'Approved'
                                                     ? 'bg-green-500/10 text-green-400 border-green-500/20'
-                                                    : player.status === 'Pending'
-                                                        ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'
-                                                        : 'bg-red-500/10 text-red-400 border-red-500/20'
+                                                    : player.status === 'Verified'
+                                                        ? 'bg-blue-500/10 text-blue-400 border-blue-500/20'
+                                                        : player.status === 'Pending'
+                                                            ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'
+                                                            : 'bg-red-500/10 text-red-400 border-red-500/20'
                                                     }`}>
                                                     {player.status.toUpperCase()}
                                                 </span>
@@ -176,8 +178,9 @@ export default function TeamPlayersPage() {
                                                 {player.transferStatus !== 'OnMarket' ? (
                                                     <button
                                                         onClick={() => handleListOnMarket(player._id, player.playerName)}
-                                                        className="p-2 text-gray-400 hover:text-yellow-400 hover:bg-yellow-400/10 rounded-lg transition-colors"
-                                                        title="List on Market"
+                                                        disabled={isActionLoading || !['Approved', 'Verified'].includes(player.status)}
+                                                        className="p-2 text-gray-400 hover:text-yellow-400 hover:bg-yellow-400/10 rounded-lg transition-colors disabled:opacity-30"
+                                                        title={['Approved', 'Verified'].includes(player.status) ? "List on Market" : "Wait for Approval/Verification"}
                                                     >
                                                         <Trophy size={18} />
                                                     </button>
@@ -189,9 +192,9 @@ export default function TeamPlayersPage() {
 
                                                 <button
                                                     onClick={() => handleRelease(player._id, player.playerName)}
-                                                    disabled={isActionLoading}
-                                                    className="p-2 text-gray-400 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors disabled:opacity-50"
-                                                    title="Release as Free Agent"
+                                                    disabled={isActionLoading || !['Approved', 'Verified'].includes(player.status)}
+                                                    className="p-2 text-gray-400 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors disabled:opacity-30"
+                                                    title={['Approved', 'Verified'].includes(player.status) ? "Release as Free Agent" : "Wait for Approval/Verification"}
                                                 >
                                                     <UserMinus size={18} />
                                                 </button>

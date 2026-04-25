@@ -145,6 +145,7 @@ export default function SquadLineupPage() {
     };
 
     const availablePlayers = players.filter(p =>
+        ['Approved', 'Verified'].includes(p.status) &&
         !squad.startingEleven.some((s: any) => (s.player?._id || s.player) === p._id) &&
         !squad.substitutes.some((s: any) => (s?._id || s) === p._id) &&
         !squad.reserves.some((s: any) => (s?._id || s) === p._id)

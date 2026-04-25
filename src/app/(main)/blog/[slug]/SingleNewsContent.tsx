@@ -8,7 +8,7 @@ import api from "@/lib/api";
 import toast from "react-hot-toast";
 
 export default function SingleNewsContent({ initialData }: { initialData?: any }) {
-    const { id } = useParams();
+    const { slug } = useParams();
     const router = useRouter();
     const [news, setNews] = useState<any>(initialData || null);
     const [loading, setLoading] = useState(!initialData);
@@ -17,7 +17,7 @@ export default function SingleNewsContent({ initialData }: { initialData?: any }
         const fetchNewsItem = async () => {
             if (initialData) return;
             try {
-                const res = await api.get(`/news/${id}`);
+                const res = await api.get(`/news/${slug}`);
                 setNews(res.data);
             } catch (error) {
                 console.error("Failed to fetch news item:", error);
@@ -25,8 +25,8 @@ export default function SingleNewsContent({ initialData }: { initialData?: any }
                 setLoading(false);
             }
         };
-        if (id) fetchNewsItem();
-    }, [id, initialData]);
+        if (slug) fetchNewsItem();
+    }, [slug, initialData]);
 
     const handleShare = async () => {
         const shareData = {

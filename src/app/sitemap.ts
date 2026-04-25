@@ -1,13 +1,16 @@
 import { MetadataRoute } from 'next';
 
-async function getNewsIds() {
+async function getNewsItems() {
     try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news`, {
             next: { revalidate: 3600 }
         });
         if (!res.ok) return [];
         const data = await res.json();
-        return data.map((item: any) => item._id);
+        return data.map((item: any) => ({
+            id: item._id,
+            slug: item.slug
+        }));
     } catch (error) {
         console.error("Error fetching news for sitemap:", error);
         return [];
@@ -35,9 +38,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // Dynamic blog routes
-  const newsIds = await getNewsIds();
-  const blogRoutes = newsIds.map((id: string) => ({
-    url: `${baseUrl}/blog/${id}`,
+  const newsItems = await getNewsItems();
+  const blogRoutes = newsItems.map((item: { id: string, slug?: string }) => ({
+    url: `${baseUrl}/blog/${item.slug || item.id}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.6,

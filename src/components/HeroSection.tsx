@@ -18,6 +18,7 @@ export default function HeroSection() {
                 // Get latest 3 news items
                 const formattedNews = res.data.slice(0, 3).map((item: any) => ({
                     id: item._id,
+                    slug: item.slug,
                     title: item.title,
                     date: new Date(item.publishedAt).toLocaleDateString('en-US', {
                         month: 'short',
@@ -120,7 +121,7 @@ export default function HeroSection() {
                                         </h2>
                                         <p className="text-sm text-gray-400 mt-1">Official news from OSFA</p>
                                     </div>
-                                    <Link href="/blog" className="text-sm text-accent hover:text-white flex items-center gap-1 transition-colors cursor-pointer">
+                                    <Link href="/blog" className="text-sm text-accent hover:text-white flex items-center gap-1 transition-colors cursor-pointer z-10">
                                         View All <ChevronRight className="w-4 h-4" />
                                     </Link>
                                 </div>
@@ -132,7 +133,7 @@ export default function HeroSection() {
                                         </div>
                                     ) : latestNews.length > 0 ? (
                                         latestNews.map((news) => (
-                                            <Link href={`/blog/${news.id}`} key={news.id} className="block group/item relative pl-4 border-l-2 border-[rgba(255,255,255,0.1)] hover:border-accent transition-colors">
+                                            <Link href={`/blog/${news.slug || news.id}`} key={news.id} className="block group/item relative pl-4 border-l-2 border-[rgba(255,255,255,0.1)] hover:border-accent transition-colors">
                                                 <span className="text-xs font-semibold text-secondary uppercase tracking-wider mb-1 block">
                                                     {news.category}
                                                 </span>

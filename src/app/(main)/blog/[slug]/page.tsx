@@ -2,13 +2,13 @@ import { Metadata, ResolvingMetadata } from "next";
 import SingleNewsContent from "./SingleNewsContent";
 
 type Props = {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-async function getNewsItem(id: string) {
+async function getNewsItem(slug: string) {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news/${id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news/${slug}`, {
             next: { revalidate: 3600 } // Revalidate every hour
         });
         if (!res.ok) return null;
@@ -20,11 +20,11 @@ async function getNewsItem(id: string) {
 }
 
 export async function generateMetadata(
-  { params }: Props,
+  props: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const { id } = await params;
-  const news = await getNewsItem(id);
+  const { slug } = await props.params;
+  const news = await getNewsItem(slug);
 
   if (!news) {
     return {
@@ -40,7 +40,7 @@ export async function generateMetadata(
     openGraph: {
       title: news.title,
       description: news.excerpt || news.content?.substring(0, 160),
-      url: `https://osunstatefa.org.ng/blog/${id}`,
+      url: `https://osunstatefa.org.ng/blog/${news.slug || slug}`,
       type: "article",
       publishedTime: news.publishedAt,
       authors: [news.author || "Osun State FA"],
@@ -55,9 +55,9 @@ export async function generateMetadata(
   };
 }
 
-export default async function SingleNewsPage({ params }: Props) {
-    const { id } = await params;
-    const news = await getNewsItem(id);
+export default async function SingleNewsPage(props: Props) {
+    const { slug } = await props.params;
+    const news = await getNewsItem(slug);
 
     const jsonLd = news ? {
         "@context": "https://schema.org",
