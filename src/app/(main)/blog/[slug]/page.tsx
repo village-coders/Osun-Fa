@@ -32,26 +32,44 @@ export async function generateMetadata(
     };
   }
 
+  const baseUrl = "https://osunstatefa.org.ng";
+  const title = news.title;
+  const description = news.excerpt || news.content?.substring(0, 160) + "...";
+  
+  // Ensure image URL is absolute
+  let imageUrl = news.imageUrl;
+  if (imageUrl && !imageUrl.startsWith('http')) {
+    imageUrl = `${baseUrl}${imageUrl.startsWith('/') ? '' : '/'}${imageUrl}`;
+  }
+
   const previousImages = (await parent).openGraph?.images || [];
+  const images = imageUrl 
+    ? [{ url: imageUrl, width: 1200, height: 630, alt: title }]
+    : previousImages;
 
   return {
-    title: news.title,
-    description: news.excerpt || news.content?.substring(0, 160),
+    title: title,
+    description: description,
     openGraph: {
-      title: news.title,
-      description: news.excerpt || news.content?.substring(0, 160),
-      url: `https://osunstatefa.org.ng/blog/${news.slug || slug}`,
+      title: title,
+      description: description,
+      url: `${baseUrl}/blog/${news.slug || slug}`,
+      siteName: "Osun State Football Association",
+      locale: "en_NG",
       type: "article",
       publishedTime: news.publishedAt,
       authors: [news.author || "Osun State FA"],
-      images: news.imageUrl ? [news.imageUrl, ...previousImages] : previousImages,
+      images: images,
     },
     twitter: {
       card: "summary_large_image",
-      title: news.title,
-      description: news.excerpt || news.content?.substring(0, 160),
-      images: news.imageUrl ? [news.imageUrl] : [],
+      title: title,
+      description: description,
+      images: imageUrl ? [imageUrl] : (previousImages.length > 0 ? [(previousImages[0] as any).url] : []),
     },
+    alternates: {
+      canonical: `${baseUrl}/blog/${news.slug || slug}`,
+    }
   };
 }
 
@@ -63,13 +81,27 @@ export default async function SingleNewsPage(props: Props) {
         "@context": "https://schema.org",
         "@type": "NewsArticle",
         "headline": news.title,
-        "image": news.imageUrl ? [news.imageUrl] : [],
+        "description": news.excerpt || news.content?.substring(0, 160),
+        "image": news.imageUrl ? [news.imageUrl] : ["https://osunstatefa.org.ng/osun-fa-logo.png"],
         "datePublished": news.publishedAt,
+        "dateModified": news.updatedAt || news.publishedAt,
         "author": [{
-            "@type": "Person",
+            "@type": "Organization",
             "name": news.author || "Osun State FA",
             "url": "https://osunstatefa.org.ng"
-        }]
+        }],
+        "publisher": {
+            "@type": "Organization",
+            "name": "Osun State Football Association",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://osunstatefa.org.ng/osun-fa-logo.png"
+            }
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": `https://osunstatefa.org.ng/blog/${news.slug || slug}`
+        }
     } : null;
 
     return (
