@@ -1,5 +1,5 @@
 import { Metadata, ResolvingMetadata } from "next";
-import SingleNewsContent from "./SingleNewsContent";
+import SingleNewsContent from "@/app/(main)/blog/[slug]/SingleNewsContent";
 
 type Props = {
   params: Promise<{ slug: string }>;
