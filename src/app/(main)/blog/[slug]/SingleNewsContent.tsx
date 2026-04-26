@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Calendar, User, ArrowLeft, Clock, Share2, Loader2, ChevronRight, Home } from "lucide-react";
+import { Calendar, User, ArrowLeft, Clock, Share2, Loader2, ChevronRight, Home, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
@@ -11,20 +11,40 @@ export default function SingleNewsContent({ initialData }: { initialData?: any }
     const { slug } = useParams();
     const router = useRouter();
     const [news, setNews] = useState<any>(initialData || null);
+    const [relatedPosts, setRelatedPosts] = useState<any[]>([]);
     const [loading, setLoading] = useState(!initialData);
 
     useEffect(() => {
         const fetchNewsItem = async () => {
-            if (initialData) return;
+            if (initialData) {
+                // If we have initialData, also fetch related posts
+                fetchRelatedPosts(initialData._id);
+                return;
+            }
             try {
                 const res = await api.get(`/news/${slug}`);
                 setNews(res.data);
+                fetchRelatedPosts(res.data._id);
             } catch (error) {
                 console.error("Failed to fetch news item:", error);
             } finally {
                 setLoading(false);
             }
         };
+
+        const fetchRelatedPosts = async (currentId: string) => {
+            try {
+                const res = await api.get("/news");
+                // Get 3 recent posts, excluding current
+                const filtered = res.data
+                    .filter((item: any) => item._id !== currentId)
+                    .slice(0, 3);
+                setRelatedPosts(filtered);
+            } catch (error) {
+                console.error("Failed to fetch related news:", error);
+            }
+        };
+
         if (slug) fetchNewsItem();
     }, [slug, initialData]);
 
@@ -158,6 +178,59 @@ export default function SingleNewsContent({ initialData }: { initialData?: any }
                     </div>
                 </div>
             </article>
+
+            {/* Related Articles Section */}
+            {relatedPosts.length > 0 && (
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
+                    <div className="flex items-center justify-between mb-10">
+                        <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 flex items-center gap-3">
+                            <span className="w-2 h-8 bg-primary rounded-full"></span>
+                            Related Articles
+                        </h2>
+                        <Link href="/blog" className="text-sm font-bold text-primary hover:text-primary-dark transition-colors flex items-center gap-1">
+                            View All <ChevronRight className="w-4 h-4" />
+                        </Link>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {relatedPosts.map((post: any) => (
+                            <Link 
+                                key={post._id} 
+                                href={`/blog/${post.slug || post._id}`}
+                                className="group bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col"
+                            >
+                                <div className="aspect-[16/10] overflow-hidden relative">
+                                    <img 
+                                        src={post.imageUrl || '/osun-fa-logo.png'} 
+                                        alt={post.title}
+                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                    />
+                                    <div className="absolute top-4 left-4">
+                                        <span className="px-3 py-1 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-black uppercase text-primary border border-white/20">
+                                            {post.category || 'News'}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className="p-6 flex flex-col flex-grow">
+                                    <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 mb-3 uppercase tracking-wider">
+                                        <Calendar className="w-3 h-3" />
+                                        {new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                    </div>
+                                    <h3 className="text-lg font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-primary transition-colors">
+                                        {post.title}
+                                    </h3>
+                                    <p className="text-sm text-gray-500 line-clamp-2 mb-6 flex-grow">
+                                        {post.excerpt}
+                                    </p>
+                                    <div className="flex items-center gap-2 text-primary font-black text-[10px] uppercase tracking-widest mt-auto">
+                                        Read More <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
+                                    </div>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

@@ -21,8 +21,8 @@ export default function CompetitionPage() {
             status: "Registration Ongoing"
         },
         {
-            title: "Osun State Football League",
-            type: "State League",
+            title: "Smartcity State League",
+            type: "State League (U-17)",
             desc: "Immerses young players (U-17) into a regulated competitive environment, allowing them to advance their careers from grassroots to professional level. Unites players from all demographics.",
             icon: <Shield className="w-8 h-8 text-primary" />,
             status: "Active"
