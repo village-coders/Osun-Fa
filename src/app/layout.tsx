@@ -8,7 +8,7 @@ import { Toaster } from "react-hot-toast";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://osunstatefa.org.ng"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://osunstatefa.org.ng"),
   title: {
     default: "Osun State Football Association | OSFA",
     template: "%s | Osun State FA",
@@ -20,12 +20,12 @@ export const metadata: Metadata = {
   themeColor: "#0b6e4f",
   viewport: "width=device-width, initial-scale=1",
   alternates: {
-    canonical: "https://osunstatefa.org.ng",
+    canonical: "/",
   },
   openGraph: {
     type: "website",
     locale: "en_NG",
-    url: "https://osunstatefa.org.ng",
+    url: "/",
     siteName: "Osun State Football Association",
     title: "Osun State Football Association | Official Website",
     description: "Welcome to the home of football in Osun State. Follow state leagues, youth developments, referee clinics, and official competitions.",
@@ -75,8 +75,8 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "SportsOrganization",
               "name": "Osun State Football Association",
-              "url": "https://osunstatefa.org.ng",
-              "logo": "https://osunstatefa.org.ng/osun-fa-logo.png",
+              "url": process.env.NEXT_PUBLIC_SITE_URL || "https://osunstatefa.org.ng",
+              "logo": `${process.env.NEXT_PUBLIC_SITE_URL || "https://osunstatefa.org.ng"}/osun-fa-logo.png`,
               "description": "The governing body for football in Osun State, Nigeria. Managing state leagues, grassroots development, and official competitions.",
               "address": {
                 "@type": "PostalAddress",
@@ -89,7 +89,7 @@ export default function RootLayout({
                 "@type": "ContactPoint",
                 "contactType": "Secretariat",
                 "email": "info@osunstatefa.org.ng",
-                "url": "https://osunstatefa.org.ng/contact"
+                "url": `${process.env.NEXT_PUBLIC_SITE_URL || "https://osunstatefa.org.ng"}/contact`
               }
             })
           }}

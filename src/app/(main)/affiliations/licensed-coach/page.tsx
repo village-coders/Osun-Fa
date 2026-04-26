@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: "Licensed Coaches | Osun State FA",
         description: "Coaching pathways, seminars, and certification under the Osun State Football Association.",
-        url: "https://osunstatefa.org.ng/affiliations/licensed-coach",
+        url: "/affiliations/licensed-coach",
     }
 };
 

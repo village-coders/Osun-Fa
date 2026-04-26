@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: "Club Registration | Osun State FA",
         description: "Requirements and benefits of registering your football club with the Osun State Football Association.",
-        url: "https://osunstatefa.org.ng/affiliations/registered-club",
+        url: "/affiliations/registered-club",
     }
 };
 

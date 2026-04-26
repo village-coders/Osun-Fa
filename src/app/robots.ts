@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/admin/', '/portal/', '/login'],
     },
-    sitemap: 'https://osunstatefa.org.ng/sitemap.xml',
+    sitemap: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://osunstatefa.org.ng'}/sitemap.xml`,
   };
 }

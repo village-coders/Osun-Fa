@@ -32,7 +32,7 @@ export async function generateMetadata(
     };
   }
 
-  const baseUrl = "https://osunstatefa.org.ng";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://osunstatefa.org.ng";
   const title = news.title;
   const description = news.excerpt || news.content?.substring(0, 160) + "...";
   
@@ -82,25 +82,25 @@ export default async function SingleNewsPage(props: Props) {
         "@type": "NewsArticle",
         "headline": news.title,
         "description": news.excerpt || news.content?.substring(0, 160),
-        "image": news.imageUrl ? [news.imageUrl] : ["https://osunstatefa.org.ng/osun-fa-logo.png"],
+        "image": news.imageUrl ? [news.imageUrl] : [`${process.env.NEXT_PUBLIC_SITE_URL || "https://osunstatefa.org.ng"}/osun-fa-logo.png`],
         "datePublished": news.publishedAt,
         "dateModified": news.updatedAt || news.publishedAt,
         "author": [{
             "@type": "Organization",
             "name": news.author || "Osun State FA",
-            "url": "https://osunstatefa.org.ng"
+            "url": process.env.NEXT_PUBLIC_SITE_URL || "https://osunstatefa.org.ng"
         }],
         "publisher": {
             "@type": "Organization",
             "name": "Osun State Football Association",
             "logo": {
                 "@type": "ImageObject",
-                "url": "https://osunstatefa.org.ng/osun-fa-logo.png"
+                "url": `${process.env.NEXT_PUBLIC_SITE_URL || "https://osunstatefa.org.ng"}/osun-fa-logo.png`
             }
         },
         "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": `https://osunstatefa.org.ng/blog/${news.slug || slug}`
+            "@id": `${process.env.NEXT_PUBLIC_SITE_URL || "https://osunstatefa.org.ng"}/blog/${news.slug || slug}`
         }
     } : null;
 

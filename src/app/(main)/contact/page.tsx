@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: "Contact Secretariat | Osun State FA",
         description: "Get in touch with the Osun State Football Association. Phone, email, and secretariat location details.",
-        url: "https://osunstatefa.org.ng/contact",
+        url: "/contact",
     }
 };
 

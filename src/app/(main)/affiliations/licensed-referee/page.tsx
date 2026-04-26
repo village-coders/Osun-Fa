@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: "Licensed Referees | Osun State FA",
         description: "Training, assessment, and certification for football referees in Osun State.",
-        url: "https://osunstatefa.org.ng/affiliations/licensed-referee",
+        url: "/affiliations/licensed-referee",
     }
 };
 

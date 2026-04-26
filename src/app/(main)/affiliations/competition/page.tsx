@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: "Official Competitions | Osun State FA",
         description: "Explore all official football competitions and leagues organized by the Osun State Football Association.",
-        url: "https://osunstatefa.org.ng/affiliations/competition",
+        url: "/affiliations/competition",
     }
 };
 

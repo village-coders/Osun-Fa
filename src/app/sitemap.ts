@@ -18,7 +18,7 @@ async function getNewsItems() {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://osunstatefa.org.ng';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://osunstatefa.org.ng';
   
   // Static routes
   const routes = [

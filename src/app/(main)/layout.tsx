@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_NG",
-    url: "https://osunstatefa.org.ng",
+    url: "/",
     siteName: "Osun State Football Association",
     title: "Osun State Football Association | Official Website",
     description: "Welcome to the home of football in Osun State. Follow state leagues, youth developments, referee clinics, and official competitions.",
