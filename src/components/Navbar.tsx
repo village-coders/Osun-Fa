@@ -121,8 +121,8 @@ export default function Navbar() {
                     </div>
                     <div className="flex items-center gap-4">
                         <span className="text-[10px] uppercase text-gray-500 mr-2">Follow Us:</span>
-                        <a href="#" className="hover:text-accent transition-colors"><Facebook className="w-4 h-4" /></a>
-                        <a href="#" className="hover:text-accent transition-colors"><Twitter className="w-4 h-4" /></a>
+                        <a href="https://www.facebook.com/share/1Cy9EgYGYy/" className="hover:text-accent transition-colors"><Facebook className="w-4 h-4" /></a>
+                        <a href="https://x.com/OsunFa" className="hover:text-accent transition-colors"><Twitter className="w-4 h-4" /></a>
                         <a href="#" className="hover:text-accent transition-colors"><Instagram className="w-4 h-4" /></a>
                         <a href="#" className="hover:text-accent transition-colors"><Youtube className="w-4 h-4" /></a>
 
