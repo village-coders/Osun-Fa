@@ -1,18 +1,21 @@
+import Image from "next/image";
+
 export default function SponsorsSection() {
     // We'll use placeholder data that looks like realistic sponsor names
     const sponsors = [
-        { name: "Osun State Govt", type: "Principal Partner" },
-        { name: "FirstBank", type: "Official Bank" },
-        { name: "MTN Nigeria", type: "Telecom Partner" },
-        { name: "Aiteo", type: "Energy Partner" },
-        { name: "Nike", type: "Kit Sponsor" }
+        { name: "Osun Stat e Govt", type: "Principal Partner", logo: "/partners/osun-state-government.png" },
+        { name: "Lanreleke Sports Academy", type: "Football Academy", logo: "/partners/lanreleke-sports-academy.png" },
+        { name: "Perculia Ultimate Concerns Limited", type: "", logo: "/partners/perculia-ultimate-concerns-limited.png" },
+        { name: "SmartCity Plc", type: "Football Tournament", logo: "/partners/smartcity-plc.png" }
     ];
 
     return (
         <section className="py-20 bg-white border-t border-border">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-12">
-                    <span className="text-sm font-bold tracking-widest text-primary uppercase">Our Proud Partners</span>
+                    <span className="text-sm font-bold tracking-widest text-primary uppercase">
+                        Our Proud Partners
+                    </span>
                     <h2 className="mt-2 text-3xl font-extrabold text-text-main">Empowering Osun Football</h2>
                 </div>
 
@@ -20,14 +23,21 @@ export default function SponsorsSection() {
                     {sponsors.map((sponsor, idx) => (
                         <div key={idx} className="group flex flex-col items-center justify-center p-6 grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300">
                             {/* Abstract Logo Placeholder */}
-                            <div className="w-24 h-24 mb-4 rounded-full bg-gray-100 flex items-center justify-center shadow-inner group-hover:bg-primary/5 transition-colors border border-gray-200">
-                                <span className="text-2xl font-black text-gray-400 group-hover:text-primary transition-colors">
-                                    {sponsor.name.charAt(0)}
-                                </span>
+                            <div className="w-24 h-24 mb-4 relative flex items-center justify-center">
+                                <Image
+                                    src={sponsor.logo}
+                                    alt={sponsor.name}
+                                    width={96}
+                                    height={96}
+                                    className="object-cover"
+                                />
                             </div>
                             <h3 className="font-bold text-lg text-text-main">{sponsor.name}</h3>
-                            <span className="text-xs text-text-muted font-medium tracking-wide uppercase">{sponsor.type}</span>
+                            {sponsor.type && (
+                                <span className="text-xs text-text-muted font-medium tracking-wide uppercase">{sponsor.type}</span>
+                            )}
                         </div>
+                        
                     ))}
                 </div>
 

@@ -94,10 +94,10 @@ export default function Navbar() {
     ];
 
     const affiliations = [
-        { name: "OSFA Registered Club", href: "/affiliations/registered-club" },
-        { name: "OSFA Licensed Referee", href: "/affiliations/licensed-referee" },
-        { name: "OSFA Licensed Coach", href: "/affiliations/licensed-coach" },
-        { name: "OSFA Competition", href: "/affiliations/competition" },
+        { name: "Osun FA Registered Clubs", href: "/affiliations/registered-club" },
+        { name: "Licensed Referees", href: "/affiliations/licensed-referee" },
+        { name: "Licensed Coaches", href: "/affiliations/licensed-coach" },
+        { name: "Competitions", href: "/affiliations/competition" },
     ];
 
     return (

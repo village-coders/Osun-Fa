@@ -1,24 +1,28 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next"; // Added Viewport import
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
+// 1. Move viewport and themeColor here
+export const viewport: Viewport = {
+  themeColor: "#0b6e4f",
+  width: "device-width",
+  initialScale: 1,
+};
+
+// 2. Metadata remains here, but without themeColor and viewport
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://osunstatefa.org.ng"),
   title: {
     default: "Osun State Football Association | OSFA",
     template: "%s | Osun State FA",
   },
-  description: "Official website of the Osun State Football Association (OSFA). Discover the latest news, grassroots programs, state leagues, referee training, and elite football developments in Osun State, Nigeria.",
+  description: "Official website of the Osun State Football Association (OSFA).",
   keywords: ["Osun State", "Football", "OSFA", "Nigeria Football", "Grassroots Football", "Osun FA Cup", "Osun State League", "Soccer", "African Football", "Osun State FA"],
   authors: [{ name: "Osun State Football Association" }],
   creator: "OSFA",
-  themeColor: "#0b6e4f",
-  viewport: "width=device-width, initial-scale=1",
   alternates: {
     canonical: "/",
   },
@@ -28,20 +32,13 @@ export const metadata: Metadata = {
     url: "/",
     siteName: "Osun State Football Association",
     title: "Osun State Football Association | Official Website",
-    description: "Welcome to the home of football in Osun State. Follow state leagues, youth developments, referee clinics, and official competitions.",
-    images: [
-      {
-        url: "/osun-fa-logo.png",
-        width: 1200,
-        height: 630,
-        alt: "Osun State FA Logo",
-      },
-    ],
+    description: "Welcome to the home of football in Osun State.",
+    images: [{ url: "/osun-fa-logo.png", width: 1200, height: 630, alt: "Osun State FA Logo" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Osun State Football Association | Official Website",
-    description: "Welcome to the home of football in Osun State. Follow state leagues, youth developments, referee clinics, and official competitions.",
+    description: "Welcome to the home of football in Osun State.",
     images: ["/osun-fa-logo.png"],
   },
   robots: {
@@ -56,7 +53,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "google-site-verification-id", // User should replace this
+    google: "google-site-verification-id",
   },
 };
 
