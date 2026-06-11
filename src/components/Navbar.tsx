@@ -101,25 +101,25 @@ export default function Navbar() {
     ];
 
     return (
-        <nav className="fixed w-full z-50 flex flex-col transition-all duration-300 shadow-sm">
+        <nav className="fixed top-0 left-0 w-full z-50 flex flex-col transition-all duration-300 shadow-sm">
             {/* Topbar: Contact & Socials */}
-            <div className="bg-primary-dark text-gray-300 py-2 border-b border-[rgba(255,255,255,0.05)] text-xs font-semibold tracking-wide hidden lg:block">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-                    <div className="flex items-center gap-6">
-                        <div className="flex items-center gap-2 hover:text-white transition-colors cursor-pointer">
+            <div className="hidden bg-primary-dark text-gray-300 py-2 border-b border-[rgba(255,255,255,0.05)] text-xs font-semibold tracking-wide lg:block">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col gap-2 xl:flex-row xl:justify-between xl:items-center">
+                    <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+                        <div className="flex items-center gap-2 hover:text-white transition-colors cursor-pointer min-w-0">
                             <MapPin className="w-3.5 h-3.5 text-secondary" />
-                            <span>Osun FA Secretariat, Osogbo City Stadium</span>
+                            <span className="truncate">Osun FA Secretariat, Osogbo City Stadium</span>
                         </div>
-                        <div className="flex items-center gap-2 hover:text-white transition-colors cursor-pointer">
+                        <div className="flex items-center gap-2 hover:text-white transition-colors cursor-pointer min-w-0">
                             <Phone className="w-3.5 h-3.5 text-secondary" />
-                            <span>+234 (0) 800 123 4567</span>
+                            <span className="truncate">+234 (0) 800 123 4567</span>
                         </div>
-                        <div className="flex items-center gap-2 hover:text-white transition-colors cursor-pointer">
+                        <div className="flex items-center gap-2 hover:text-white transition-colors cursor-pointer min-w-0">
                             <Mail className="w-3.5 h-3.5 text-secondary" />
-                            <span>info@osunstatefa.org.ng</span>
+                            <span className="truncate">info@osunstatefa.org.ng</span>
                         </div>
                     </div>
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-wrap items-center gap-4">
                         <span className="text-[10px] uppercase text-gray-500 mr-2">Follow Us:</span>
                         <a href="https://www.facebook.com/share/1Cy9EgYGYy/" className="hover:text-accent transition-colors"><Facebook className="w-4 h-4" /></a>
                         <a href="https://x.com/OsunFa" className="hover:text-accent transition-colors"><Twitter className="w-4 h-4" /></a>
@@ -138,14 +138,14 @@ export default function Navbar() {
             {/* Main Navbar */}
             <div className="glass-dark text-white border-b border-[rgba(255,255,255,0.1)] w-full">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-20">
+                    <div className="flex items-center justify-between h-16 sm:h-20 gap-3">
                         {/* Logo */}
-                        <div className="flex-shrink-0">
+                        <div className="shrink-0">
                             <Link href="/" className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-gradient-to-br from-accent to-primary rounded-full flex items-center justify-center font-bold text-black border-2 border-accent">
-                                    <Image src="/osun-fa-logo.png" alt="Logo" width={50} height={50} />
+                                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-linear-to-br from-accent to-primary rounded-full flex items-center justify-center font-bold text-black border-2 border-accent overflow-hidden">
+                                    <Image src="/osun-fa-logo.png" alt="Logo" width={50} height={50} className="w-full h-full object-contain" />
                                 </div>
-                                <span className="font-bold text-xl tracking-tight hidden sm:block">
+                                <span className="font-bold text-lg sm:text-xl tracking-tight hidden sm:block">
                                     Osun State FA
                                 </span>
                             </Link>
@@ -213,7 +213,7 @@ export default function Navbar() {
                                         <p className="text-xs font-bold text-accent uppercase tracking-tighter leading-none mb-2">{getRoleDisplayName(user.role)}</p>
                                         <p className="text-[10px] font-bold text-white leading-none whitespace-nowrap">Go to Dashboard</p>
                                     </div>
-                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent to-primary flex items-center justify-center text-primary-dark font-black text-lg border-2 border-accent group-hover:scale-105 transition-transform">
+                                    <div className="w-10 h-10 rounded-full bg-linear-to-br from-accent to-primary flex items-center justify-center text-primary-dark font-black text-lg border-2 border-accent group-hover:scale-105 transition-transform">
                                         {user.name?.charAt(0) || user.role?.charAt(0).toUpperCase()}
                                     </div>
                                 </Link>
@@ -230,8 +230,11 @@ export default function Navbar() {
                         {/* Mobile menu button */}
                         <div className="-mr-2 flex md:hidden">
                             <button
+                                type="button"
                                 onClick={() => setIsOpen(!isOpen)}
                                 className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none transition-colors"
+                                aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+                                aria-expanded={isOpen}
                             >
                                 {isOpen ? <X className="block h-6 w-6" /> : <Menu className="block h-6 w-6" />}
                             </button>
@@ -241,8 +244,30 @@ export default function Navbar() {
 
                 {/* Mobile Menu */}
                 {isOpen && (
-                    <div className="md:hidden glass-dark border-t border-[rgba(255,255,255,0.1)]">
-                        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <div className="md:hidden glass-dark border-t border-[rgba(255,255,255,0.1)] max-h-[calc(100vh-4rem)] overflow-y-auto">
+                        <div className="px-3 pt-3 pb-4 space-y-1 sm:px-4">
+                            <div className="rounded-xl border border-white/10 bg-black/20 p-3 space-y-3 lg:hidden">
+                                <div className="flex items-start gap-3 text-sm text-gray-300">
+                                    <MapPin className="w-4 h-4 text-secondary mt-0.5 shrink-0" />
+                                    <span>Osun FA Secretariat, Osogbo City Stadium</span>
+                                </div>
+                                <div className="flex items-center gap-3 text-sm text-gray-300">
+                                    <Phone className="w-4 h-4 text-secondary shrink-0" />
+                                    <span>+234 (0) 800 123 4567</span>
+                                </div>
+                                <div className="flex items-center gap-3 text-sm text-gray-300">
+                                    <Mail className="w-4 h-4 text-secondary shrink-0" />
+                                    <span className="break-all">info@osunstatefa.org.ng</span>
+                                </div>
+                                <div className="flex items-center gap-3 pt-1 text-gray-300">
+                                    <span className="text-[10px] uppercase text-gray-500 mr-1">Follow Us:</span>
+                                    <a href="https://www.facebook.com/share/1Cy9EgYGYy/" className="hover:text-accent transition-colors"><Facebook className="w-4 h-4" /></a>
+                                    <a href="https://x.com/OsunFa" className="hover:text-accent transition-colors"><Twitter className="w-4 h-4" /></a>
+                                    <a href="#" className="hover:text-accent transition-colors"><Instagram className="w-4 h-4" /></a>
+                                    <a href="#" className="hover:text-accent transition-colors"><Youtube className="w-4 h-4" /></a>
+                                </div>
+                            </div>
+
                             {navLinks.slice(0, 2).map((link) => (
                                 <Link
                                     key={link.name}
@@ -296,7 +321,7 @@ export default function Navbar() {
                                     onClick={() => setIsOpen(false)}
                                 >
                                     <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-primary-dark font-bold border-2 border-white">
-                                    {user.name?.charAt(0) || user.role?.charAt(0).toUpperCase()}
+                                        {user.name?.charAt(0) || user.role?.charAt(0).toUpperCase()}
                                     </div>
                                     <div className="text-left">
                                         <p className="text-xs font-bold text-accent">{getRoleDisplayName(user.role)}</p>

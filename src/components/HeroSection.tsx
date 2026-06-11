@@ -42,7 +42,7 @@ export default function HeroSection() {
     return (
         <>
             <Marquee />
-            <section className="relative pt-32 pb-20 lg:pt-20 lg:pb-32 overflow-hidden bg-surface-dark text-white">
+            <section className="relative pt-8 sm:pt-12 pb-20 lg:pt-20 lg:pb-32 overflow-hidden bg-surface-dark text-white">
                 {/* Dynamic Background Elements */}
                 <div className="absolute inset-0 bg-cover bg-center bg-no-repeat top-0 left-0 w-full h-full overflow-hidden z-0"
                     style={{ backgroundImage: isMobile ? "url('/bg-image-mobile.png')" : "url('/bg-image.png')" }}
@@ -54,8 +54,8 @@ export default function HeroSection() {
                     ></div>
 
                     {/* Overlays to ensure text remains readable */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-surface-dark via-surface-dark/80 to-surface-dark/30"></div>
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-surface-dark/50 to-surface-dark"></div>
+                    <div className="absolute inset-0 bg-linear-to-r from-surface-dark via-surface-dark/80 to-surface-dark/30"></div>
+                    <div className="absolute inset-0 bg-linear-to-b from-transparent via-surface-dark/50 to-surface-dark"></div>
 
                     {/* Abstract pattern overlay */}
                     <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-30 mix-blend-overlay"></div>
@@ -78,7 +78,7 @@ export default function HeroSection() {
 
                             <h1 className="text-5xl lg:text-7xl font-extrabold tracking-tight leading-tight">
                                 Elevating <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-secondary to-primary-light">
+                                <span className="text-transparent bg-clip-text bg-linear-to-r from-accent via-secondary to-primary-light">
                                     Football Excellence
                                 </span>
                                 <br /> In Osun State
@@ -108,7 +108,7 @@ export default function HeroSection() {
                         {/* Right Column: News Widget */}
                         <div className="lg:col-span-5">
                             <div className="glass-dark rounded-2xl p-6 lg:p-8 shadow-2xl border border-[rgba(255,255,255,0.1)] relative overflow-hidden group">
-                                <div className="absolute top-0 right-0 w-32 h-32 bg-secondary opacity-10 rounded-full filter blur-[40px] group-hover:opacity-20 transition-opacity"></div>
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-secondary opacity-10 rounded-full filter blur-2xl group-hover:opacity-20 transition-opacity"></div>
 
                                 <div className="flex justify-between items-end mb-8 border-b border-[rgba(255,255,255,0.1)] pb-4">
                                     <div>

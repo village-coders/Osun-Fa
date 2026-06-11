@@ -21,7 +21,7 @@ export default function Marquee() {
             <div className="flex whitespace-nowrap overflow-hidden items-center group w-full">
                 <div 
                     className="flex animate-marquee group-hover:[animation-play-state:paused] items-center" 
-                    style={{ animationDuration: '200s' }}
+                    style={{ animationDuration: '100s' }}
                 >
                     {scrollItems.map((item, index) => (
                         <div key={index} className="flex items-center">
