@@ -16,13 +16,13 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://osunstatefa.org.ng"),
   title: {
-    default: "Osun State Football Association | Osun FA",
-    template: "%s | Osun State FA",
+    default: "Osun State Football Association",
+    template: "%s | Osun FA",
   },
-  description: "Official website of the Osun State Football Association (OSFA).",
-  keywords: ["Osun State", "Football", "OSFA", "Nigeria Football", "Grassroots Football", "Osun FA Cup", "Osun State League", "Soccer", "African Football", "Osun State FA"],
+  description: "Official website of the Osun State Football Association (Osun FA).",
+  keywords: ["Osun State", "Football", "Osun FA", "Nigeria Football", "Grassroots Football", "Osun FA Cup", "Osun State League", "Soccer", "African Football", "Osun State FA"],
   authors: [{ name: "Osun State Football Association" }],
-  creator: "OSFA",
+  creator: "Osun FA Web Team",
   alternates: {
     canonical: "/",
   },

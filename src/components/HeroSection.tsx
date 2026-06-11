@@ -119,7 +119,7 @@ export default function HeroSection() {
                                                 <span className="relative inline-flex rounded-full h-3 w-3 bg-accent"></span>
                                             </span>
                                         </h2>
-                                        <p className="text-sm text-gray-400 mt-1">Official news from OSFA</p>
+                                        <p className="text-sm text-gray-400 mt-1">Official news from Osun FA</p>
                                     </div>
                                     <Link href="/blog" className="text-sm text-accent hover:text-white flex items-center gap-1 transition-colors cursor-pointer z-10">
                                         View All <ChevronRight className="w-4 h-4" />
