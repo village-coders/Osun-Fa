@@ -41,7 +41,7 @@ export default function LicensedRefereePage() {
                         哨
                     </div>
                     <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6">
-                        OSFA <span className="text-accent">Licensed Referees</span>
+                        <span className="text-accent">Licensed Referees</span>
                     </h1>
                     <p className="text-xl text-gray-300 max-w-2xl mx-auto">
                         Upholding the integrity of the game through rigorous training, assessment, and certification.
@@ -52,7 +52,7 @@ export default function LicensedRefereePage() {
             <div className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <h2 className="text-3xl font-extrabold text-text-main mb-6">The Path to Officiating</h2>
                 <p className="text-text-muted max-w-3xl mx-auto mb-16 text-lg">
-                    The Osun State Referees Council works in tandem with OSFA to train and deploy match officials across the state. Our pathway ensures that only the best, fittest, and most knowledgeable individuals handle the whistle.
+                    The Osun State Referees Council works in tandem with Osun FA to train and deploy match officials across the state. Our pathway ensures that only the best, fittest, and most knowledgeable individuals handle the whistle.
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

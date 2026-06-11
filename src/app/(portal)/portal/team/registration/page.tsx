@@ -200,7 +200,7 @@ export default function ClubRegistrationPage() {
                             <span className="text-gray-500 text-[10px] font-bold uppercase tracking-widest">• OSFA-DRP-2026</span>
                         </div>
                         <h1 className="text-4xl font-black text-white tracking-tight">Digital Club Registration</h1>
-                        <p className="text-gray-400 font-medium">Please complete all 7 sections to finalize your official OSFA affiliation.</p>
+                        <p className="text-gray-400 font-medium">Please complete all 7 sections to finalize your official Osun FA affiliation.</p>
                     </div>
                     <Link href="/portal/team">
                         <button className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm font-bold bg-white/5 px-4 py-2 rounded-xl border border-white/5">
@@ -324,7 +324,7 @@ export default function ClubRegistrationPage() {
                         <p className="text-gray-400 text-sm mb-10 italic">Please upload clear scanned copies (PDF/JPG/PNG). Max 10MB per document.</p>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             <FileUpload label="CAC Registration Certificate" fieldName="cacRegistrationCertificate" file={files.cacRegistrationCertificate} onChange={handleFileChange} />
-                            <FileUpload label="OSFA Affiliation Certificate" fieldName="osfaAffiliationCertificate" file={files.osfaAffiliationCertificate} onChange={handleFileChange} />
+                            <FileUpload label="Osun FA Affiliation Certificate" fieldName="osfaAffiliationCertificate" file={files.osfaAffiliationCertificate} onChange={handleFileChange} />
                             <FileUpload label="Constitution / Memorandum" fieldName="constitution" file={files.constitution} onChange={handleFileChange} />
                             <FileUpload label="Club Logo *" fieldName="clubLogo" file={files.clubLogo} onChange={handleFileChange} isImage />
                             <FileUpload label="Letter of Application *" fieldName="applicationLetter" file={files.applicationLetter} onChange={handleFileChange} />
@@ -367,7 +367,7 @@ export default function ClubRegistrationPage() {
                     <FormCard title="Section F: Banking & Financial Details" icon={CreditCard}>
                         <p className="text-gray-500 text-xs mb-10 flex items-center gap-2 bg-black/20 p-4 rounded-xl border border-white/5">
                             <Shield size={14} className="text-accent" />
-                            This information is confidential and used only for official OSFA financial transactions.
+                            This information is confidential and used only for official Osun FA financial transactions.
                         </p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <InputField label="Club Bank Name *" name="bankName" value={formData.bankName} onChange={handleChange} required />

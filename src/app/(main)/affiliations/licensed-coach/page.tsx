@@ -37,7 +37,7 @@ export default function LicensedCoachPage() {
                 <div className="max-w-7xl mx-auto text-center relative z-10">
                     <GraduationCap className="w-16 h-16 text-secondary mx-auto mb-6" />
                     <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6">
-                        OSFA <span className="text-secondary">Licensed Coaches</span>
+                        <span className="text-secondary">Licensed Coaches</span>
                     </h1>
                     <p className="text-xl text-gray-300 max-w-2xl mx-auto">
                         Elevating the tactical, physical, and mental preparedness of Osun State teams through world-class coaching education.
@@ -49,7 +49,7 @@ export default function LicensedCoachPage() {
                 <div className="text-center mb-16 mx-auto max-w-3xl">
                     <h2 className="text-3xl font-extrabold text-text-main mb-6">Mastering the Game</h2>
                     <p className="text-text-muted text-lg leading-relaxed">
-                        The Osun State Technical Department mandates that all clubs participating in official OSFA competitions must be handled by certified personnel. We provide continuous education, seminars, and licensing courses to keep our coaches at the cutting edge of modern football.
+                        The Osun State Technical Department mandates that all clubs participating in official Osun FA competitions must be handled by certified personnel. We provide continuous education, seminars, and licensing courses to keep our coaches at the cutting edge of modern football.
                     </p>
                 </div>
 

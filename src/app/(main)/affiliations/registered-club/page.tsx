@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function RegisteredClubPage() {
     const requirements = [
-        "Completed OSFA Club Registration Form",
+        "Completed Osun FA Club Registration Form",
         "List of registered players with valid identification",
         "Evidence of payment of annual affiliation fee",
         "Profiles of the coaching staff and management board",
@@ -28,7 +28,7 @@ export default function RegisteredClubPage() {
                 <div className="max-w-7xl mx-auto text-center relative z-10">
                     <ShieldCheck className="w-16 h-16 text-secondary mx-auto mb-6" />
                     <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6">
-                        OSFA <span className="text-secondary">Registered Clubs</span>
+                        <span className="text-secondary">Registered Clubs</span>
                     </h1>
                     <p className="text-xl text-gray-300 max-w-2xl mx-auto">
                         Join the official network of recognized football clubs in Osun State and gain access to premier competitions.
@@ -46,7 +46,7 @@ export default function RegisteredClubPage() {
 
                         <div className="space-y-6">
                             {[
-                                "Eligibility to participate in all OSFA organized competitions",
+                                "Eligibility to participate in all Osun FA organized competitions",
                                 "Official recognition by the Nigeria Football Federation (NFF)",
                                 "Access to coaching clinics and referee support",
                                 "Protection of players under the state transfer system"

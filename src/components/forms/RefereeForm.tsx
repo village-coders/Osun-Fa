@@ -91,7 +91,7 @@ export default function RefereeForm() {
         <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6">
             <div className="mb-10 text-center">
                 <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">Referee Registration</h1>
-                <p className="text-gray-400">Complete the form below to register as an official OSFA referee.</p>
+                <p className="text-gray-400">Complete the form below to register as an official Osun FA referee.</p>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-8 relative">
@@ -411,7 +411,7 @@ export default function RefereeForm() {
                     <h2 className={headingClass}>Section I: Declaration & Code of Conduct</h2>
                     <div className="pb-4">
                         <p className="text-gray-400 text-sm mb-4">
-                            I hereby declare that the information provided is accurate and complete. I agree to abide by the Laws of the Game and the regulations of Osun State Football Association, NFF, CAF, and FIFA. I consent to data processing in accordance with OSFA Data Protection Policy.
+                            I hereby declare that the information provided is accurate and complete. I agree to abide by the Laws of the Game and the regulations of Osun State Football Association, NFF, CAF, and FIFA. I consent to data processing in accordance with Osun FA Data Protection Policy.
                         </p>
                         <div className="space-y-4">
                             <div>

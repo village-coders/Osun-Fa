@@ -2,7 +2,7 @@ import CoachForm from "@/components/forms/CoachForm";
 
 export const metadata = {
     title: "Coach Registration | OSFA",
-    description: "Register as an official OSFA coach.",
+    description: "Register as an official Osun FA coach.",
 };
 
 export default function CoachRegistrationPage() {

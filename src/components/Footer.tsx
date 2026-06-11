@@ -65,7 +65,7 @@ export default function Footer() {
                         <ul className="space-y-4">
                             <li className="flex items-start gap-3 text-sm text-gray-400">
                                 <MapPin className="w-5 h-5 text-accent flex-shrink-0" />
-                                <span>OSFA Secretariat, Osogbo City Stadium, Osogbo, Osun State.</span>
+                                <span>Osun FA Secretariat, Osogbo City Stadium, Osogbo, Osun State.</span>
                             </li>
                             <li className="flex items-center gap-3 text-sm text-gray-400">
                                 <Phone className="w-5 h-5 text-accent flex-shrink-0" />

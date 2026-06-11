@@ -74,7 +74,7 @@ export default function TeamDashboard() {
                         </div>
                         <h2 className="text-3xl font-black text-white uppercase tracking-tight leading-tight">Registration <br/> <span className="text-accent">Incomplete</span></h2>
                         <p className="text-gray-400 max-w-xl font-medium leading-relaxed">
-                            Your club registration is currently pending. Please fill out the official <span className="text-accent">OSFA Digital Registration Form</span> to proceed with full membership.
+                            Your club registration is currently pending. Please fill out the official <span className="text-accent">Osun FA Digital Registration Form</span> to proceed with full membership.
                         </p>
                     </div>
                     <Link

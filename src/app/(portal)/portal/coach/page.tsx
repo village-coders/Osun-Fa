@@ -30,7 +30,7 @@ export default function CoachDashboard() {
                 <div className="space-y-4 text-center md:text-left relative z-10">
                     <h2 className="text-3xl font-black text-white uppercase tracking-tight leading-tight">Coach <span className="text-accent">Portal</span></h2>
                     <p className="text-gray-400 max-w-lg font-medium leading-relaxed">
-                        Manage your coaching profile, view match assignments, and stay up to date with the latest OSFA technical guidelines.
+                        Manage your coaching profile, view match assignments, and stay up to date with the latest Osun FA technical guidelines.
                     </p>
                 </div>
                 <button className="bg-accent text-primary-dark font-black px-10 py-5 rounded-2xl flex items-center gap-4 hover:-translate-y-1 active:scale-95 transition-all shadow-2xl shadow-accent/20 shrink-0 uppercase text-[10px] tracking-[0.2em] relative z-10">

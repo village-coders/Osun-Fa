@@ -71,7 +71,7 @@ export default function PortalLoginPage() {
                 <div className="p-8 pb-0 flex flex-col items-center">
                     <Link href="/" className="inline-flex flex-col items-center gap-4 mb-6 transition-transform hover:scale-105">
                         <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg p-2 border-2 border-accent/20">
-                            <Image src="/osun-fa-logo.png" alt="OSFA Logo" width={56} height={56} className="object-contain" />
+                            <Image src="/osun-fa-logo.png" alt="Osun FA Logo" width={56} height={56} className="object-contain" />
                         </div>
                         <h1 className="text-2xl font-bold text-white tracking-tight text-center">
                             Portal Login

@@ -119,7 +119,7 @@ export default function TeamSettingsPage() {
                                 value={formData.email}
                                 className="w-full px-4 py-2.5 bg-black/20 border border-white/5 rounded-xl text-gray-500 cursor-not-allowed"
                             />
-                            <p className="text-xs text-gray-500">Contact OSFA support to change registration email.</p>
+                            <p className="text-xs text-gray-500">Contact Osun FA support to change registration email.</p>
                         </div>
                         <div className="space-y-2">
                             <label className="text-sm font-bold text-gray-400">Official Phone Number</label>

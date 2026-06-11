@@ -3,10 +3,10 @@ import Image from "next/image";
 export default function SponsorsSection() {
     // We'll use placeholder data that looks like realistic sponsor names
     const sponsors = [
-        { name: "Osun Stat e Govt", type: "Principal Partner", logo: "/partners/osun-state-government.png" },
+        { name: "Osun State Government", type: "Principal Partner", logo: "/partners/osun-state-government.png" },
         { name: "Lanreleke Sports Academy", type: "Football Academy", logo: "/partners/lanreleke-sports-academy.png" },
         { name: "Perculia Ultimate Concerns Limited", type: "", logo: "/partners/perculia-ultimate-concerns-limited.png" },
-        { name: "SmartCity Plc", type: "Football Tournament", logo: "/partners/smartcity-plc.png" }
+        { name: "Armstrong Paint", type: "Partner", logo: "/partners/armstrong.png" }
     ];
 
     return (
@@ -32,7 +32,7 @@ export default function SponsorsSection() {
                                     className="object-cover"
                                 />
                             </div>
-                            <h3 className="font-bold text-lg text-text-main">{sponsor.name}</h3>
+                            <h3 className="font-bold text-lg text-center text-text-main">{sponsor.name}</h3>
                             {sponsor.type && (
                                 <span className="text-xs text-text-muted font-medium tracking-wide uppercase">{sponsor.type}</span>
                             )}

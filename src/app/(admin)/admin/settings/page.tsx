@@ -174,7 +174,7 @@ export default function AdminSettingsPage() {
                                 <div className="mt-0.5">ℹ️</div>
                                 <div>
                                     <p className="font-bold">Configuration Environment</p>
-                                    <p className="mt-1 opacity-90">These parameters directly affect the public-facing footprint of the OSFA website. Updates are cached and may take up to 5 minutes to globally propagate.</p>
+                                    <p className="mt-1 opacity-90">These parameters directly affect the public-facing footprint of the Osun FA website. Updates are cached and may take up to 5 minutes to globally propagate.</p>
                                 </div>
                             </div>
 

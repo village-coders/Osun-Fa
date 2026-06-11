@@ -108,7 +108,7 @@ export default function Navbar() {
                     <div className="flex items-center gap-6">
                         <div className="flex items-center gap-2 hover:text-white transition-colors cursor-pointer">
                             <MapPin className="w-3.5 h-3.5 text-secondary" />
-                            <span>OSFA Secretariat, Osogbo City Stadium</span>
+                            <span>Osun FA Secretariat, Osogbo City Stadium</span>
                         </div>
                         <div className="flex items-center gap-2 hover:text-white transition-colors cursor-pointer">
                             <Phone className="w-3.5 h-3.5 text-secondary" />
@@ -171,7 +171,7 @@ export default function Navbar() {
                                     onMouseLeave={() => setIsAffiliationsOpen(false)}
                                 >
                                     <button className="hover:text-accent px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-1">
-                                        OSFA Affiliations <ChevronDown className="w-4 h-4" />
+                                        Osun FA Affiliations <ChevronDown className="w-4 h-4" />
                                     </button>
                                     {isAffiliationsOpen && (
                                         <div className="absolute left-0 mt-0 w-56 rounded-md shadow-lg bg-surface-dark border border-[rgba(255,255,255,0.1)] ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden">
@@ -260,7 +260,7 @@ export default function Navbar() {
                                     onClick={() => setIsAffiliationsOpen(!isAffiliationsOpen)}
                                     className="w-full text-left flex justify-between items-center px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-primary-dark"
                                 >
-                                    OSFA Affiliations <ChevronDown className={`w-4 h-4 transition-transform ${isAffiliationsOpen ? 'rotate-180' : ''}`} />
+                                    Osun FA Affiliations <ChevronDown className={`w-4 h-4 transition-transform ${isAffiliationsOpen ? 'rotate-180' : ''}`} />
                                 </button>
                                 {isAffiliationsOpen && (
                                     <div className="pl-4 mt-1 space-y-1 bg-black/20 rounded-md py-2">

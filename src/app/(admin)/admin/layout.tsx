@@ -48,7 +48,7 @@ export default function AdminLayout({
                         <div className="w-8 h-8 bg-gradient-to-br from-accent to-primary rounded-full flex items-center justify-center font-bold text-black border border-accent">
                             <Image src="/osun-fa-logo.png" alt="Logo" width={30} height={30} />
                         </div>
-                        <span className="font-bold text-lg tracking-tight">OSFA Admin</span>
+                        <span className="font-bold text-lg tracking-tight">Osun FA Admin</span>
                     </Link>
                     <button className="ml-auto lg:hidden text-gray-400 hover:text-white" onClick={() => setIsSidebarOpen(false)}>
                         <X className="w-5 h-5" />

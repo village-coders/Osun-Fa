@@ -12,7 +12,7 @@ export default function RegisterSelectionPage() {
         },
         {
             title: "Coach Registration",
-            description: "Register as an official OSFA licensed coach.",
+            description: "Register as an official licensed coach.",
             icon: <Award className="w-8 h-8 text-accent" />,
             href: "/portal/register",
             color: "border-accent",

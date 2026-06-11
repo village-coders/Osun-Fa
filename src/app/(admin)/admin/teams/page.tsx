@@ -323,7 +323,7 @@ export default function AdminTeamsPage() {
                         {activeTab === 'legal' && (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 <DocumentLink label="CAC Certificate" url={selectedTeam.cacRegistrationCertificateUrl} />
-                                <DocumentLink label="OSFA Affiliation" url={selectedTeam.osfaAffiliationCertificateUrl} />
+                                <DocumentLink label="Osun FA Affiliation" url={selectedTeam.osfaAffiliationCertificateUrl} />
                                 <DocumentLink label="Club Constitution" url={selectedTeam.constitutionUrl} />
                                 <DocumentLink label="Registration Letter" url={selectedTeam.applicationLetterUrl} />
                             </div>

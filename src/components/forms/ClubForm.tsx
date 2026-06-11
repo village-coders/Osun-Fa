@@ -297,7 +297,7 @@ export default function ClubForm() {
                             <input type="file" {...register("cacRegistrationCertificate")} className={`${inputClass} border-[rgba(255,255,255,0.1)] text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-dark file:text-accent hover:file:bg-black transition-colors cursor-pointer`} />
                         </div>
                         <div className="relative">
-                            <label className={labelClass}>OSFA Affiliation Certificate</label>
+                            <label className={labelClass}>Osun FA Affiliation Certificate</label>
                             <input type="file" {...register("osfaAffiliationCertificate")} className={`${inputClass} border-[rgba(255,255,255,0.1)] text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-dark file:text-accent hover:file:bg-black transition-colors cursor-pointer`} />
                         </div>
                         <div className="relative">

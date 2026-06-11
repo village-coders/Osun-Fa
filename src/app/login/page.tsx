@@ -58,9 +58,9 @@ export default function LoginPage() {
                     <div className="relative z-10">
                         <Link href="/" className="inline-flex items-center gap-3 mb-10 transition-transform hover:scale-105">
                             <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg p-1.5 border-2 border-accent/20">
-                                <Image src="/osun-fa-logo.png" alt="OSFA Logo" width={40} height={40} className="object-contain" />
+                                <Image src="/osun-fa-logo.png" alt="Osun FA Logo" width={40} height={40} className="object-contain" />
                             </div>
-                            <span className="text-2xl font-bold text-white tracking-tight">OSFA Portal</span>
+                            <span className="text-2xl font-bold text-white tracking-tight">Osun FA Portal</span>
                         </Link>
 
                         <h1 className="text-3xl lg:text-4xl font-extrabold text-white mb-6 leading-tight">
@@ -74,7 +74,7 @@ export default function LoginPage() {
                     <div className="relative z-10 mt-12 pt-8 border-t border-white/10">
                         <p className="text-sm font-medium text-gray-400 flex items-center gap-2">
                             <Lock className="w-4 h-4 text-accent" />
-                            Protected by OSFA Secure Access <br />
+                            Protected by Osun FA Secure Access <br />
                         </p>
                     </div>
                 </div>

@@ -59,7 +59,7 @@ function VerifyContent() {
 
                 {/* <div className="flex justify-center mb-8">
                     <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg p-2 border-2 border-accent/20">
-                        <Image src="/osun-fa-logo.png" alt="OSFA Logo" width={48} height={48} className="object-contain" />
+                        <Image src="/osun-fa-logo.png" alt="Osun FA Logo" width={48} height={48} className="object-contain" />
                     </div>
                 </div> */}
 

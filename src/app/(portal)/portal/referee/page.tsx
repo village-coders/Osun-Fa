@@ -19,7 +19,7 @@ export default function RefereeDashboard() {
                 </div>
                 <div className="flex items-center gap-2 bg-green-500/10 text-green-400 px-4 py-2 rounded-2xl border border-green-500/10 font-black text-[9px] uppercase tracking-widest shrink-0">
                     <CheckCircle2 size={14} />
-                    OSFA Certified official
+                    Osun FA Certified official
                 </div>
             </div>
 
@@ -65,7 +65,7 @@ export default function RefereeDashboard() {
                     </div>
                     <div className="space-y-2">
                          <p className="text-white/60 font-black text-sm uppercase tracking-widest italic">No Allocations</p>
-                         <p className="text-white/20 text-[10px] font-bold max-w-xs uppercase tracking-tighter">OSFA Referees Committee will assign matches here soon.</p>
+                         <p className="text-white/20 text-[10px] font-bold max-w-xs uppercase tracking-tighter">Osun FA Referees Committee will assign matches here soon.</p>
                     </div>
                 </div>
             </div>

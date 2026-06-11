@@ -57,7 +57,7 @@ export default function PlayerForm() {
                     </svg>
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-2">Registration Successful!</h3>
-                <p className="text-gray-400">Your player registration details have been submitted and are pending review by OSFA administrators.</p>
+                <p className="text-gray-400">Your player registration details have been submitted and are pending review by Osun FA administrators.</p>
                 <button
                     onClick={() => window.location.href = '/'}
                     className="mt-6 bg-accent text-primary-dark hover:bg-secondary px-6 py-2 rounded-full font-bold transition-colors"
@@ -78,7 +78,7 @@ export default function PlayerForm() {
         <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6">
             <div className="mb-10 text-center">
                 <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">Player Registration</h1>
-                <p className="text-gray-400">Complete the form below to register as a player in OSFA competitions.</p>
+                <p className="text-gray-400">Complete the form below to register as a player in Osun FA competitions.</p>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-8 relative">
@@ -324,7 +324,7 @@ export default function PlayerForm() {
                             </select>
                         </div>
                         <div className="relative">
-                            <label className={labelClass}>Previous OSFA Club</label>
+                            <label className={labelClass}>Previous Osun FA Club</label>
                             <input {...register("previousOsfaClub")} className={`${inputClass} border-[rgba(255,255,255,0.1)]`} />
                         </div>
                         <div className="relative md:col-span-2">

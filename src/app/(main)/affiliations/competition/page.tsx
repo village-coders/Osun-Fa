@@ -86,7 +86,7 @@ export default function CompetitionPage() {
                 <div className="max-w-7xl mx-auto text-center relative z-10">
                     <Trophy className="w-16 h-16 text-secondary mx-auto mb-6 drop-shadow-[0_0_15px_rgba(229,168,35,0.5)]" />
                     <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6">
-                        OSFA <span className="text-secondary">Competitions</span>
+                        Osun FA <span className="text-secondary">Competitions</span>
                     </h1>
                     <p className="text-xl text-gray-400 max-w-2xl mx-auto">
                         The heart of state football. Explore our competitive leagues and knockout tournaments that forge champions.

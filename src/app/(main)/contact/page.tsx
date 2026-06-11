@@ -43,7 +43,7 @@ export default function ContactPage() {
                                 </div>
                                 <div>
                                     <h4 className="font-bold text-text-main text-lg">Our Location</h4>
-                                    <p className="text-text-muted mt-1">OSFA Secretariat, <br />Osogbo City Stadium, <br />Osogbo, Osun State.</p>
+                                    <p className="text-text-muted mt-1">Osun FA Secretariat, <br />Osogbo City Stadium, <br />Osogbo, Osun State.</p>
                                 </div>
                             </div>
 

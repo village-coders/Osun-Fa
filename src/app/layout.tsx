@@ -16,7 +16,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://osunstatefa.org.ng"),
   title: {
-    default: "Osun State Football Association | OSFA",
+    default: "Osun State Football Association | Osun FA",
     template: "%s | Osun State FA",
   },
   description: "Official website of the Osun State Football Association (OSFA).",

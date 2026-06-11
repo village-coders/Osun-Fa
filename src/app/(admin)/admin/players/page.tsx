@@ -409,7 +409,7 @@ export default function AdminPlayersPage() {
                                         <ScanEye size={40} />
                                     </div>
                                     <h4 className="text-2xl font-bold text-gray-900 uppercase tracking-tighter">AI Identity Verification</h4>
-                                    <p className="text-gray-500 text-sm max-w-sm mx-auto">Facial landmarks matched against the OSFA player database.</p>
+                                    <p className="text-gray-500 text-sm max-w-sm mx-auto">Facial landmarks matched against the Osun FA player database.</p>
                                 </div>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                     <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-4">

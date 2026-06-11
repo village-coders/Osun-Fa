@@ -153,7 +153,7 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
                         <LogOut size={16} />
                         Logout
                     </button>
-                    <p className="text-[8px] text-center font-bold text-white/10 uppercase tracking-[0.2em]">&copy; {new Date().getFullYear()} OSFA Portal v1.0</p>
+                    <p className="text-[8px] text-center font-bold text-white/10 uppercase tracking-[0.2em]">&copy; {new Date().getFullYear()} Osun FA Portal v1.0</p>
                 </div>
             </aside>
 

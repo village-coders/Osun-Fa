@@ -158,8 +158,8 @@ export default function ViewPlayerPage() {
                             <DataPoint label="Transfer Status" value={player.transferStatus} />
                         </div>
                         <div className="mt-8 p-6 bg-black/20 rounded-3xl border border-white/5 grid grid-cols-1 sm:grid-cols-2 gap-8">
-                            <DataPoint label="Previous OSFA Registration" value={player.previouslyRegisteredWithOSFA} />
-                            <DataPoint label="Previous OSFA Club" value={player.previousOsfaClub} />
+                            <DataPoint label="Previous Osun FA Registration" value={player.previouslyRegisteredWithOSFA} />
+                            <DataPoint label="Previous Osun FA Club" value={player.previousOsfaClub} />
                             <DataPoint label="Other Previous Clubs" value={player.previousClubs} fullWidth />
                         </div>
                     </div>
