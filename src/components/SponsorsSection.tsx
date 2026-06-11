@@ -32,7 +32,7 @@ export default function SponsorsSection() {
                                     className="object-cover"
                                 />
                             </div>
-                            <h3 className="font-bold text-lg text-center text-text-main">{sponsor.name}</h3>
+                            <h3 className="font-bold text-lg text-center max-w-70 text-text-main">{sponsor.name}</h3>
                             {sponsor.type && (
                                 <span className="text-xs text-text-muted font-medium tracking-wide uppercase">{sponsor.type}</span>
                             )}
