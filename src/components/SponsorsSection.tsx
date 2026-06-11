@@ -6,7 +6,7 @@ export default function SponsorsSection() {
         { name: "Osun State Government", type: "Principal Partner", logo: "/partners/osun-state-government.png" },
         { name: "Lanreleke Sports Academy", type: "Partner", logo: "/partners/lanreleke-sports-academy.png" },
         { name: "Perculia Ultimate Concerns Limited", type: "Partner", logo: "/partners/perculia-ultimate-concerns-limited.png" },
-        { name: "SmartCity Plc", type: "Partner", logo: "/partners/smartcity-plc.png" },
+        { name: "SmartCity PLC", type: "Partner", logo: "/partners/smartcity-plc.png" },
         { name: "Armstrong Paint", type: "Partner", logo: "/partners/armstrong.png" },
     ];
 
