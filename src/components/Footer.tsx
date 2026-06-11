@@ -4,6 +4,13 @@ import Link from "next/link";
 
 export default function Footer() {
     const year = new Date().getFullYear();
+
+    const socialIcons = [
+        { icon: Facebook, href: "https://www.facebook.com/share/1Cy9EgYGYy/" },
+        { icon: Twitter, href: "https://x.com/OsunFa" },
+        { icon: Instagram, href: "https://www.instagram.com/osunstatefa" },
+        { icon: Youtube, href: "https://www.youtube.com/osunstatefa" },
+    ];
     return (
         <footer className="bg-surface-dark text-white border-t border-[rgba(255,255,255,0.05)] pt-20 pb-10">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -21,9 +28,9 @@ export default function Footer() {
                             Official Governing Body for Football in Osun State. Developing football at grassroots, amateur, and professional levels.
                         </p>
                         <div className="flex gap-4">
-                            {[Facebook, Twitter, Instagram, Youtube].map((Icon, i) => (
-                                <a key={i} href="#" className="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-accent hover:text-black transition-colors">
-                                    <Icon className="w-5 h-5" />
+                            {socialIcons.map((social, i) => (
+                                <a key={i} href={social.href} className="w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-accent hover:text-black transition-colors">
+                                    <social.icon className="w-5 h-5" />
                                 </a>
                             ))}
                         </div>

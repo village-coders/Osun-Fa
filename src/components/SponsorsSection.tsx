@@ -4,9 +4,10 @@ export default function SponsorsSection() {
     // We'll use placeholder data that looks like realistic sponsor names
     const sponsors = [
         { name: "Osun State Government", type: "Principal Partner", logo: "/partners/osun-state-government.png" },
-        { name: "Lanreleke Sports Academy", type: "Football Academy", logo: "/partners/lanreleke-sports-academy.png" },
-        { name: "Perculia Ultimate Concerns Limited", type: "", logo: "/partners/perculia-ultimate-concerns-limited.png" },
-        { name: "Armstrong Paint", type: "Partner", logo: "/partners/armstrong.png" }
+        { name: "Lanreleke Sports Academy", type: "Partner", logo: "/partners/lanreleke-sports-academy.png" },
+        { name: "Perculia Ultimate Concerns Limited", type: "Partner", logo: "/partners/perculia-ultimate-concerns-limited.png" },
+        { name: "SmartCity Plc", type: "Partner", logo: "/partners/smartcity-plc.png" },
+        { name: "Armstrong Paint", type: "Partner", logo: "/partners/armstrong.png" },
     ];
 
     return (
