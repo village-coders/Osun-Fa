@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
+import { TableSkeleton } from "@/components/PortalSkeletons";
 import {
     Eye,
     FileText,
@@ -89,6 +90,8 @@ export default function AdminCoachesPage() {
         );
     }, [coaches, searchQuery]);
 
+    if (loading) return <TableSkeleton />;
+
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -113,7 +116,7 @@ export default function AdminCoachesPage() {
                 </div>
 
                 <div className="overflow-x-auto w-full">
-                    <table className="w-full text-left text-sm whitespace-nowrap min-w-[900px]">
+                    <table className="w-full text-left text-sm whitespace-nowrap min-w-225">
                         <thead className="bg-gray-50 text-gray-500 font-semibold border-b border-gray-100">
                             <tr>
                                 <th className="px-6 py-4">Coach Profile</th>
@@ -125,16 +128,7 @@ export default function AdminCoachesPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
-                            {loading ? (
-                                <tr>
-                                    <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
-                                        <div className="flex items-center justify-center gap-2">
-                                            <Loader2 className="w-5 h-5 animate-spin text-primary" />
-                                            <span>Processing credentials...</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ) : filteredCoaches.length === 0 ? (
+                            {filteredCoaches.length === 0 ? (
                                 <tr>
                                     <td colSpan={6} className="px-6 py-8 text-center text-gray-500">No coaches matching your search found</td>
                                 </tr>
@@ -151,22 +145,22 @@ export default function AdminCoachesPage() {
                                                     )}
                                                 </div>
                                                 <div className="flex flex-col">
-                                                    <span className="truncate max-w-[180px] font-extrabold">{coach.coachFullName || `${coach.surname} ${coach.firstName}`}</span>
+                                                    <span className="truncate max-w-45 font-extrabold">{coach.coachFullName || `${coach.surname} ${coach.firstName}`}</span>
                                                     <span className="text-[10px] text-gray-400 uppercase tracking-widest">{coach.email}</span>
                                                 </div>
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 text-gray-600 font-medium">
-                                            <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-2 max-w-45">
                                                 <Medal className="w-4 h-4 text-secondary shrink-0" />
                                                 <div className="flex flex-col">
-                                                    <span className="truncate max-w-[150px]">{coach.highestCoachingQualification}</span>
+                                                    <span className="truncate max-w-37.5">{coach.highestCoachingQualification}</span>
                                                     <span className="text-[10px] text-primary/60 font-bold uppercase">{coach.issuingBody}</span>
                                                 </div>
                                             </div>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <div className="flex flex-col">
+                                            <div className="flex flex-col max-w-37.5">
                                                 <span className="text-gray-600 font-bold">{coach.currentClub || 'Private / Unattached'}</span>
                                                 <span className="text-[10px] text-gray-400 capitalize">{coach.yearsOfExperience} Years Exp.</span>
                                             </div>

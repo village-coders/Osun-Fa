@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { Users, Save, Loader2, User, X, Info } from "lucide-react";
 import userApi from "@/lib/api";
 import toast from "react-hot-toast";
+import { SquadSkeleton } from "@/components/PortalSkeletons";
 
 const FORMATIONS = ["4-4-2", "4-3-3", "3-5-2", "4-2-3-1", "5-3-2"];
 
@@ -151,12 +152,7 @@ export default function SquadLineupPage() {
         !squad.reserves.some((s: any) => (s?._id || s) === p._id)
     );
 
-    if (loading) return (
-        <div className="flex flex-col items-center justify-center min-h-[400px]">
-            <Loader2 className="w-10 h-10 animate-spin text-green-500 mb-4" />
-            <p className="text-gray-500 tracking-widest uppercase">Organizing Squad...</p>
-        </div>
-    );
+    if (loading) return <SquadSkeleton />;
 
     const currentLayout = FORMATION_LAYOUTS[squad.formation] || FORMATION_LAYOUTS["4-4-2"];
 
@@ -238,7 +234,7 @@ export default function SquadLineupPage() {
                 </div>
 
                 {/* Selection Sidebar */}
-                <div className="lg:col-span-4 h-[800px] flex flex-col bg-black/20 rounded-3xl p-4 border border-white/5">
+                <div className="lg:col-span-4 h-200 flex flex-col bg-black/20 rounded-3xl p-4 border border-white/5">
                     <h3 className="text-xl font-bold text-white mb-2">Squad Pool</h3>
                     <div className="bg-blue-500/10 border border-blue-500/20 p-3 rounded-xl mb-4 flex gap-2">
                         <Info size={16} className="text-blue-400 shrink-0" />

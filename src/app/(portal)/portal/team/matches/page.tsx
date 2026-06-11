@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Calendar, MapPin, Clock, Loader2 } from "lucide-react";
 import userApi from "@/lib/api";
 import toast from "react-hot-toast";
+import { CardGridSkeleton } from "@/components/PortalSkeletons";
 
 export default function TeamMatchesPage() {
     const [activeTab, setActiveTab] = useState("upcoming");
@@ -57,9 +58,8 @@ export default function TeamMatchesPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {loading ? (
-                    <div className="col-span-full text-center py-16 bg-white/5 rounded-2xl border border-white/5">
-                        <Loader2 className="w-12 h-12 mx-auto mb-4 text-accent animate-spin" />
-                        <p className="text-gray-400 font-medium">Loading match data...</p>
+                    <div className="col-span-full">
+                        <CardGridSkeleton />
                     </div>
                 ) : filteredMatches.length === 0 ? (
                     <div className="col-span-full text-center py-16 bg-white/5 rounded-2xl border border-white/5">

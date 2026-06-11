@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Calendar, Clock, MapPin, Check, X, Loader2, Search, Plus, User, Info, MessageSquare, Save } from "lucide-react";
 import userApi from "@/lib/api";
 import toast from "react-hot-toast";
+import { CardGridSkeleton } from "@/components/PortalSkeletons";
 
 export default function FriendlyMatchesPage() {
     const [incoming, setIncoming] = useState<any[]>([]);
@@ -93,14 +94,7 @@ export default function FriendlyMatchesPage() {
         );
     };
 
-    if (loading) {
-        return (
-            <div className="flex flex-col items-center justify-center min-h-[400px]">
-                <Loader2 className="w-10 h-10 animate-spin text-green-500 mb-4" />
-                <p className="text-gray-500 font-medium uppercase tracking-widest">Loading Friendlies...</p>
-            </div>
-        );
-    }
+    if (loading) return <CardGridSkeleton />;
 
     return (
         <div className="max-w-7xl mx-auto space-y-12 pb-20">

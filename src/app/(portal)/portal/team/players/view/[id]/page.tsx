@@ -24,6 +24,7 @@ import {
 import Link from "next/link";
 import userApi from "@/lib/api";
 import toast from "react-hot-toast";
+import { PlayerDetailSkeleton } from "@/components/PortalSkeletons";
 
 export default function ViewPlayerPage() {
     const params = useParams();
@@ -52,12 +53,7 @@ export default function ViewPlayerPage() {
     }, [params.id]);
 
     if (loading) {
-        return (
-            <div className="flex flex-col items-center justify-center min-h-[400px] text-gray-400">
-                <Loader2 className="w-10 h-10 animate-spin text-accent mb-4" />
-                <p className="font-black uppercase tracking-widest text-[10px]">Retrieving Player Dossier...</p>
-            </div>
-        );
+        return <PlayerDetailSkeleton />;
     }
 
     if (!player) return null;

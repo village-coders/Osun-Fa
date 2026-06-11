@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowLeft, Save, Loader2, Image as ImageIcon } from "lucide-react";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
+import { FormSkeleton } from "@/components/PortalSkeletons";
 
 function NewsFormContent() {
     const router = useRouter();
@@ -87,11 +88,7 @@ function NewsFormContent() {
     };
 
     if (loading) {
-        return (
-            <div className="flex justify-center items-center py-20">
-                <Loader2 className="w-8 h-8 animate-spin text-primary" />
-            </div>
-        );
+        return <FormSkeleton />;
     }
 
     return (

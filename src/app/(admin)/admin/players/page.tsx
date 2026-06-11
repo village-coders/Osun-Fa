@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
+import { TableSkeleton } from "@/components/PortalSkeletons";
 import {
     Eye,
     MessageSquare,
@@ -95,6 +96,8 @@ export default function AdminPlayersPage() {
         );
     }, [players, searchQuery]);
 
+    if (loading) return <TableSkeleton />;
+
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -131,16 +134,7 @@ export default function AdminPlayersPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
-                            {loading ? (
-                                <tr>
-                                    <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
-                                        <div className="flex items-center justify-center gap-2">
-                                            <Loader2 className="w-5 h-5 animate-spin text-primary" />
-                                            <span>Scanning database...</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ) : filteredPlayers.length === 0 ? (
+                            {filteredPlayers.length === 0 ? (
                                 <tr>
                                     <td colSpan={6} className="px-6 py-8 text-center text-gray-500">No players matched your search</td>
                                 </tr>

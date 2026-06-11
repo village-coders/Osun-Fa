@@ -1,9 +1,10 @@
 "use client";
 
-import { Plus, Edit, Trash2, Search, Filter, Loader2, Image as ImageIcon } from "lucide-react";
+import { Plus, Edit, Trash2, Search, Filter, Image as ImageIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
+import { TableSkeleton } from "@/components/PortalSkeletons";
 
 export default function AdminNewsPage() {
     const [newsItems, setNewsItems] = useState<any[]>([]);
@@ -40,6 +41,10 @@ export default function AdminNewsPage() {
         n.category?.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    if (loading) {
+        return <TableSkeleton />;
+    }
+
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -72,7 +77,7 @@ export default function AdminNewsPage() {
                 </div>
 
                 <div className="overflow-x-auto w-full">
-                    <table className="w-full text-left text-sm whitespace-nowrap min-w-[800px]">
+                    <table className="w-full text-left text-sm whitespace-nowrap min-w-200">
                         <thead className="bg-gray-50 text-gray-500 font-semibold border-b border-gray-100">
                             <tr>
                                 <th className="px-6 py-4">Article</th>
@@ -84,16 +89,7 @@ export default function AdminNewsPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
-                            {loading ? (
-                                <tr>
-                                    <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
-                                        <div className="flex items-center justify-center gap-2">
-                                            <Loader2 className="w-5 h-5 animate-spin text-primary" />
-                                            <span>Loading news...</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ) : filteredNews.length === 0 ? (
+                            {filteredNews.length === 0 ? (
                                 <tr>
                                     <td colSpan={6} className="px-6 py-8 text-center text-gray-500">No news articles found</td>
                                 </tr>
@@ -109,7 +105,7 @@ export default function AdminNewsPage() {
                                                 )}
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 font-medium text-gray-800 truncate max-w-[250px]">{item.title}</td>
+                                        <td className="px-6 py-4 font-medium text-gray-800 truncate max-w-62.5">{item.title}</td>
                                         <td className="px-6 py-4 text-gray-500">{item.category || 'General'}</td>
                                         <td className="px-6 py-4 text-gray-500">{new Date(item.createdAt).toLocaleDateString()}</td>
                                         <td className="px-6 py-4">

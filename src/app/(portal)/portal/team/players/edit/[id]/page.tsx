@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import userApi from "@/lib/api";
 import toast from "react-hot-toast";
+import { FormSkeleton } from "@/components/PortalSkeletons";
 
 export default function EditPlayerPage() {
     const params = useNextParams();
@@ -73,14 +74,7 @@ export default function EditPlayerPage() {
         }
     };
 
-    if (loading) {
-        return (
-            <div className="flex flex-col items-center justify-center min-h-[400px] text-gray-400">
-                <Loader2 className="w-10 h-10 animate-spin text-accent mb-4" />
-                <p className="font-bold tracking-widest uppercase text-[10px]">Loading Record...</p>
-            </div>
-        );
-    }
+    if (loading) return <FormSkeleton />;
 
     if (!formData) return null;
 

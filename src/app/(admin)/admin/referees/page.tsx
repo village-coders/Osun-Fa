@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
+import { TableSkeleton } from "@/components/PortalSkeletons";
 import {
     Eye,
     FileText,
@@ -87,6 +88,8 @@ export default function AdminRefereesPage() {
         );
     }, [referees, searchQuery]);
 
+    if (loading) return <TableSkeleton />;
+
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -111,7 +114,7 @@ export default function AdminRefereesPage() {
                 </div>
 
                 <div className="overflow-x-auto w-full">
-                    <table className="w-full text-left text-sm whitespace-nowrap min-w-[900px]">
+                    <table className="w-full text-left text-sm whitespace-nowrap min-w-225">
                         <thead className="bg-gray-50 text-gray-500 font-semibold border-b border-gray-100">
                             <tr>
                                 <th className="px-6 py-4">Referee Details</th>
@@ -123,16 +126,7 @@ export default function AdminRefereesPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
-                            {loading ? (
-                                <tr>
-                                    <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
-                                        <div className="flex items-center justify-center gap-2">
-                                            <Loader2 className="w-5 h-5 animate-spin text-primary" />
-                                            <span>Scanning personnel files...</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ) : filteredReferees.length === 0 ? (
+                            {filteredReferees.length === 0 ? (
                                 <tr>
                                     <td colSpan={6} className="px-6 py-8 text-center text-gray-500">No match officials found</td>
                                 </tr>
@@ -149,7 +143,7 @@ export default function AdminRefereesPage() {
                                                     )}
                                                 </div>
                                                 <div className="flex flex-col">
-                                                    <span className="truncate max-w-[180px] font-extrabold">{ref.refereeFullName || `${ref.surname} ${ref.firstName}`}</span>
+                                                    <span className="truncate max-w-45 font-extrabold">{ref.refereeFullName || `${ref.surname} ${ref.firstName}`}</span>
                                                     <span className="text-[10px] text-gray-400 uppercase tracking-widest">{ref.email}</span>
                                                 </div>
                                             </div>
@@ -158,7 +152,7 @@ export default function AdminRefereesPage() {
                                             <div className="flex items-center gap-2">
                                                 <Activity className="w-4 h-4 text-secondary shrink-0" />
                                                 <div className="flex flex-col">
-                                                    <span className="truncate max-w-[150px]">{ref.currentGrade}</span>
+                                                    <span className="truncate max-w-37.5">{ref.currentGrade}</span>
                                                     <span className="text-[10px] text-primary/60 font-bold uppercase">{ref.refereeCategory}</span>
                                                 </div>
                                             </div>

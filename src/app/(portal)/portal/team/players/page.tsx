@@ -117,14 +117,7 @@ export default function TeamPlayersPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-white/5">
-                            {loading ? (
-                                <tr>
-                                    <td colSpan={4} className="px-10 py-32 text-center">
-                                        <Loader2 className="w-12 h-12 mx-auto mb-6 animate-spin text-accent/20" />
-                                        <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">Synchronizing Registry...</p>
-                                    </td>
-                                </tr>
-                            ) : filteredPlayers.length === 0 ? (
+                            {filteredPlayers.length === 0 ? (
                                 <tr>
                                     <td colSpan={4} className="px-10 py-32 text-center text-gray-500">
                                         <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-6">

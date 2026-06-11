@@ -1,11 +1,12 @@
 "use client";
 
-import { Users, UserCog, Activity, Trophy, CalendarDays, TrendingUp, Loader2 } from "lucide-react";
+import { Users, UserCog, Activity, Trophy, CalendarDays, TrendingUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
 import { Shield } from "lucide-react";
+import { AdminDashboardSkeleton } from "@/components/PortalSkeletons";
 
 export default function AdminDashboard() {
     const [counts, setCounts] = useState<any>({
@@ -56,14 +57,7 @@ export default function AdminDashboard() {
     ];
 
     if (loading) {
-        return (
-            <div className="flex items-center justify-center min-h-[400px]">
-                <div className="flex flex-col items-center gap-4 text-gray-500">
-                    <Loader2 className="w-10 h-10 animate-spin text-primary" />
-                    <p className="font-medium animate-pulse">Loading Operation Metrics...</p>
-                </div>
-            </div>
-        )
+        return <AdminDashboardSkeleton />;
     }
 
     return (

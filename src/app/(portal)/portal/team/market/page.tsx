@@ -5,6 +5,7 @@ import { Users, Search, Loader2, User, Trophy, LayoutGrid, DollarSign, Handshake
 import Link from "next/link";
 import userApi from "@/lib/api";
 import toast from "react-hot-toast";
+import { CardGridSkeleton } from "@/components/PortalSkeletons";
 
 export default function PlayerMarketPage() {
     const [searchQuery, setSearchQuery] = useState("");
@@ -99,9 +100,8 @@ export default function PlayerMarketPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
                     {loading ? (
-                        <div className="col-span-full py-20 text-center">
-                            <Loader2 className="w-10 h-10 mx-auto mb-3 animate-spin text-accent" />
-                            <p className="text-gray-500">Scanning the market for talent...</p>
+                        <div className="col-span-full">
+                            <CardGridSkeleton />
                         </div>
                     ) : filteredPlayers.length === 0 ? (
                         <div className="col-span-full py-20 text-center">

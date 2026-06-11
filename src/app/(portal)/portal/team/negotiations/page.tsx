@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { MessageSquare, Check, X, Loader2, User, Clock, ArrowRight } from "lucide-react";
 import userApi from "@/lib/api";
 import toast from "react-hot-toast";
+import { CardGridSkeleton } from "@/components/PortalSkeletons";
 
 export default function NegotiationsPage() {
     const [incoming, setIncoming] = useState<any[]>([]);
@@ -59,14 +60,7 @@ export default function NegotiationsPage() {
         );
     };
 
-    if (loading) {
-        return (
-            <div className="flex flex-col items-center justify-center min-h-[400px]">
-                <Loader2 className="w-10 h-10 animate-spin text-accent mb-4" />
-                <p className="text-gray-500">Retrieving negotiation records...</p>
-            </div>
-        );
-    }
+    if (loading) return <CardGridSkeleton />;
 
     return (
         <div className="max-w-6xl mx-auto space-y-12">

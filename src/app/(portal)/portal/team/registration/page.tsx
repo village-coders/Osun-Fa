@@ -23,6 +23,7 @@ import {
 import userApi from "@/lib/api";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { FormSkeleton } from "@/components/PortalSkeletons";
 
 export default function ClubRegistrationPage() {
     const router = useRouter();
@@ -174,7 +175,7 @@ export default function ClubRegistrationPage() {
         }
     };
 
-    if (loading) return <div className="flex justify-center py-20"><Loader2 className="animate-spin text-accent w-10 h-10" /></div>;
+    if (loading) return <FormSkeleton />;
 
     const sections = [
         { id: 1, label: "Identification", icon: Building },
@@ -213,7 +214,7 @@ export default function ClubRegistrationPage() {
 
             {/* Stepper Navigation */}
             <div className="bg-white/5 border border-white/10 rounded-4xl p-4 hide-scrollbar overflow-x-auto">
-                <div className="flex items-center justify-between min-w-[800px] px-4">
+                <div className="flex items-center justify-between min-w-200 px-4">
                     {sections.map((s, i) => (
                         <div key={s.id} className="flex items-center flex-1 last:flex-none">
                             <button
@@ -229,7 +230,7 @@ export default function ClubRegistrationPage() {
                                 <span className={`text-[10px] font-black uppercase tracking-widest ${currentStep === s.id ? 'text-accent' : 'text-gray-500'}`}>{s.label}</span>
                             </button>
                             {i < sections.length - 1 && (
-                                <div className="flex-1 h-[2px] bg-white/5 mx-4 mt-[-18px]">
+                                <div className="flex-1 h-0.5 bg-white/5 mx-4 -mt-4.5">
                                     <div className={`h-full transition-all duration-500 ${currentStep > s.id ? 'bg-accent w-full' : 'w-0'}`}></div>
                                 </div>
                             )}
@@ -524,7 +525,7 @@ function OfficialGroup({ title, prefix, data, onChange }: any) {
 function FileUpload({ label, fieldName, file, onChange, isImage }: any) {
     return (
         <div className="relative group">
-            <label className="flex flex-col items-center justify-center gap-4 p-8 border-4 border-dotted border-white/5 rounded-3xl bg-white/5 hover:bg-white/10 hover:border-accent/30 transition-all cursor-pointer text-center h-full min-h-[220px] overflow-hidden relative">
+            <label className="flex flex-col items-center justify-center gap-4 p-8 border-4 border-dotted border-white/5 rounded-3xl bg-white/5 hover:bg-white/10 hover:border-accent/30 transition-all cursor-pointer text-center h-full min-h-55 overflow-hidden relative">
                 <input type="file" onChange={(e) => onChange(e, fieldName)} className="hidden" />
 
                 {file ? (
@@ -533,7 +534,7 @@ function FileUpload({ label, fieldName, file, onChange, isImage }: any) {
                             {isImage ? <ImageIcon size={32} /> : <FileText size={32} />}
                         </div>
                         <div className="space-y-1">
-                            <p className="text-xs font-black text-white truncate max-w-[150px]">{file.name}</p>
+                            <p className="text-xs font-black text-white truncate max-w-37.5">{file.name}</p>
                             <p className="text-[10px] font-bold text-accent uppercase tracking-widest">Document Selected</p>
                         </div>
                     </div>

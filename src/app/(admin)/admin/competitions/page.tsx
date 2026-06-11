@@ -4,6 +4,7 @@ import { CheckCircle, XCircle, Trash2, Search, Trophy, Loader2, Image as ImageIc
 import { useEffect, useState } from "react";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
+import { TableSkeleton } from "@/components/PortalSkeletons";
 
 export default function AdminCompetitionsPage() {
     const [competitions, setCompetitions] = useState<any[]>([]);
@@ -51,6 +52,8 @@ export default function AdminCompetitionsPage() {
         c.seasonYear?.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    if (loading) return <TableSkeleton />;
+
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -82,7 +85,7 @@ export default function AdminCompetitionsPage() {
                 </div>
 
                 <div className="overflow-x-auto w-full">
-                    <table className="w-full text-left text-sm whitespace-nowrap min-w-[800px]">
+                    <table className="w-full text-left text-sm whitespace-nowrap min-w-200">
                         <thead className="bg-gray-50 text-gray-500 font-semibold border-b border-gray-100">
                             <tr>
                                 <th className="px-6 py-4">Competition Name</th>
@@ -94,16 +97,7 @@ export default function AdminCompetitionsPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
-                            {loading ? (
-                                <tr>
-                                    <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
-                                        <div className="flex items-center justify-center gap-2">
-                                            <Loader2 className="w-5 h-5 animate-spin text-primary" />
-                                            <span>Loading competitions...</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ) : filteredCompetitions.length === 0 ? (
+                            {filteredCompetitions.length === 0 ? (
                                 <tr>
                                     <td colSpan={6} className="px-6 py-8 text-center text-gray-500">No competitions found</td>
                                 </tr>
@@ -119,12 +113,12 @@ export default function AdminCompetitionsPage() {
                                                         <Trophy className="w-4 h-4 text-primary" />
                                                     )}
                                                 </div>
-                                                <span className="truncate max-w-[200px]">{comp.proposedName}</span>
+                                                <span className="truncate max-w-50">{comp.proposedName}</span>
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 text-gray-600">{comp.formatType}</td>
                                         <td className="px-6 py-4 text-gray-500">{comp.seasonYear}</td>
-                                        <td className="px-6 py-4 text-gray-500 font-medium truncate max-w-[150px]">{comp.sponsorName || 'None'}</td>
+                                        <td className="px-6 py-4 text-gray-500 font-medium truncate max-w-37.5">{comp.sponsorName || 'None'}</td>
                                         <td className="px-6 py-4">
                                             <span className={`px-3 py-1 rounded-full text-xs font-bold ${comp.status === 'Approved' ? 'bg-green-100 text-green-700' :
                                                 comp.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :

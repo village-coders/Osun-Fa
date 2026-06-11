@@ -4,6 +4,7 @@ import { Plus, Edit, Trash2, Search, Calendar as CalendarIcon, Loader2 } from "l
 import { useEffect, useState } from "react";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
+import { TableSkeleton } from "@/components/PortalSkeletons";
 
 export default function AdminMatchesPage() {
     const [matches, setMatches] = useState<any[]>([]);
@@ -41,6 +42,8 @@ export default function AdminMatchesPage() {
         m.competition?.proposedName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         m.venue?.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    if (loading) return <TableSkeleton />;
 
     const getStatusBadge = (status: string) => {
         switch (status) {
@@ -100,16 +103,7 @@ export default function AdminMatchesPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
-                            {loading ? (
-                                <tr>
-                                    <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
-                                        <div className="flex items-center justify-center gap-2">
-                                            <Loader2 className="w-5 h-5 animate-spin text-primary" />
-                                            <span>Loading matches...</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ) : filteredMatches.length === 0 ? (
+                            {filteredMatches.length === 0 ? (
                                 <tr>
                                     <td colSpan={5} className="px-6 py-8 text-center text-gray-500">No matches found</td>
                                 </tr>

@@ -4,6 +4,7 @@ import { Save, Shield, User, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import userApi from "@/lib/api";
 import toast from "react-hot-toast";
+import { FormSkeleton } from "@/components/PortalSkeletons";
 
 export default function RefereeSettingsPage() {
     const [loading, setLoading] = useState(true);
@@ -96,11 +97,7 @@ export default function RefereeSettingsPage() {
     };
 
     if (loading) {
-        return (
-            <div className="flex justify-center py-20">
-                <Loader2 className="w-10 h-10 animate-spin text-accent" />
-            </div>
-        );
+        return <FormSkeleton />;
     }
 
     return (

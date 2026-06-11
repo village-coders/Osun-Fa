@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Calendar, User, ArrowRight, Loader2 } from "lucide-react";
+import { Calendar, User, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import toast from "react-hot-toast";
@@ -55,12 +55,39 @@ export default function BlogContent() {
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center py-40">
-                <Loader2 className="w-12 h-12 animate-spin text-primary" />
+            <div className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-pulse">
+                    {Array.from({ length: 6 }).map((_, index) => (
+                        <div key={index} className="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 flex flex-col h-full">
+                            <div className="h-48 w-full bg-gray-200 relative overflow-hidden">
+                                <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/50 to-transparent -translate-x-full animate-[shimmer_1.4s_infinite]"></div>
+                            </div>
+                            <div className="p-6 flex flex-col grow gap-4">
+                                <div className="flex gap-2">
+                                    <div className="h-6 w-24 rounded-full bg-gray-200"></div>
+                                </div>
+                                <div className="space-y-3">
+                                    <div className="h-6 w-11/12 rounded bg-gray-200"></div>
+                                    <div className="h-6 w-4/5 rounded bg-gray-200"></div>
+                                </div>
+                                <div className="space-y-2 grow">
+                                    <div className="h-4 w-full rounded bg-gray-200"></div>
+                                    <div className="h-4 w-5/6 rounded bg-gray-200"></div>
+                                    <div className="h-4 w-3/5 rounded bg-gray-200"></div>
+                                </div>
+                                <div className="pt-6 border-t border-gray-100 flex items-center justify-between gap-4">
+                                    <div className="flex items-center gap-4 w-full">
+                                        <div className="h-4 w-24 rounded bg-gray-200"></div>
+                                        <div className="h-4 w-20 rounded bg-gray-200"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         );
     }
-
     return (
         <div className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {posts.length > 0 ? (
@@ -71,12 +98,22 @@ export default function BlogContent() {
                                 <article className="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 hover:shadow-2xl transition-all duration-300 flex flex-col h-full hover:-translate-y-2">
                                     <div className={`h-48 w-full ${post.imageColor} relative overflow-hidden flex items-center justify-center`}>
                                         {post.imageUrl ? (
-                                            <Image
-                                                src={post.imageUrl}
-                                                alt={post.title}
-                                                fill
-                                                className="object-contain group-hover:scale-105 transition-transform duration-500"
-                                            />
+                                            <>
+                                                <Image
+                                                    src={post.imageUrl}
+                                                    alt={post.title}
+                                                    fill
+                                                    aria-hidden="true"
+                                                    className="object-cover scale-125 blur-3xl opacity-55 transition-transform duration-500 group-hover:scale-150"
+                                                />
+                                                <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-black/15"></div>
+                                                <Image
+                                                    src={post.imageUrl}
+                                                    alt={post.title}
+                                                    fill
+                                                    className="object-contain z-10 px-6 py-4 drop-shadow-2xl transition-transform duration-500 group-hover:scale-105"
+                                                />
+                                            </>
                                         ) : (
                                             <>
                                                 <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"></div>
