@@ -163,7 +163,7 @@ export default function Navbar() {
                                     <Image src="/osun-fa-logo.png" alt="Logo" width={50} height={50} className="w-full h-full object-contain" />
                                 </div>
                                 <span className="font-bold text-lg sm:text-xl tracking-tight sm:block">
-                                    Osun State FA
+                                    Osun FA
                                 </span>
                             </Link>
                         </div>
