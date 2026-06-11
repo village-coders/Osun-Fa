@@ -145,7 +145,7 @@ export default function Navbar() {
                                 <div className="w-9 h-9 sm:w-10 sm:h-10 bg-linear-to-br from-accent to-primary rounded-full flex items-center justify-center font-bold text-black border-2 border-accent overflow-hidden">
                                     <Image src="/osun-fa-logo.png" alt="Logo" width={50} height={50} className="w-full h-full object-contain" />
                                 </div>
-                                <span className="font-bold text-lg sm:text-xl tracking-tight hidden sm:block">
+                                <span className="font-bold text-lg sm:text-xl tracking-tight sm:block">
                                     Osun State FA
                                 </span>
                             </Link>
