@@ -12,9 +12,26 @@ export default function Navbar() {
     const [isAffiliationsOpen, setIsAffiliationsOpen] = useState(false);
     const [user, setUser] = useState<any>(null);
     const [isMounted, setIsMounted] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
 
     useEffect(() => {
         setIsMounted(true);
+    }, []);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 10);
+        };
+
+        handleScroll();
+        window.addEventListener('scroll', handleScroll, { passive: true });
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+    useEffect(() => {
         const fetchUserSession = async () => {
             const portalToken = Cookies.get('portalToken');
             const adminToken = Cookies.get('token');
@@ -136,7 +153,7 @@ export default function Navbar() {
             </div>
 
             {/* Main Navbar */}
-            <div className="glass-dark text-white border-b border-[rgba(255,255,255,0.1)] w-full">
+            <div className={`text-white border-b border-[rgba(255,255,255,0.1)] w-full transition-all duration-300 ${isScrolled ? 'bg-black/35 backdrop-blur-xl' : 'bg-black'}`}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16 sm:h-20 gap-3">
                         {/* Logo */}
