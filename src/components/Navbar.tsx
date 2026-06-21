@@ -140,8 +140,8 @@ export default function Navbar() {
                         <span className="text-[10px] uppercase text-gray-500 mr-2">Follow Us:</span>
                         <a href="https://www.facebook.com/share/1Cy9EgYGYy/" className="hover:text-accent transition-colors"><Facebook className="w-4 h-4" /></a>
                         <a href="https://x.com/OsunFa" className="hover:text-accent transition-colors"><Twitter className="w-4 h-4" /></a>
-                        <a href="#" className="hover:text-accent transition-colors"><Instagram className="w-4 h-4" /></a>
-                        <a href="#" className="hover:text-accent transition-colors"><Youtube className="w-4 h-4" /></a>
+                        <a href="https://www.instagram.com/osunstatefa" className="hover:text-accent transition-colors"><Instagram className="w-4 h-4" /></a>
+                        <a href="https://www.youtube.com/osunstatefa" className="hover:text-accent transition-colors"><Youtube className="w-4 h-4" /></a>
 
                         <div className="h-4 w-px bg-gray-600 mx-2"></div>
                         <Link href="/login" className="flex items-center gap-1.5 hover:text-white transition-colors group">
@@ -280,8 +280,8 @@ export default function Navbar() {
                                     <span className="text-[10px] uppercase text-gray-500 mr-1">Follow Us:</span>
                                     <a href="https://www.facebook.com/share/1Cy9EgYGYy/" className="hover:text-accent transition-colors"><Facebook className="w-4 h-4" /></a>
                                     <a href="https://x.com/OsunFa" className="hover:text-accent transition-colors"><Twitter className="w-4 h-4" /></a>
-                                    <a href="#" className="hover:text-accent transition-colors"><Instagram className="w-4 h-4" /></a>
-                                    <a href="#" className="hover:text-accent transition-colors"><Youtube className="w-4 h-4" /></a>
+                                    <a href="https://www.instagram.com/osunstatefa" className="hover:text-accent transition-colors"><Instagram className="w-4 h-4" /></a>
+                                    <a href="https://www.youtube.com/osunstatefa" className="hover:text-accent transition-colors"><Youtube className="w-4 h-4" /></a>
                                 </div>
                             </div>
 

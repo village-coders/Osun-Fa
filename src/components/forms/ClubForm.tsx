@@ -368,32 +368,11 @@ export default function ClubForm() {
                     </div>
                 </div>
 
-                {/* SECTION F: BANKING */}
-                <div className={sectionClass}>
-                    <h2 className={headingClass}>Section F: Banking Information</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
-                        <div className="relative">
-                            <label className={labelClass}>Bank Name</label>
-                            <input {...register("bankName")} className={`${inputClass} border-[rgba(255,255,255,0.1)]`} />
-                        </div>
-                        <div className="relative">
-                            <label className={labelClass}>Account Name</label>
-                            <input {...register("accountName")} className={`${inputClass} border-[rgba(255,255,255,0.1)]`} />
-                        </div>
-                        <div className="relative">
-                            <label className={labelClass}>Account Number</label>
-                            <input {...register("accountNumber")} className={`${inputClass} border-[rgba(255,255,255,0.1)]`} />
-                        </div>
-                        <div className="relative">
-                            <label className={labelClass}>Payment Reference</label>
-                            <input {...register("paymentReference")} className={`${inputClass} border-[rgba(255,255,255,0.1)]`} />
-                        </div>
-                    </div>
-                </div>
 
-                {/* SECTION G: DECLARATION */}
+
+                {/* SECTION F: DECLARATION */}
                 <div className={sectionClass}>
-                    <h2 className={headingClass}>Section G: Declaration & Consent</h2>
+                    <h2 className={headingClass}>Section F: Declaration & Consent</h2>
                     <div className="pb-4">
                         <p className="text-gray-400 text-sm mb-4">
                             I hereby declare that all information provided is true and correct to the best of my knowledge.

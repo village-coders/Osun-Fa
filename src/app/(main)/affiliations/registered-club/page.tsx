@@ -1,5 +1,6 @@
 import { ShieldCheck, FileText, CheckCircle2, ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
+import RegisteredClubsList from "@/components/RegisteredClubsList";
 
 export const metadata: Metadata = {
     title: "Registered Clubs | Affiliation Requirements",
@@ -81,6 +82,17 @@ export default function RegisteredClubPage() {
                             <ChevronRight className="w-5 h-5" />
                         </button>
                     </div>
+                </div>
+
+                {/* Display Registered Clubs */}
+                <div className="mt-32">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl md:text-5xl font-black text-text-main mb-6 uppercase tracking-tight">Our <span className="text-primary">Verified Clubs</span></h2>
+                        <p className="text-text-muted text-lg max-w-2xl mx-auto font-medium">
+                            Meet the official clubs registered with the Osun State Football Association.
+                        </p>
+                    </div>
+                    <RegisteredClubsList />
                 </div>
             </div>
         </div>

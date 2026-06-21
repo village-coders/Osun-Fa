@@ -72,11 +72,7 @@ export default function ClubRegistrationPage() {
         numberOfPlayers: "",
         youthTeamsAvailable: [],
 
-        // Section F: Banking
-        bankName: "",
-        accountName: "",
-        accountNumber: "",
-        paymentReference: "",
+
 
         // Section G: Declaration
         authorizedOfficerName: "",
@@ -183,8 +179,7 @@ export default function ClubRegistrationPage() {
         { id: 3, label: "Management", icon: UserCog },
         { id: 4, label: "Documents", icon: FileText },
         { id: 5, label: "Facilities", icon: Trophy },
-        { id: 6, label: "Financials", icon: CreditCard },
-        { id: 7, label: "Declaration", icon: Shield }
+        { id: 6, label: "Declaration", icon: Shield }
     ];
 
     return (
@@ -363,25 +358,11 @@ export default function ClubRegistrationPage() {
                     </FormCard>
                 )}
 
-                {/* Section F: Banking */}
-                {currentStep === 6 && (
-                    <FormCard title="Section F: Banking & Financial Details" icon={CreditCard}>
-                        <p className="text-gray-500 text-xs mb-10 flex items-center gap-2 bg-black/20 p-4 rounded-xl border border-white/5">
-                            <Shield size={14} className="text-accent" />
-                            This information is confidential and used only for official Osun FA financial transactions.
-                        </p>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <InputField label="Club Bank Name *" name="bankName" value={formData.bankName} onChange={handleChange} required />
-                            <InputField label="Account Name *" name="accountName" value={formData.accountName} onChange={handleChange} required />
-                            <InputField label="Account Number *" name="accountNumber" value={formData.accountNumber} onChange={handleChange} required />
-                            <InputField label="Payment Reference (if applicable)" name="paymentReference" value={formData.paymentReference} onChange={handleChange} />
-                        </div>
-                    </FormCard>
-                )}
 
-                {/* Section G: Declaration */}
-                {currentStep === 7 && (
-                    <FormCard title="Section G: Declaration & Consent" icon={Shield}>
+
+                {/* Section F: Declaration */}
+                {currentStep === 6 && (
+                    <FormCard title="Section F: Declaration & Consent" icon={Shield}>
                         <div className="space-y-10">
                             <div className="bg-white/5 p-8 rounded-4xl border border-white/5 space-y-4">
                                 <p className="text-sm text-gray-300 leading-relaxed italic">
@@ -433,10 +414,10 @@ export default function ClubRegistrationPage() {
                         Previous Phase
                     </button>
 
-                    {currentStep < 7 ? (
+                    {currentStep < 6 ? (
                         <button
                             type="button"
-                            onClick={() => setCurrentStep(prev => Math.min(7, prev + 1))}
+                            onClick={() => setCurrentStep(prev => Math.min(6, prev + 1))}
                             className="bg-white/10 text-white font-black uppercase text-[10px] tracking-[0.3em] px-12 py-5 rounded-3xl hover:bg-white/20 hover:-translate-y-1 transition-all active:scale-95 shadow-xl"
                         >
                             Next Section

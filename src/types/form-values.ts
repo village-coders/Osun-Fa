@@ -50,13 +50,9 @@ export interface ClubFormValues {
     numberOfPlayers: string;
     youthTeamsAvailable?: string[];
 
-    // SECTION F: BANKING
-    bankName?: string;
-    accountName?: string;
-    accountNumber?: string;
-    paymentReference?: string;
 
-    // SECTION G: DECLARATION
+
+    // SECTION F: DECLARATION
     declarationAccepted: boolean;
     authorizedOfficerName: string;
     authorizedOfficerPosition: string;

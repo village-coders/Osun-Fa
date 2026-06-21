@@ -40,11 +40,17 @@ export default function Footer() {
                     <div>
                         <h4 className="text-lg font-bold mb-6 text-white">Quick Links</h4>
                         <ul className="space-y-3">
-                            {['Home', 'About Us', 'Competitions', 'Latest News', 'Gallery', 'Contact Us'].map((link) => (
-                                <li key={link}>
-                                    <Link href="#" className="text-gray-400 hover:text-accent transition-colors flex items-center gap-2 group text-sm">
+                            {[
+                                { name: 'Home', href: '/' },
+                                { name: 'About Us', href: '/about' },
+                                { name: 'Competitions', href: '/affiliations/competition' },
+                                { name: 'Latest News', href: '/blog' },
+                                { name: 'Contact Us', href: '/contact' }
+                            ].map((link) => (
+                                <li key={link.name}>
+                                    <Link href={link.href} className="text-gray-400 hover:text-accent transition-colors flex items-center gap-2 group text-sm">
                                         <span className="w-1.5 h-1.5 rounded-full bg-primary group-hover:bg-accent transition-colors"></span>
-                                        {link}
+                                        {link.name}
                                     </Link>
                                 </li>
                             ))}
@@ -55,11 +61,16 @@ export default function Footer() {
                     <div>
                         <h4 className="text-lg font-bold mb-6 text-white">Affiliations</h4>
                         <ul className="space-y-3">
-                            {['Registered Clubs', 'Licensed Referees', 'Licensed Coaches', 'Youth Development', 'State League Teams'].map((link) => (
-                                <li key={link}>
-                                    <Link href="#" className="text-gray-400 hover:text-accent transition-colors flex items-center gap-2 group text-sm">
+                            {[
+                                { name: 'Registered Clubs', href: '/affiliations/registered-club' },
+                                { name: 'Licensed Referees', href: '/affiliations/licensed-referee' },
+                                { name: 'Licensed Coaches', href: '/affiliations/licensed-coach' },
+                                { name: 'State Competitions', href: '/affiliations/competition' }
+                            ].map((link) => (
+                                <li key={link.name}>
+                                    <Link href={link.href} className="text-gray-400 hover:text-accent transition-colors flex items-center gap-2 group text-sm">
                                         <span className="w-1.5 h-1.5 rounded-full bg-secondary group-hover:bg-accent transition-colors"></span>
-                                        {link}
+                                        {link.name}
                                     </Link>
                                 </li>
                             ))}
@@ -102,8 +113,8 @@ export default function Footer() {
                 <div className="pt-8 border-t border-[rgba(255,255,255,0.05)] flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
                     <p>© {year} Osun State Football Association. All rights reserved.</p>
                     <div className="flex gap-6">
-                        <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
-                        <Link href="#" className="hover:text-white transition-colors">Terms of Service</Link>
+                        <Link href="/" className="hover:text-white transition-colors">Privacy Policy</Link>
+                        <Link href="/" className="hover:text-white transition-colors">Terms of Service</Link>
                     </div>
                 </div>
             </div>

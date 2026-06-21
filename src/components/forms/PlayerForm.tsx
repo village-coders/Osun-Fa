@@ -88,7 +88,7 @@ export default function PlayerForm() {
 
                     <div className="mb-6 flex flex-col w-full max-w-xl">
                         <label className={labelClass}>Passport Photograph <span className="text-red-500">*</span></label>
-                        <p className="text-xs text-gray-400 mb-4">Please upload a clear headshot or take a photo using your webcam. This is required for facial recognition.</p>
+                        <p className="text-xs text-gray-400 mb-4">Please upload a clear headshot or take a photo using your webcam.</p>
 
                         <PhotoCapture
                             onPhotoCaptured={(file: File) => {
