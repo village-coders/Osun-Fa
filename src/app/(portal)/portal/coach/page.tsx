@@ -58,7 +58,7 @@ export default function CoachDashboard() {
                 </div>
                 <Link href="/portal/complete-profile/coach">
                     <button className="bg-accent text-primary-dark font-black px-10 py-5 rounded-2xl flex items-center gap-4 hover:-translate-y-1 active:scale-95 transition-all shadow-2xl shadow-accent/20 shrink-0 uppercase text-[10px] tracking-[0.2em] relative z-10">
-                        {hasCompletedProfile ? "Edit Profile" : "Update Credentials"}
+                        {hasCompletedProfile ? "View Profile" : "Update Credentials"}
                     </button>
                 </Link>
             </div>
