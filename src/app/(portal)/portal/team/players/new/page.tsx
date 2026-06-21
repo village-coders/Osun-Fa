@@ -361,7 +361,7 @@ export default function RegisterPlayerPage() {
                     <FormCard title="Section F: Registration & Transfer History" icon={History}>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <SelectField
-                                label="Previously Registered with OSFA? *"
+                                label="Previously Registered with Osun FA? *"
                                 name="previouslyRegisteredWithOSFA"
                                 value={formData.previouslyRegisteredWithOSFA}
                                 onChange={handleChange}
@@ -470,7 +470,7 @@ export default function RegisterPlayerPage() {
                                     </div>
                                     <div>
                                         <span className="text-sm font-black text-white uppercase tracking-tight block mb-1">Data Processing Consent</span>
-                                        <span className="text-xs text-gray-400 font-medium">I consent to data processing in accordance with OSFA Data Protection Policy.</span>
+                                        <span className="text-xs text-gray-400 font-medium">I consent to data processing in accordance with Osun FA Data Protection Policy.</span>
                                     </div>
                                 </label>
                             </div>

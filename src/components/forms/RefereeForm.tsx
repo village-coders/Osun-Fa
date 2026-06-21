@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { RefereeFormValues } from "@/types/form-values";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import userApi from "@/lib/api";
 import { toast } from "react-hot-toast";
 import Cookies from "js-cookie";
@@ -12,12 +12,47 @@ export default function RefereeForm() {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitSuccess, setSubmitSuccess] = useState(false);
+    const [isUpdateMode, setIsUpdateMode] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors },
     } = useForm<RefereeFormValues>();
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const token = Cookies.get("portalToken");
+                if (!token) return;
+                
+                const res = await userApi.get("/portal-auth/me", {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                
+                if (res.data) {
+                    if (res.data.status) {
+                        setIsUpdateMode(true);
+                    }
+                    
+                    const formattedData = { ...res.data };
+                    if (formattedData.dateOfBirth) formattedData.dateOfBirth = formattedData.dateOfBirth.split('T')[0];
+                    if (formattedData.lastFitnessTestDate) formattedData.lastFitnessTestDate = formattedData.lastFitnessTestDate.split('T')[0];
+                    if (formattedData.lastAssessmentDate) formattedData.lastAssessmentDate = formattedData.lastAssessmentDate.split('T')[0];
+                    if (formattedData.date) formattedData.date = formattedData.date.split('T')[0];
+                    
+                    reset(formattedData);
+                }
+            } catch (err) {
+                console.error("Failed to fetch profile", err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchProfile();
+    }, [reset]);
 
     const onSubmit = async (data: RefereeFormValues) => {
         setIsSubmitting(true);
@@ -87,11 +122,25 @@ export default function RefereeForm() {
     const sectionClass = "glass-dark p-6 rounded-2xl mb-8 border border-[rgba(255,255,255,0.05)]";
     const headingClass = "text-xl font-bold text-accent mb-6 flex items-center gap-2 border-b border-[rgba(255,255,255,0.1)] pb-3";
 
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center py-32">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent"></div>
+            </div>
+        );
+    }
+
     return (
         <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6">
             <div className="mb-10 text-center">
-                <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">Referee Registration</h1>
-                <p className="text-gray-400">Complete the form below to register as an official Osun FA referee.</p>
+                <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">
+                    {isUpdateMode ? "Update Referee Profile" : "Referee Registration"}
+                </h1>
+                <p className="text-gray-400">
+                    {isUpdateMode 
+                        ? "Update your Osun FA referee profile details below."
+                        : "Complete the form below to register as an official Osun FA referee."}
+                </p>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-8 relative">
@@ -383,7 +432,7 @@ export default function RefereeForm() {
                     </div>
                 </div>
 
-                {/* SECTION H: BANKING & PAYMENT DETAILS */}
+                {/* SECTION H: BANKING & PAYMENT DETAILS (COMMENTED OUT)
                 <div className={sectionClass}>
                     <h2 className={headingClass}>Section H: Banking Information</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
@@ -405,6 +454,7 @@ export default function RefereeForm() {
                         </div>
                     </div>
                 </div>
+                */}
 
                 {/* SECTION I: DECLARATION */}
                 <div className={sectionClass}>
@@ -456,7 +506,7 @@ export default function RefereeForm() {
                                 </svg>
                                 Submitting Form...
                             </>
-                        ) : "Submit Registration"}
+                        ) : (isUpdateMode ? "Update Profile" : "Submit Registration")}
                     </button>
                 </div>
             </form>

@@ -27,11 +27,22 @@ export default function AdminCompetitionsPage() {
 
     const handleUpdateStatus = async (id: string, status: string) => {
         try {
-            await api.put(`/competitions/${id}/status`, { status });
+            await api.put(`/competitions/${id}`, { status });
             setCompetitions(competitions.map(c => c._id === id ? { ...c, status } : c));
             toast.success(`Competition ${status.toLowerCase()}`);
         } catch (error) {
             toast.error("Failed to update status");
+        }
+    };
+
+    const handleToggleRegistration = async (id: string, currentStatus: string) => {
+        try {
+            const newStatus = currentStatus === 'open' ? 'closed' : 'open';
+            await api.put(`/competitions/${id}`, { registrationStatus: newStatus });
+            setCompetitions(competitions.map(c => c._id === id ? { ...c, registrationStatus: newStatus } : c));
+            toast.success(`Registration ${newStatus}`);
+        } catch (error) {
+            toast.error("Failed to toggle registration status");
         }
     };
 
@@ -47,9 +58,8 @@ export default function AdminCompetitionsPage() {
     };
 
     const filteredCompetitions = competitions.filter(c =>
-        c.proposedName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        c.formatType?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        c.seasonYear?.toLowerCase().includes(searchQuery.toLowerCase())
+        c.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        c.season?.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     if (loading) return <TableSkeleton />;
@@ -91,8 +101,8 @@ export default function AdminCompetitionsPage() {
                                 <th className="px-6 py-4">Competition Name</th>
                                 <th className="px-6 py-4">Format</th>
                                 <th className="px-6 py-4">Season / Year</th>
-                                <th className="px-6 py-4">Sponsor (if any)</th>
                                 <th className="px-6 py-4">Status</th>
+                                <th className="px-6 py-4">Registration</th>
                                 <th className="px-6 py-4 text-right">Actions</th>
                             </tr>
                         </thead>
@@ -113,32 +123,32 @@ export default function AdminCompetitionsPage() {
                                                         <Trophy className="w-4 h-4 text-primary" />
                                                     )}
                                                 </div>
-                                                <span className="truncate max-w-50">{comp.proposedName}</span>
+                                                <span className="truncate max-w-50">{comp.name}</span>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 text-gray-600">{comp.formatType}</td>
-                                        <td className="px-6 py-4 text-gray-500">{comp.seasonYear}</td>
-                                        <td className="px-6 py-4 text-gray-500 font-medium truncate max-w-37.5">{comp.sponsorName || 'None'}</td>
+                                        <td className="px-6 py-4 text-gray-600">-</td>
+                                        <td className="px-6 py-4 text-gray-500">{comp.season}</td>
                                         <td className="px-6 py-4">
-                                            <span className={`px-3 py-1 rounded-full text-xs font-bold ${comp.status === 'Approved' ? 'bg-green-100 text-green-700' :
-                                                comp.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
-                                                    'bg-red-100 text-red-700'
+                                            <span className={`px-3 py-1 rounded-full text-xs font-bold ${comp.status === 'completed' ? 'bg-green-100 text-green-700' :
+                                                comp.status === 'ongoing' ? 'bg-blue-100 text-blue-800' :
+                                                    'bg-yellow-100 text-yellow-700'
                                                 }`}>
                                                 {comp.status}
                                             </span>
                                         </td>
                                         <td className="px-6 py-4">
+                                            <span className={`px-3 py-1 rounded-full text-xs font-bold ${comp.registrationStatus === 'open' ? 'bg-accent/20 text-green-700' : 'bg-gray-100 text-gray-600'}`}>
+                                                {comp.registrationStatus === 'open' ? 'Open' : 'Closed'}
+                                            </span>
+                                        </td>
+                                        <td className="px-6 py-4">
                                             <div className="flex items-center justify-end gap-2">
-                                                {comp.status !== 'Approved' && (
-                                                    <button onClick={() => handleUpdateStatus(comp._id, 'Approved')} className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors" title="Sanction Competition">
-                                                        <CheckCircle className="w-5 h-5" />
-                                                    </button>
-                                                )}
-                                                {comp.status !== 'Rejected' && (
-                                                    <button onClick={() => handleUpdateStatus(comp._id, 'Rejected')} className="p-2 text-orange-600 hover:bg-orange-50 rounded-lg transition-colors" title="Reject Competition">
-                                                        <XCircle className="w-5 h-5" />
-                                                    </button>
-                                                )}
+                                                <button
+                                                    onClick={() => handleToggleRegistration(comp._id, comp.registrationStatus)}
+                                                    className={`p-2 rounded-lg transition-colors title="Toggle Registration" ${comp.registrationStatus === 'open' ? 'text-red-600 hover:bg-red-50' : 'text-green-600 hover:bg-green-50'}`}
+                                                >
+                                                    {comp.registrationStatus === 'open' ? <XCircle className="w-4 h-4" /> : <CheckCircle className="w-4 h-4" />}
+                                                </button>
                                                 <button
                                                     onClick={() => window.location.href = `/admin/competitions/form?id=${comp._id}`}
                                                     className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"

@@ -114,7 +114,7 @@ export default function ClubForm() {
         <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6">
             <div className="mb-10 text-center">
                 <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">Club / Team Registration</h1>
-                <p className="text-gray-400">Complete the form below to register your club with the OSFA.</p>
+                <p className="text-gray-400">Complete the form below to register your club with the Osun FA.</p>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-8 relative">
@@ -261,17 +261,17 @@ export default function ClubForm() {
                             {errors.secretaryEmail && <p className={errorClass}>{errors.secretaryEmail.message as string}</p>}
                         </div>
                         <div className="relative">
-                            <label className={labelClass}>Head Coach Name <span className="text-red-500">*</span></label>
+                            <label className={labelClass}>Coach Name <span className="text-red-500">*</span></label>
                             <input {...register("headCoachName", { required: "Head coach name is required" })} className={`${inputClass} ${errors.headCoachName ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
                             {errors.headCoachName && <p className={errorClass}>{errors.headCoachName.message as string}</p>}
                         </div>
                         <div className="relative">
-                            <label className={labelClass}>Head Coach License Level <span className="text-red-500">*</span></label>
+                            <label className={labelClass}>Coach License Level <span className="text-red-500">*</span></label>
                             <input {...register("headCoachLicenseLevel")} className={`${inputClass} ${errors.headCoachLicenseLevel ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
                             {errors.headCoachLicenseLevel && <p className={errorClass}>{errors.headCoachLicenseLevel.message as string}</p>}
                         </div>
                         <div className="relative">
-                            <label className={labelClass}>Head Coach Phone <span className="text-red-500">*</span></label>
+                            <label className={labelClass}>Coach Phone <span className="text-red-500">*</span></label>
                             <input type="tel" {...register("headCoachPhone")} className={`${inputClass} ${errors.headCoachPhone ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`} />
                             {errors.headCoachPhone && <p className={errorClass}>{errors.headCoachPhone.message as string}</p>}
                         </div>

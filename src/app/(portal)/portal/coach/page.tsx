@@ -2,8 +2,31 @@
 
 import { Calendar, User, FileText, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import userApi from "@/lib/api";
+import Cookies from "js-cookie";
 
 export default function CoachDashboard() {
+    const [hasCompletedProfile, setHasCompletedProfile] = useState(false);
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const token = Cookies.get("portalToken");
+                if (!token) return;
+                const res = await userApi.get("/portal-auth/me", {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                if (res.data?.status) {
+                    setHasCompletedProfile(true);
+                }
+            } catch (err) {
+                console.error("Failed to fetch coach profile", err);
+            }
+        };
+        fetchProfile();
+    }, []);
+
     const stats = [
         { label: "Profile Status", value: "Active", icon: User, color: "text-green-500", bg: "bg-green-500/10" },
         { label: "Matches Assessed", value: "0", icon: Calendar, color: "text-blue-500", bg: "bg-blue-500/10" },
@@ -33,9 +56,11 @@ export default function CoachDashboard() {
                         Manage your coaching profile, view match assignments, and stay up to date with the latest Osun FA technical guidelines.
                     </p>
                 </div>
-                <button className="bg-accent text-primary-dark font-black px-10 py-5 rounded-2xl flex items-center gap-4 hover:-translate-y-1 active:scale-95 transition-all shadow-2xl shadow-accent/20 shrink-0 uppercase text-[10px] tracking-[0.2em] relative z-10">
-                    Update Credentials
-                </button>
+                <Link href="/portal/complete-profile/coach">
+                    <button className="bg-accent text-primary-dark font-black px-10 py-5 rounded-2xl flex items-center gap-4 hover:-translate-y-1 active:scale-95 transition-all shadow-2xl shadow-accent/20 shrink-0 uppercase text-[10px] tracking-[0.2em] relative z-10">
+                        {hasCompletedProfile ? "Edit Profile" : "Update Credentials"}
+                    </button>
+                </Link>
             </div>
 
             {/* Stats Grid */}

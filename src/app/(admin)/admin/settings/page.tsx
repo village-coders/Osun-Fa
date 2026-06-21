@@ -11,7 +11,7 @@ export default function AdminSettingsPage() {
 
     // Profile State (Placeholder for now since backend only has email)
     const [profile, setProfile] = useState({
-        email: "admin@osfa.org",
+        email: "admin@osunfa.org",
         role: "Super Administrator",
     });
 
@@ -24,7 +24,7 @@ export default function AdminSettingsPage() {
 
     // Global site settings (UI only mock for now, can be wired to backend later if site-settings model exists)
     const [siteSettings, setSiteSettings] = useState({
-        contactEmail: "info@osfa.org",
+        contactEmail: "info@osunfa.org",
         contactPhone: "+234 800 000 0000",
         address: "Osogbo, Osun State",
         facebook: "https://facebook.com/osunfa",

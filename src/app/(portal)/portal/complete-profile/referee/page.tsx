@@ -1,13 +1,13 @@
 import RefereeForm from "@/components/forms/RefereeForm";
 
 export const metadata = {
-    title: "Referee Registration | OSFA",
-    description: "Register as an official Osun FA referee.",
+    title: "Referee Registration | Osun FA",
+    description: "Register as a football referee with the Osun FA.",
 };
 
 export default function RefereeRegistrationPage() {
     return (
-        <div className="min-h-screen bg-surface-dark pt-24 pb-12">
+        <div className="min-h-screen pt-24 pb-12">
             <RefereeForm />
         </div>
     );

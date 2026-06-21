@@ -115,7 +115,7 @@ export default function AdminTeamsPage() {
                         <thead className="bg-gray-50 text-gray-500 font-semibold border-b border-gray-100">
                             <tr>
                                 <th className="px-6 py-4">Club Details</th>
-                                <th className="px-6 py-4">Head Coach</th>
+                                <th className="px-6 py-4">Coach</th>
                                 <th className="px-6 py-4">LGA</th>
                                 <th className="px-6 py-4">Category</th>
                                 <th className="px-6 py-4">Status</th>
@@ -308,7 +308,7 @@ export default function AdminTeamsPage() {
                                 </div>
                                 <div className="space-y-6">
                                     <SectionTitle title="Technical Department" />
-                                    <ManagementCard title="Head Coach" name={selectedTeam.headCoachName} phone={selectedTeam.headCoachPhone} badge={selectedTeam.headCoachLicenseLevel} />
+                                    <ManagementCard title="Coach" name={selectedTeam.headCoachName} phone={selectedTeam.headCoachPhone} badge={selectedTeam.headCoachLicenseLevel} />
                                     <ManagementCard title="Team Manager" name={selectedTeam.teamManagerName} phone={selectedTeam.teamManagerPhone} />
                                 </div>
                             </div>

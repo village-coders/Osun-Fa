@@ -8,13 +8,13 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    default: "Osun State Football Association | OSFA",
+    default: "Osun State Football Association | Osun FA",
     template: "%s | Osun State FA",
   },
-  description: "Official website of the Osun State Football Association (OSFA). Discover the latest news, grassroots programs, state leagues, referee training, and elite football developments in Osun State, Nigeria.",
-  keywords: ["Osun State", "Football", "OSFA", "Nigeria Football", "Grassroots Football", "Osun FA Cup", "Osun State League", "Soccer"],
+  description: "Official website of the Osun State Football Association (Osun FA). Discover the latest news, grassroots programs, state leagues, referee training, and elite football developments in Osun State, Nigeria.",
+  keywords: ["Osun State", "Football", "Osun FA", "Nigeria Football", "Grassroots Football", "Osun FA Cup", "Osun State League", "Soccer"],
   authors: [{ name: "Osun State Football Association" }],
-  creator: "OSFA",
+  creator: "Osun FA",
   openGraph: {
     type: "website",
     locale: "en_NG",

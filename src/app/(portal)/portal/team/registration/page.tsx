@@ -193,7 +193,7 @@ export default function ClubRegistrationPage() {
                     <div className="space-y-2">
                         <div className="flex items-center gap-3">
                             <span className="bg-accent/20 text-accent text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full border border-accent/30">Official Portal</span>
-                            <span className="text-gray-500 text-[10px] font-bold uppercase tracking-widest">• OSFA-DRP-2026</span>
+                            <span className="text-gray-500 text-[10px] font-bold uppercase tracking-widest">• Osun FA-DRP-2026</span>
                         </div>
                         <h1 className="text-4xl font-black text-white tracking-tight">Digital Club Registration</h1>
                         <p className="text-gray-400 font-medium">Please complete all 7 sections to finalize your official Osun FA affiliation.</p>
@@ -296,7 +296,7 @@ export default function ClubRegistrationPage() {
                             <OfficialGroup title="13. Club Chairman / President" prefix="chairman" data={formData} onChange={handleChange} />
                             <OfficialGroup title="14. Secretary / Administrator" prefix="secretary" data={formData} onChange={handleChange} />
                             <div className="space-y-6">
-                                <h4 className="text-xs font-black text-accent uppercase tracking-[0.2em] border-b border-accent/10 pb-2">15. Head Coach</h4>
+                                <h4 className="text-xs font-black text-accent uppercase tracking-[0.2em] border-b border-accent/10 pb-2">15. Coach</h4>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                     <InputField label="Full Name" name="headCoachName" value={formData.headCoachName} onChange={handleChange} />
                                     <InputField label="License Level" name="headCoachLicenseLevel" value={formData.headCoachLicenseLevel} onChange={handleChange} placeholder="e.g. CAF A, B, C" />

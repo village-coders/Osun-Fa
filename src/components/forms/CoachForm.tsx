@@ -2,22 +2,67 @@
 
 import { useForm } from "react-hook-form";
 import { CoachFormValues } from "@/types/form-values";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import userApi from "@/lib/api";
 import { toast } from "react-hot-toast";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { User, MapPin, FileText, Award, Briefcase, BookOpen, HeartPulse, CreditCard, ShieldCheck, ArrowLeft, ArrowRight, Check } from "lucide-react";
 
 export default function CoachForm() {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitSuccess, setSubmitSuccess] = useState(false);
+    const [isUpdateMode, setIsUpdateMode] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [currentStep, setCurrentStep] = useState(1);
 
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors },
     } = useForm<CoachFormValues>();
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const token = Cookies.get("portalToken");
+                if (!token) return;
+                
+                const res = await userApi.get("/portal-auth/me", {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                
+                if (res.data) {
+                    // Check if coach already has a status meaning they completed registration before
+                    if (res.data.status) {
+                        setIsUpdateMode(true);
+                    }
+                    
+                    // Format dates for input type="date"
+                    const formattedData = { ...res.data };
+                    if (formattedData.dateOfBirth) {
+                        formattedData.dateOfBirth = formattedData.dateOfBirth.split('T')[0];
+                    }
+                    if (formattedData.licenseExpiryDate) {
+                        formattedData.licenseExpiryDate = formattedData.licenseExpiryDate.split('T')[0];
+                    }
+                    if (formattedData.date) {
+                        formattedData.date = formattedData.date.split('T')[0];
+                    }
+                    
+                    reset(formattedData);
+                }
+            } catch (err) {
+                console.error("Failed to fetch profile", err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchProfile();
+    }, [reset]);
 
     const onSubmit = async (data: CoachFormValues) => {
         setIsSubmitting(true);
@@ -86,16 +131,91 @@ export default function CoachForm() {
     const sectionClass = "glass-dark p-6 rounded-2xl mb-8 border border-[rgba(255,255,255,0.05)]";
     const headingClass = "text-xl font-bold text-accent mb-6 flex items-center gap-2 border-b border-[rgba(255,255,255,0.1)] pb-3";
 
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center py-32">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent"></div>
+            </div>
+        );
+    }
+
+    const sections = [
+        { id: 1, label: "Personal", icon: User },
+        { id: 2, label: "Contacts", icon: MapPin },
+        { id: 3, label: "ID Docs", icon: FileText },
+        { id: 4, label: "Quals", icon: Award },
+        { id: 5, label: "Profile", icon: Briefcase },
+        { id: 6, label: "CPD", icon: BookOpen },
+        { id: 7, label: "Medical", icon: HeartPulse },
+        // { id: 8, label: "Banking", icon: CreditCard },
+        { id: 8, label: "Declaration", icon: ShieldCheck }
+    ];
+
+    const nextStep = () => setCurrentStep(prev => Math.min(prev + 1, sections.length));
+    const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1));
+
     return (
-        <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6">
-            <div className="mb-10 text-center">
-                <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">Coach Registration</h1>
-                <p className="text-gray-400">Complete the form below to register as an official Osun FA coach.</p>
+        <div className="max-w-5xl mx-auto space-y-8 pb-20 pt-8 px-4 sm:px-6">
+            {/* Header */}
+            <div className="bg-linear-to-br from-primary via-primary-dark to-black p-10 rounded-3xl border border-white/10 shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-10 opacity-5">
+                    <Award size={160} />
+                </div>
+                <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                    <div className="space-y-2">
+                        <div className="flex items-center gap-3">
+                            <span className="bg-accent/20 text-accent text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full border border-accent/30">Official Portal</span>
+                            <span className="text-gray-500 text-[10px] font-bold uppercase tracking-widest">• Osun FA-DRP-2026</span>
+                        </div>
+                        <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">
+                            {isUpdateMode ? "Update Coach Profile" : "Coach Registration"}
+                        </h1>
+                        <p className="text-gray-400 font-medium">
+                            {isUpdateMode 
+                                ? "Update your Osun FA coach profile details below."
+                                : "Please complete all sections to register as an official Osun FA coach."}
+                        </p>
+                    </div>
+                    <Link href="/portal/coach">
+                        <button className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors text-sm font-bold bg-white/5 px-4 py-2 rounded-xl border border-white/5">
+                            <ArrowLeft size={16} />
+                            Back to Dashboard
+                        </button>
+                    </Link>
+                </div>
+            </div>
+
+            {/* Stepper Navigation */}
+            <div className="bg-white/5 border border-white/10 rounded-4xl p-4 hide-scrollbar overflow-x-auto">
+                <div className="flex items-center justify-between min-w-[800px] px-4">
+                    {sections.map((s, i) => (
+                        <div key={s.id} className="flex items-center flex-1 last:flex-none">
+                            <button
+                                type="button"
+                                onClick={() => setCurrentStep(s.id)}
+                                className={`flex flex-col items-center gap-2 group transition-all ${currentStep === s.id ? 'scale-110' : 'opacity-60 hover:opacity-100'}`}
+                            >
+                                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all border-2 ${currentStep === s.id
+                                    ? 'bg-accent border-accent text-primary-dark shadow-lg shadow-accent/20'
+                                    : 'bg-white/5 border-white/10 text-gray-400 hover:border-accent/40'
+                                    }`}>
+                                    <s.icon size={20} />
+                                </div>
+                                <span className={`text-[10px] font-black uppercase tracking-widest ${currentStep === s.id ? 'text-accent' : 'text-gray-500'}`}>{s.label}</span>
+                            </button>
+                            {i < sections.length - 1 && (
+                                <div className="flex-1 h-0.5 bg-white/5 mx-4 -mt-4.5">
+                                    <div className={`h-full transition-all duration-500 ${currentStep > s.id ? 'bg-accent w-full' : 'w-0'}`}></div>
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                </div>
             </div>
 
             <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-8 relative">
                 {/* SECTION A: PERSONAL INFO */}
-                <div className={sectionClass}>
+                <div className={`${sectionClass} ${currentStep !== 1 ? 'hidden' : ''}`}>
                     <h2 className={headingClass}>Section A: Personal Information</h2>
 
                     <div className="mb-6 flex flex-col items-center sm:items-start max-w-sm">
@@ -175,7 +295,7 @@ export default function CoachForm() {
                 </div>
 
                 {/* SECTION B: CONTACT INFO */}
-                <div className={sectionClass}>
+                <div className={`${sectionClass} ${currentStep !== 2 ? 'hidden' : ''}`}>
                     <h2 className={headingClass}>Section B: Contact Information</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
                         <div className="relative">
@@ -205,9 +325,9 @@ export default function CoachForm() {
                     </div>
                 </div>
 
-                {/* SECTION C: IDENTIFICATION */}
-                <div className={sectionClass}>
-                    <h2 className={headingClass}>Section C: Identification & Documents</h2>
+                {/* SECTION C: IDENTIFICATION & DOCUMENT UPLOADS */}
+                <div className={`${sectionClass} ${currentStep !== 3 ? 'hidden' : ''}`}>
+                    <h2 className={headingClass}>Section C: Identification Documents</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
                         <div className="relative">
                             <label className={labelClass}>NIN Document</label>
@@ -225,7 +345,7 @@ export default function CoachForm() {
                 </div>
 
                 {/* SECTION D: COACHING QUALIFICATIONS */}
-                <div className={sectionClass}>
+                <div className={`${sectionClass} ${currentStep !== 4 ? 'hidden' : ''}`}>
                     <h2 className={headingClass}>Section D: Coaching Qualifications & Licensing</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
                         <div className="relative">
@@ -280,14 +400,14 @@ export default function CoachForm() {
                 </div>
 
                 {/* SECTION E: COACHING PROFILE */}
-                <div className={sectionClass}>
-                    <h2 className={headingClass}>Section E: Coaching Profile</h2>
+                <div className={`${sectionClass} ${currentStep !== 5 ? 'hidden' : ''}`}>
+                    <h2 className={headingClass}>Section E: Coaching Profile & Experience</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
                         <div className="relative">
                             <label className={labelClass}>Primary Coaching Role <span className="text-red-500">*</span></label>
                             <select {...register("primaryCoachingRole", { required: "Primary role is required" })} className={`${inputClass} ${errors.primaryCoachingRole ? 'border-red-500' : 'border-[rgba(255,255,255,0.1)]'}`}>
                                 <option value="">Select Role</option>
-                                <option value="Head Coach">Head Coach</option>
+                                <option value="Coach">Coach</option>
                                 <option value="Assistant Coach">Assistant Coach</option>
                                 <option value="Goalkeeper Coach">Goalkeeper Coach</option>
                                 <option value="Fitness Coach">Fitness Coach</option>
@@ -326,8 +446,8 @@ export default function CoachForm() {
                 </div>
 
                 {/* SECTION F: CPD */}
-                <div className={sectionClass}>
-                    <h2 className={headingClass}>Section F: Continuing Professional Development (CPD)</h2>
+                <div className={`${sectionClass} ${currentStep !== 6 ? 'hidden' : ''}`}>
+                    <h2 className={headingClass}>Section F: Continuous Professional Development (CPD)</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
                         <div className="relative">
                             <label className={labelClass}>Recent Courses Attended</label>
@@ -344,9 +464,9 @@ export default function CoachForm() {
                     </div>
                 </div>
 
-                {/* SECTION G: MEDICAL (OPTIONAL) */}
-                <div className={sectionClass}>
-                    <h2 className={headingClass}>Section G: Medical Information</h2>
+                {/* SECTION G: MEDICAL */}
+                <div className={`${sectionClass} ${currentStep !== 7 ? 'hidden' : ''}`}>
+                    <h2 className={headingClass}>Section G: Medical Declaration</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
                         <div className="relative md:col-span-2">
                             <label className={labelClass}>Known Medical Conditions</label>
@@ -359,8 +479,8 @@ export default function CoachForm() {
                     </div>
                 </div>
 
-                {/* SECTION H: BANKING (OPTIONAL) */}
-                <div className={sectionClass}>
+                {/* SECTION H: BANKING & PAYMENT DETAILS (COMMENTED OUT)
+                <div className={`${sectionClass} ${currentStep !== 8 ? 'hidden' : ''}`}>
                     <h2 className={headingClass}>Section H: Banking Information</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
                         <div className="relative">
@@ -381,10 +501,11 @@ export default function CoachForm() {
                         </div>
                     </div>
                 </div>
+                */}
 
                 {/* SECTION I: DECLARATION */}
-                <div className={sectionClass}>
-                    <h2 className={headingClass}>Section I: Declaration & Professional Conduct</h2>
+                <div className={`${sectionClass} ${currentStep !== 8 ? 'hidden' : ''}`}>
+                    <h2 className={headingClass}>Section I: Declaration & Code of Conduct</h2>
                     <div className="pb-4">
                         <p className="text-gray-400 text-sm mb-4">
                             I hereby declare that all information provided is true and correct. I agree to abide by the statutes, codes of ethics, and technical regulations of Osun State Football Association, NFF, CAF, and FIFA.
@@ -418,22 +539,43 @@ export default function CoachForm() {
                     </div>
                 </div>
 
-                <div className="flex justify-end pt-4 pb-12">
+                <div className="flex justify-between items-center pt-4 pb-12">
                     <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="bg-accent text-primary-dark hover:bg-secondary px-8 py-3 rounded-full text-lg font-bold shadow-[0_0_15px_rgba(0,255,136,0.2)] transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                        type="button"
+                        onClick={prevStep}
+                        disabled={currentStep === 1}
+                        className="bg-white/5 hover:bg-white/10 text-white px-8 py-3 rounded-full text-sm font-bold transition-all disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-2"
                     >
-                        {isSubmitting ? (
-                            <>
-                                <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-primary-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
-                                Submitting Form...
-                            </>
-                        ) : "Submit Registration"}
+                        <ArrowLeft size={18} />
+                        Previous Step
                     </button>
+
+                    {currentStep < sections.length ? (
+                        <button
+                            type="button"
+                            onClick={nextStep}
+                            className="bg-accent text-primary-dark hover:bg-secondary px-8 py-3 rounded-full text-sm font-bold shadow-[0_0_15px_rgba(0,255,136,0.2)] transition-all flex items-center gap-2"
+                        >
+                            Next Step
+                            <ArrowRight size={18} />
+                        </button>
+                    ) : (
+                        <button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className="bg-accent text-primary-dark hover:bg-secondary px-8 py-3 rounded-full text-lg font-bold shadow-[0_0_15px_rgba(0,255,136,0.2)] transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                        >
+                            {isSubmitting ? (
+                                <>
+                                    <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-primary-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    Submitting Form...
+                                </>
+                            ) : (isUpdateMode ? "Update Profile" : "Submit Registration")}
+                        </button>
+                    )}
                 </div>
             </form>
         </div>

@@ -31,7 +31,7 @@ export default function RegisterSelectionPage() {
             <div className="max-w-4xl mx-auto">
                 <div className="text-center mb-12">
                     <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                        Join <span className="text-accent">OSFA</span>
+                        Join <span className="text-accent">Osun FA</span>
                     </h1>
                     <p className="text-gray-400 text-lg max-w-2xl mx-auto">
                         Select your registration category below to begin your journey with the Osun State Football Association.

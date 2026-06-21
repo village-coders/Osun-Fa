@@ -21,7 +21,7 @@ export default function PortalRegisterPage() {
 
     const roles = [
         { id: "team", label: "Club / Team", icon: Users, desc: "Register a football club to manage players and matches" },
-        { id: "coach", label: "Head Coach", icon: User, desc: "Register as an independent certified coach" },
+        { id: "coach", label: "Coach", icon: User, desc: "Register as an independent certified coach" },
         { id: "referee", label: "Referee", icon: User, desc: "Register as an official match referee" },
     ];
 
@@ -89,7 +89,7 @@ export default function PortalRegisterPage() {
                         </Link>
 
                         <h1 className="text-3xl lg:text-4xl font-extrabold text-white mb-6 leading-tight">
-                            Start Your Journey with <span className="text-accent">OSFA</span>
+                            Start Your Journey with <span className="text-accent">Osun FA</span>
                         </h1>
                         <p className="text-gray-300 text-lg leading-relaxed shadow-sm">
                             Create your secure portal account to register your club, apply as a coach, or become an official football referee.

@@ -1,8 +1,32 @@
 "use client";
 
 import { Calendar, CheckCircle2, Flag, FileText } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import userApi from "@/lib/api";
+import Cookies from "js-cookie";
 
 export default function RefereeDashboard() {
+    const [hasCompletedProfile, setHasCompletedProfile] = useState(false);
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const token = Cookies.get("portalToken");
+                if (!token) return;
+                const res = await userApi.get("/portal-auth/me", {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                if (res.data?.status) {
+                    setHasCompletedProfile(true);
+                }
+            } catch (err) {
+                console.error("Failed to fetch referee profile", err);
+            }
+        };
+        fetchProfile();
+    }, []);
+
     const stats = [
         { label: "Profile Status", value: "Active", icon: CheckCircle2, color: "text-green-500", bg: "bg-green-500/10" },
         { label: "Matches Officiated", value: "0", icon: Flag, color: "text-accent", bg: "bg-accent/10" },
@@ -32,9 +56,11 @@ export default function RefereeDashboard() {
                         View matches you've been allocated to, submit match reports, and manage your referee certifications and fitness test records.
                     </p>
                 </div>
-                <button className="bg-accent text-primary-dark font-black px-10 py-5 rounded-2xl flex items-center gap-4 hover:-translate-y-1 active:scale-95 transition-all shadow-2xl shadow-accent/20 shrink-0 uppercase text-[10px] tracking-[0.2em] relative z-10">
-                    Submit Match Report
-                </button>
+                <Link href="/portal/complete-profile/referee">
+                    <button className="bg-accent text-primary-dark font-black px-10 py-5 rounded-2xl flex items-center gap-4 hover:-translate-y-1 active:scale-95 transition-all shadow-2xl shadow-accent/20 shrink-0 uppercase text-[10px] tracking-[0.2em] relative z-10">
+                        {hasCompletedProfile ? "Edit Profile" : "Update Credentials"}
+                    </button>
+                </Link>
             </div>
 
             {/* Stats Grid */}

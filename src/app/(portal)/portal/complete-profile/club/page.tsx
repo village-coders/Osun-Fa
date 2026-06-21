@@ -1,8 +1,8 @@
 import ClubForm from "@/components/forms/ClubForm";
 
 export const metadata = {
-    title: "Club Registration | OSFA",
-    description: "Register your football club with the OSFA.",
+    title: "Club Registration | Osun FA",
+    description: "Register your football club with the Osun FA.",
 };
 
 export default function ClubRegistrationPage() {

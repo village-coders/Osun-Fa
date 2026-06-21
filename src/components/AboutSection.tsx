@@ -42,7 +42,7 @@ export default function AboutSection() {
                         </h2>
 
                         <p className="text-lg text-text-muted mb-6 leading-relaxed">
-                            The Osun State Football Association (OSFA) is the official governing body of football in Osun State. We are committed to fostering a thriving, inclusive, and globally competitive football ecosystem right here at home.
+                            The Osun State Football Association (Osun FA) is the official governing body of football in Osun State. We are committed to fostering a thriving, inclusive, and globally competitive football ecosystem right here at home.
                         </p>
                         <p className="text-lg text-text-muted mb-8 leading-relaxed">
                             Since our establishment, we have worked tirelessly with clubs, referees, coaches, and communities to elevate the standard of the beautiful game, transforming passion into purpose.

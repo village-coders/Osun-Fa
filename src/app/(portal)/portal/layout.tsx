@@ -5,7 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import Cookies from "js-cookie";
-import { LayoutDashboard, Users, User, Calendar, Settings, LogOut, Menu, X, Handshake, MessageSquare, LayoutGrid, Activity } from "lucide-react";
+import { LayoutDashboard, Users, User, Calendar, Settings, LogOut, Menu, X, Handshake, MessageSquare, LayoutGrid, Activity, Trophy } from "lucide-react";
 import api from "@/lib/api";
 
 export default function PortalLayout({ children }: { children: React.ReactNode }) {
@@ -25,10 +25,30 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
         const token = Cookies.get("portalToken");
         const userRole = Cookies.get("portalRole");
 
-        if (!token) {
+        if (!token || !userRole) {
             router.push("/portal/login");
         } else {
-            setRole(userRole || null);
+            setRole(userRole);
+            
+            // Enforce Role-Based Access Control on Frontend
+            const pathSegments = pathname?.split('/') || [];
+            const accessingTeamArea = pathSegments.includes('team') || pathSegments.includes('club');
+            const accessingCoachArea = pathSegments.includes('coach');
+            const accessingRefereeArea = pathSegments.includes('referee');
+
+            if (accessingTeamArea && userRole !== 'team') {
+                router.replace(`/portal/${userRole}`);
+                return;
+            }
+            if (accessingCoachArea && userRole !== 'coach') {
+                router.replace(`/portal/${userRole}`);
+                return;
+            }
+            if (accessingRefereeArea && userRole !== 'referee') {
+                router.replace(`/portal/${userRole}`);
+                return;
+            }
+
             fetchUserData();
         }
     }, [router, pathname, isPublicPath]);
@@ -61,6 +81,7 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
             base.push({ name: "Friendly Matches", href: `/portal/team/friendlies`, icon: Calendar });
             base.push({ name: "Negotiations", href: `/portal/team/negotiations`, icon: MessageSquare });
             base.push({ name: "Match Fixtures", href: `/portal/team/matches`, icon: Calendar });
+            base.push({ name: "Competitions", href: `/portal/team/competitions`, icon: Trophy });
         } else if (role === "coach") {
             base.push({ name: "My Assignments", href: `/portal/coach/assignments`, icon: Calendar });
         } else if (role === "referee") {
@@ -89,7 +110,7 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
                     <div className="bg-white p-1 rounded-lg">
                          <Image src="/osun-fa-logo.png" alt="Logo" width={28} height={28} />
                     </div>
-                    <span className="text-white font-black tracking-tighter text-lg uppercase">OSFA<span className="text-accent underline decoration-2 underline-offset-4 ml-1">Portal</span></span>
+                    <span className="text-white font-black tracking-tighter text-lg uppercase">Osun FA<span className="text-accent underline decoration-2 underline-offset-4 ml-1">Portal</span></span>
                 </Link>
                 <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="p-2 bg-white/5 rounded-xl border border-white/5 text-white active:scale-95 transition-all">
                     {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -111,12 +132,12 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
                                 className="w-full h-full object-contain" 
                             />
                         ) : (
-                            <Image src="/osun-fa-logo.png" alt="OSFA" width={42} height={42} className="w-10 h-10 object-contain" />
+                            <Image src="/osun-fa-logo.png" alt="Osun FA" width={42} height={42} className="w-10 h-10 object-contain" />
                         )}
                     </div>
                     <div>
                         <h2 className="text-white font-black text-xl leading-none tracking-tighter uppercase whitespace-nowrap overflow-hidden text-ellipsis max-w-[140px]">
-                            {userData?.name || userData?.clubName || userData?.playerName || 'OSFA'}
+                            {userData?.name || userData?.clubName || userData?.playerName || (userData?.firstName && userData?.surname ? `${userData.firstName} ${userData.surname}` : null) || (userData?.firstName ? userData.firstName : null) || 'Osun FA'}
                         </h2>
                         <div className="h-1 w-8 bg-accent mt-1 rounded-full"></div>
                         <span className="text-accent/60 text-[9px] font-black uppercase tracking-[0.3em] mt-2 block">{role} Profile</span>

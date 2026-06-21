@@ -316,7 +316,7 @@ export default function PlayerForm() {
                     <h2 className={headingClass}>Section F: Registration & Transfer History</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4">
                         <div className="relative">
-                            <label className={labelClass}>Previously Registered with OSFA?</label>
+                            <label className={labelClass}>Previously Registered with Osun FA?</label>
                             <select {...register("previouslyRegisteredWithOSFA")} className={`${inputClass} border-[rgba(255,255,255,0.1)]`}>
                                 <option value="">Select</option>
                                 <option value="Yes">Yes</option>

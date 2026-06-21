@@ -94,7 +94,7 @@ export default function PortalLoginPage() {
                                 disabled={loading}
                             >
                                 <option value="team" className="text-gray-900">Club / Team</option>
-                                <option value="coach" className="text-gray-900">Head Coach</option>
+                                <option value="coach" className="text-gray-900">Coach</option>
                                 <option value="referee" className="text-gray-900">Referee</option>
                             </select>
                         </div>
