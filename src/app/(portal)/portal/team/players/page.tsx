@@ -84,7 +84,7 @@ export default function TeamPlayersPage() {
                 <Link href="/portal/team/players/new">
                     <button className="bg-accent text-primary-dark font-black px-10 py-5 rounded-2xl flex items-center gap-3 hover:-translate-y-1 active:scale-95 transition-all shadow-2xl shadow-accent/20 shrink-0 uppercase text-[10px] tracking-[0.2em] relative z-10">
                         <Plus size={18} strokeWidth={3} />
-                        Register New Player
+                        Add New Player
                     </button>
                 </Link>
             </div>
