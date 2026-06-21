@@ -97,6 +97,19 @@ export default function RegisterPlayerPage() {
 
     const [files, setFiles] = useState<Record<string, File>>({});
 
+    // Compute whether the registered player is a minor (<18)
+    const isMinor = (() => {
+        if (!formData.dateOfBirth) return false;
+        const dob = new Date(formData.dateOfBirth);
+        const today = new Date();
+        const age = today.getFullYear() - dob.getFullYear();
+        const monthDiff = today.getMonth() - dob.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+            return age - 1 < 18;
+        }
+        return age < 18;
+    })();
+
     const handleChange = (e: any) => {
         const { name, value, type, checked } = e.target;
         const finalValue = type === 'checkbox' ? checked : value;
@@ -129,13 +142,23 @@ export default function RegisterPlayerPage() {
 
     const handleNext = () => {
         if (validateStep(currentStep)) {
-            setCurrentStep(prev => Math.min(9, prev + 1));
+            let nextStep = currentStep + 1;
+            // Skip Section C (step 3) if the player is not a minor
+            if (nextStep === 3 && !isMinor) {
+                nextStep = 4;
+            }
+            setCurrentStep(Math.min(9, nextStep));
             window.scrollTo({ top: 0, behavior: "smooth" });
         }
     };
 
     const handlePrev = () => {
-        setCurrentStep(prev => Math.max(1, prev - 1));
+        let prevStep = currentStep - 1;
+        // Skip Section C (step 3) going backwards if not a minor
+        if (prevStep === 3 && !isMinor) {
+            prevStep = 2;
+        }
+        setCurrentStep(Math.max(1, prevStep));
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
@@ -290,7 +313,7 @@ export default function RegisterPlayerPage() {
                 )}
 
                 {/* Section C: Next of Kin / Parent */}
-                {currentStep === 3 && (
+                {currentStep === 3 && isMinor && (
                     <FormCard title="Section C: Next of Kin / Parent (For Minors)" icon={Shield}>
                         <p className="text-gray-400 text-sm mb-8 italic">Required for players under 18 years old.</p>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -414,13 +437,15 @@ export default function RegisterPlayerPage() {
                                 <InputField label="Date *" name="date" type="date" value={formData.date} readOnly />
                             </div>
 
-                            <div className="p-6 bg-black/20 rounded-3xl border border-white/5 space-y-6">
-                                <h4 className="text-sm font-black text-accent uppercase tracking-widest">For Minors (Under 18)</h4>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <InputField label="Parent/Guardian Name" name="parentName" value={formData.parentName} onChange={handleChange} />
-                                    <InputField label="Parent Signature (Type Name)" name="parentSignature" value={formData.parentSignature} onChange={handleChange} />
+                            {isMinor && (
+                                <div className="p-6 bg-black/20 rounded-3xl border border-white/5 space-y-6">
+                                    <h4 className="text-sm font-black text-accent uppercase tracking-widest">For Minors (Under 18)</h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <InputField label="Parent/Guardian Name" name="parentName" value={formData.parentName} onChange={handleChange} />
+                                        <InputField label="Parent Signature (Type Name)" name="parentSignature" value={formData.parentSignature} onChange={handleChange} />
+                                    </div>
                                 </div>
-                            </div>
+                            )}
 
                             <div className="space-y-4 pt-6 border-t border-white/5">
                                 <label className="flex items-start gap-4 p-6 rounded-3xl bg-accent/5 border border-accent/10 cursor-pointer group">

@@ -75,11 +75,6 @@ export default function ViewPlayerPage() {
                         {player.status === 'Approved' || player.status === 'Verified' ? <BadgeCheck size={18} /> : <Activity size={18} />}
                         <span className="text-xs font-black uppercase tracking-widest">Status: {player.status}</span>
                     </div>
-                    <Link href={`/portal/team/players/edit/${player._id}`}>
-                        <button className="bg-accent text-primary-dark font-black uppercase text-[10px] tracking-[0.2em] px-6 py-2.5 rounded-xl transition-all hover:-translate-y-1 shadow-xl">
-                            Edit Profile
-                        </button>
-                    </Link>
                 </div>
             </div>
 
