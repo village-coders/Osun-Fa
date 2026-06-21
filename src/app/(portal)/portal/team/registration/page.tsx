@@ -510,13 +510,17 @@ function FileUpload({ label, fieldName, file, onChange, isImage }: any) {
                 <input type="file" onChange={(e) => onChange(e, fieldName)} className="hidden" />
 
                 {file ? (
-                    <div className="space-y-4 animate-in zoom-in duration-300">
-                        <div className="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center text-primary-dark mx-auto shadow-xl">
-                            {isImage ? <ImageIcon size={32} /> : <FileText size={32} />}
+                    <div className="space-y-4 animate-in zoom-in duration-300 w-full flex flex-col items-center">
+                        <div className="w-20 h-20 bg-accent rounded-2xl flex items-center justify-center text-primary-dark mx-auto shadow-xl overflow-hidden border-2 border-accent">
+                            {file.type?.startsWith('image/') ? (
+                                <img src={URL.createObjectURL(file)} alt="Preview" className="w-full h-full object-cover" />
+                            ) : (
+                                <FileText size={32} />
+                            )}
                         </div>
                         <div className="space-y-1">
-                            <p className="text-xs font-black text-white truncate max-w-37.5">{file.name}</p>
-                            <p className="text-[10px] font-bold text-accent uppercase tracking-widest">Document Selected</p>
+                            <p className="text-xs font-black text-white truncate max-w-[150px]">{file.name}</p>
+                            <p className="text-[10px] font-bold text-accent uppercase tracking-widest">Selected</p>
                         </div>
                     </div>
                 ) : (

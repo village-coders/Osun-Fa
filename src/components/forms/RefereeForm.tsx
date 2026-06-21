@@ -33,7 +33,7 @@ export default function RefereeForm() {
                 });
                 
                 if (res.data) {
-                    if (res.data.status) {
+                    if (res.data.firstName) {
                         setIsUpdateMode(true);
                     }
                     

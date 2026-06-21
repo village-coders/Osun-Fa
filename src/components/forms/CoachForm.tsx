@@ -36,8 +36,8 @@ export default function CoachForm() {
                 });
                 
                 if (res.data) {
-                    // Check if coach already has a status meaning they completed registration before
-                    if (res.data.status) {
+                    // Check if coach already completed registration by checking firstName
+                    if (res.data.firstName) {
                         setIsUpdateMode(true);
                     }
                     
