@@ -11,6 +11,7 @@ export default function TeamDashboard() {
     const [loading, setLoading] = useState(true);
     const [stats, setStats] = useState<any[]>([]);
     const [clubStatus, setClubStatus] = useState<string>("Pending");
+    const [isProfileComplete, setIsProfileComplete] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchStats = async () => {
@@ -27,6 +28,8 @@ export default function TeamDashboard() {
                 const currentClub = meRes.data;
 
                 setClubStatus(currentClub.status || "Pending");
+                // Check if registration form is submitted by looking at required fields like digitalSignature or declarationAccepted
+                setIsProfileComplete(!!currentClub.digitalSignature || !!currentClub.declarationAccepted || !!currentClub.clubCategory);
 
                 setStats([
                     { label: "Squad Size", value: myPlayers.length.toString(), icon: Users, color: "text-blue-500", bg: "bg-blue-500/10" },
@@ -62,8 +65,8 @@ export default function TeamDashboard() {
             </div>
 
             {/* Quick Actions / Registration CTA */}
-            {clubStatus !== 'Approved' ? (
-                <div className="bg-linear-to-br from-accent/20 via-primary-dark to-black border border-accent/20 p-8 md:p-12 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-12 relative overflow-hidden group shadow-2xl">
+            {clubStatus !== 'Approved' && !isProfileComplete && (
+                <div className="bg-linear-to-br from-accent/20 via-primary-dark to-black border border-accent/20 p-8 md:p-12 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-12 relative overflow-hidden group shadow-2xl mb-12">
                     <div className="absolute top-0 right-0 p-20 opacity-5 group-hover:scale-110 group-hover:rotate-12 transition-all duration-1000">
                         <FileText size={200} />
                     </div>
@@ -86,8 +89,28 @@ export default function TeamDashboard() {
                         <ArrowRight size={20} />
                     </Link>
                 </div>
-            ) : (
-                <div className="bg-linear-to-br from-white/5 to-transparent border border-white/10 p-8 md:p-12 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-12 group shadow-2xl relative overflow-hidden">
+            )}
+
+            {clubStatus !== 'Approved' && isProfileComplete && (
+                <div className="bg-linear-to-br from-yellow-500/10 via-primary-dark to-black border border-yellow-500/20 p-8 md:p-12 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-12 relative overflow-hidden group shadow-2xl mb-12">
+                    <div className="absolute top-0 right-0 p-20 opacity-5 group-hover:scale-110 group-hover:rotate-12 transition-all duration-1000">
+                        <Activity size={200} className="text-yellow-500" />
+                    </div>
+                    <div className="relative z-10 space-y-4 text-center md:text-left">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-yellow-500/20 rounded-full border border-yellow-500/30 mb-2">
+                             <div className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-ping"></div>
+                             <span className="text-[9px] font-black text-yellow-500 uppercase tracking-widest leading-none">Under Review</span>
+                        </div>
+                        <h2 className="text-3xl font-black text-white uppercase tracking-tight leading-tight">Pending <br/> <span className="text-yellow-500">Verification</span></h2>
+                        <p className="text-gray-400 max-w-xl font-medium leading-relaxed">
+                            Your club registration has been submitted and is currently awaiting verification by the Osun FA Admin. Once approved, you will have full access to manage your club.
+                        </p>
+                    </div>
+                </div>
+            )}
+
+            {clubStatus === 'Approved' && (
+                <div className="bg-linear-to-br from-white/5 to-transparent border border-white/10 p-8 md:p-12 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-12 group shadow-2xl relative overflow-hidden mb-12">
                      <div className="absolute -top-24 -right-24 w-64 h-64 bg-accent/5 rounded-full blur-[100px] pointer-events-none"></div>
                     <div className="space-y-4 text-center md:text-left relative z-10">
                         <h2 className="text-3xl font-black text-white uppercase tracking-tight leading-tight">Manage Your <span className="text-accent">Club</span></h2>
