@@ -1,5 +1,5 @@
-export default function Marquee() {
-    const newsItems = [
+export default function Marquee({ newsItems = [] }: { newsItems?: string[] }) {
+    const defaultItems = [
         "🔥 BREAKING: Osun State FA Cup registration extended to Nov 5th.",
         "🏆 MATCH RESULT: Osogbo United 2 - 1 Ilesa Warriors",
         "⚽ NEW INITIATIVE: Grassroots coaching clinic begins next week.",
@@ -7,8 +7,10 @@ export default function Marquee() {
         "📢 NOTICE: All registered clubs must submit player licenses by Friday."
     ];
 
+    const displayItems = newsItems.length > 0 ? newsItems : defaultItems;
+
     // Duplicate items to ensure smooth continuous scrolling
-    const scrollItems = [...newsItems, ...newsItems, ...newsItems];
+    const scrollItems = [...displayItems, ...displayItems, ...displayItems];
 
     return (
         <div className="bg-primary-dark mt-20 lg:mt-28 text-white py-3 border-y border-accent/20 overflow-hidden relative flex items-center w-full z-20 shadow-lg">

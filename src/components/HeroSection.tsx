@@ -39,9 +39,11 @@ export default function HeroSection() {
 
     const isMobile = useMediaQuery('(max-width: 768px)');
 
+    const marqueeNews = latestNews.map(news => `📢 ${news.category.toUpperCase()}: ${news.title}`);
+
     return (
         <>
-            <Marquee />
+            <Marquee newsItems={marqueeNews} />
             <section className="relative pt-8 sm:pt-12 pb-20 lg:pt-20 lg:pb-32 overflow-hidden bg-surface-dark text-white">
                 {/* Dynamic Background Elements */}
                 <div className="absolute inset-0 bg-cover bg-center bg-no-repeat top-0 left-0 w-full h-full overflow-hidden z-0"
