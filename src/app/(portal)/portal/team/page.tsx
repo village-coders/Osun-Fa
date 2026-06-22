@@ -165,13 +165,10 @@ export default function TeamDashboard() {
                              <p className="text-white/20 text-xs font-medium max-w-xs uppercase tracking-tighter">Your recent registrations and match updates will appear here.</p>
                         </div>
                     </div>
-                </div>
-
-                {/* Quick Reminders */}
-                <div className="bg-linear-to-b from-primary-dark/40 to-transparent border border-white/5 rounded-3xl p-8 md:p-10 shadow-2xl">
+                </div>                    <div className="bg-linear-to-b from-primary-dark/40 to-transparent border border-white/5 rounded-3xl p-8 md:p-10 shadow-2xl">
                     <h3 className="text-xs font-black text-white uppercase tracking-[0.3em] mb-10 pb-4 border-b border-white/5">Quick Actions</h3>
                     <div className="space-y-6">
-                         <div className="flex gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-accent/40 transition-all cursor-pointer group">
+                         <Link href="/portal/team/players/new" className="flex gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-accent/40 transition-all cursor-pointer group">
                               <div className="w-10 h-10 shrink-0 rounded-xl bg-accent/10 flex items-center justify-center text-accent group-hover:rotate-12 transition-transform">
                                    <Users size={20} />
                               </div>
@@ -179,8 +176,8 @@ export default function TeamDashboard() {
                                    <p className="text-[11px] font-black text-white uppercase">New Player Entry</p>
                                    <p className="text-[9px] text-white/40 font-bold uppercase tracking-tight">Add a new athlete to your official roster.</p>
                               </div>
-                         </div>
-                         <div className="flex gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-accent/40 transition-all cursor-pointer group">
+                         </Link>
+                         <Link href="/portal/team/competitions" className="flex gap-4 p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-accent/40 transition-all cursor-pointer group">
                               <div className="w-10 h-10 shrink-0 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-400 group-hover:rotate-12 transition-transform">
                                    <Trophy size={20} />
                               </div>
@@ -188,7 +185,7 @@ export default function TeamDashboard() {
                                    <p className="text-[11px] font-black text-white uppercase">Competition Tenders</p>
                                    <p className="text-[9px] text-white/40 font-bold uppercase tracking-tight">Register your team for upcoming FA leagues.</p>
                               </div>
-                         </div>
+                         </Link>
                     </div>
                 </div>
             </div>

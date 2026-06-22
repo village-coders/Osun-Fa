@@ -25,6 +25,7 @@ function CompetitionFormContent() {
         status: "upcoming",
         description: "",
         logoUrl: "",
+        registrationLink: "",
     });
 
     useEffect(() => {
@@ -40,6 +41,7 @@ function CompetitionFormContent() {
                         status: res.data.status || "upcoming",
                         description: res.data.description || "",
                         logoUrl: res.data.logoUrl || res.data.sponsorLogoUrl || "",
+                        registrationLink: res.data.registrationLink || "",
                     });
                 } catch (error) {
                     toast.error("Failed to load competition");
@@ -188,22 +190,52 @@ function CompetitionFormContent() {
                             <label className="block text-sm font-semibold text-gray-700 mb-2">
                                 <div className="flex items-center gap-2">
                                     <ImageIcon className="w-4 h-4" />
-                                    Competition Logo / Sponsor Logo
+                                    Competition Logo *
                                 </div>
                             </label>
+                            
+                            <div className="flex items-center gap-6 mt-3">
+                                {(logoFile || formData.logoUrl) && (
+                                    <div className="w-24 h-24 rounded-lg overflow-hidden border border-gray-200 bg-gray-50 shrink-0 flex items-center justify-center">
+                                        <img 
+                                            src={logoFile ? URL.createObjectURL(logoFile) : formData.logoUrl} 
+                                            alt="Logo Preview" 
+                                            className="w-full h-full object-cover" 
+                                        />
+                                    </div>
+                                )}
+                                
+                                <div className="flex-1">
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        required={!isEditing && !formData.logoUrl}
+                                        onChange={(e) => {
+                                            if (e.target.files && e.target.files.length > 0) {
+                                                setLogoFile(e.target.files[0]);
+                                            }
+                                        }}
+                                        className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/5 file:text-primary hover:file:bg-primary/10 cursor-pointer"
+                                    />
+                                    {formData.logoUrl && !logoFile && (
+                                        <p className="text-xs text-gray-500 mt-2 truncate">Current logo: {formData.logoUrl.substring(formData.logoUrl.lastIndexOf('/') + 1)}</p>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Registration Link */}
+                        <div className="md:col-span-2">
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">Registration Link</label>
                             <input
-                                type="file"
-                                accept="image/*"
-                                onChange={(e) => {
-                                    if (e.target.files && e.target.files.length > 0) {
-                                        setLogoFile(e.target.files[0]);
-                                    }
-                                }}
-                                className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/5 file:text-primary hover:file:bg-primary/10 cursor-pointer"
+                                type="url"
+                                name="registrationLink"
+                                value={formData.registrationLink}
+                                onChange={handleChange}
+                                className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                placeholder="https://forms.gle/..."
                             />
-                            {formData.logoUrl && !logoFile && (
-                                <p className="text-xs text-gray-500 mt-2 truncate">Current logo: {formData.logoUrl.substring(formData.logoUrl.lastIndexOf('/') + 1)}</p>
-                            )}
+                            <p className="text-xs text-gray-500 mt-1">If provided, clubs will be directed to this link to register for the competition.</p>
                         </div>
 
                         {/* Description */}

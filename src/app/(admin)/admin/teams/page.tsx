@@ -23,7 +23,8 @@ import {
     Users as UsersIcon,
     UserCog,
     Search,
-    Loader2
+    Loader2,
+    Trash2
 } from "lucide-react";
 import AdminModal from "@/components/AdminModal";
 
@@ -35,6 +36,7 @@ export default function AdminTeamsPage() {
     const [reviewMode, setReviewMode] = useState<{ id: string, status: string } | null>(null);
     const [remarks, setRemarks] = useState("");
     const [activeTab, setActiveTab] = useState("general");
+    const [deleteTarget, setDeleteTarget] = useState<{ id: string, name: string } | null>(null);
 
     useEffect(() => {
         const fetchTeams = async () => {
@@ -67,11 +69,11 @@ export default function AdminTeamsPage() {
     };
 
     const handleDelete = async (id: string) => {
-        if (!confirm("Are you sure you want to delete this club?")) return;
         try {
             await api.delete(`/clubs/${id}`);
             setTeams(teams.filter(t => t._id !== id));
             toast.success("Club deleted");
+            setDeleteTarget(null);
         } catch (error) {
             toast.error("Failed to delete club");
         }
@@ -183,11 +185,11 @@ export default function AdminTeamsPage() {
                                                     </div>
                                                 )}
                                                 <button
-                                                    onClick={() => handleDelete(team._id)}
+                                                    onClick={() => setDeleteTarget({ id: team._id, name: team.name || team.clubName })}
                                                     className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                                                     title="Delete Record"
                                                 >
-                                                    <Settings className="w-4 h-4" />
+                                                    <Trash2 className="w-4 h-4" />
                                                 </button>
                                             </div>
                                         </td>
@@ -396,6 +398,42 @@ export default function AdminTeamsPage() {
                             placeholder={reviewMode?.status === 'Approved' ? "e.g. Documentation verified." : "e.g. CAC Certificate is expired."}
                             className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl h-32 focus:outline-none focus:border-primary focus:bg-white transition-all text-sm font-medium text-gray-700 resize-none"
                         />
+                    </div>
+                </div>
+            </AdminModal>
+
+            {/* Delete Confirmation Modal */}
+            <AdminModal
+                isOpen={!!deleteTarget}
+                onClose={() => setDeleteTarget(null)}
+                title="Delete Club"
+                subtitle="This action cannot be undone"
+                maxWidth="sm"
+                footer={
+                    <div className="flex flex-col gap-2 w-full">
+                        <button
+                            onClick={() => handleDelete(deleteTarget!.id)}
+                            className="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg transition-all active:scale-[0.98] uppercase tracking-wider text-sm"
+                        >
+                            Yes, Delete Club
+                        </button>
+                        <button
+                            onClick={() => setDeleteTarget(null)}
+                            className="w-full py-2 text-gray-500 font-bold rounded-xl hover:bg-gray-100 transition-all text-xs uppercase tracking-wider"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                }
+            >
+                <div className="space-y-6 pt-4 text-center">
+                    <div className="w-20 h-20 mx-auto rounded-3xl flex items-center justify-center bg-red-50 text-red-500">
+                        <Trash2 size={40} />
+                    </div>
+                    <div>
+                        <p className="text-gray-700 font-bold text-base">Are you sure you want to delete</p>
+                        <p className="text-red-600 font-black text-lg mt-1">{deleteTarget?.name}?</p>
+                        <p className="text-gray-400 text-sm mt-3">All associated data will be permanently removed and cannot be recovered.</p>
                     </div>
                 </div>
             </AdminModal>

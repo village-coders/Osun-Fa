@@ -117,8 +117,8 @@ export default function AdminCompetitionsPage() {
                                         <td className="px-6 py-4 font-bold text-gray-800">
                                             <div className="flex items-center gap-3">
                                                 <div className="w-8 h-8 rounded bg-gray-100 flex shrink-0 items-center justify-center text-gray-400 overflow-hidden">
-                                                    {comp.sponsorLogoUrl ? (
-                                                        <img src={comp.sponsorLogoUrl} alt={comp.proposedName} className="w-full h-full object-cover" />
+                                                    {comp.logoUrl ? (
+                                                        <img src={comp.logoUrl} alt={comp.name} className="w-full h-full object-cover" />
                                                     ) : (
                                                         <Trophy className="w-4 h-4 text-primary" />
                                                     )}

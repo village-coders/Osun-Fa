@@ -137,15 +137,15 @@ export default function AdminDashboard() {
                     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
                         <h3 className="font-bold text-gray-800 mb-4">Quick Shortcuts</h3>
                         <div className="space-y-3">
-                            <button className="w-full text-left px-4 py-3 rounded-lg border border-gray-200 hover:border-primary hover:text-primary transition-colors font-medium text-gray-600">
+                            <Link href="/admin/teams" className="w-full text-left px-4 py-3 rounded-lg border border-gray-200 hover:border-primary hover:text-primary transition-colors font-medium text-gray-600 block">
                                 + Approve Pending Clubs
-                            </button>
-                            <button className="w-full text-left px-4 py-3 rounded-lg border border-gray-200 hover:border-primary hover:text-primary transition-colors font-medium text-gray-600">
+                            </Link>
+                            <Link href="/admin/news" className="w-full text-left px-4 py-3 rounded-lg border border-gray-200 hover:border-primary hover:text-primary transition-colors font-medium text-gray-600 block">
                                 + Publish News Article
-                            </button>
-                            <button className="w-full text-left px-4 py-3 rounded-lg border border-gray-200 hover:border-primary hover:text-primary transition-colors font-medium text-gray-600">
+                            </Link>
+                            <Link href="/admin/matches" className="w-full text-left px-4 py-3 rounded-lg border border-gray-200 hover:border-primary hover:text-primary transition-colors font-medium text-gray-600 block">
                                 + Update Match Scores
-                            </button>
+                            </Link>
                         </div>
                     </div>
 

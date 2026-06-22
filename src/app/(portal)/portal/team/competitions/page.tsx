@@ -24,8 +24,13 @@ export default function CompetitionsPage() {
         fetchCompetitions();
     }, []);
 
-    const handleEnroll = async (id: string) => {
-        toast.error("Enrollment is temporarily disabled", { icon: "ℹ️" });
+    const handleEnroll = async (id: string, registrationLink?: string) => {
+        if (registrationLink) {
+            window.open(registrationLink, '_blank');
+            return;
+        }
+        
+        toast.error("Enrollment is temporarily disabled via platform", { icon: "ℹ️" });
         // NOTE: Functionality intentionally disabled per user request
         /*
         try {
@@ -105,7 +110,7 @@ export default function CompetitionsPage() {
 
                                 {/* Action */}
                                 <button
-                                    onClick={() => handleEnroll(comp._id)}
+                                    onClick={() => handleEnroll(comp._id, comp.registrationLink)}
                                     disabled={comp.registrationStatus !== 'open'}
                                     className={`w-full py-4 rounded-xl font-black text-[11px] uppercase tracking-[0.2em] flex items-center justify-center gap-2 transition-all ${
                                         comp.registrationStatus === 'open'
