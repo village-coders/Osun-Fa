@@ -22,9 +22,11 @@ function VerifyContent() {
     useEffect(() => {
         const statusParam = searchParams.get("status");
         const tokenParam = searchParams.get("token");
+        const roleParam = searchParams.get("role");
 
         if (statusParam === "success") {
             setStatus("success");
+            if (roleParam) setUserRole(roleParam);
             toast.success("Email verified successfully! Please log in to complete your profile.");
         } else if (statusParam !== "success" && !tokenParam) {
             setStatus("error");
@@ -39,7 +41,11 @@ function VerifyContent() {
         // Since the user is not automatically logged in from the email link in the new flow,
         // redirect them to the login page to authenticate and receive their JWT,
         // which will then route them to the correct dashboard (where they will see they need to complete their profile).
-        router.push("/portal/login");
+        if (userRole) {
+            router.push(`/portal/login?role=${userRole}`);
+        } else {
+            router.push("/portal/login");
+        }
     };
 
     return (

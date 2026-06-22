@@ -1,20 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Mail, Lock, LogIn, Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import Cookies from "js-cookie";
 import userApi from "@/lib/api";
 
-export default function PortalLoginPage() {
+function PortalLoginContent() {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const roleParam = searchParams.get("role");
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [role, setRole] = useState("team");
     const [loading, setLoading] = useState(false);
-    const router = useRouter();
+
+    useEffect(() => {
+        if (roleParam && ["team", "coach", "referee"].includes(roleParam)) {
+            setRole(roleParam);
+        }
+    }, [roleParam]);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -155,5 +164,13 @@ export default function PortalLoginPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function PortalLoginPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-surface-dark"><Loader2 className="w-10 h-10 text-primary animate-spin" /></div>}>
+            <PortalLoginContent />
+        </Suspense>
     );
 }
