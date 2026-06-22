@@ -65,7 +65,7 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
     const handleLogout = () => {
         Cookies.remove("portalToken");
         Cookies.remove("portalRole");
-        router.push("/portal/login");
+        window.location.href = "/portal/login";
     };
 
     // Shared nav items + role specific items
