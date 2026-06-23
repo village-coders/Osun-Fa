@@ -1,7 +1,7 @@
 "use client";
 
 import { CheckCircle, XCircle, Trash2, Search, Trophy, Loader2, Image as ImageIcon, Plus, Edit } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
 import { TableSkeleton } from "@/components/PortalSkeletons";
