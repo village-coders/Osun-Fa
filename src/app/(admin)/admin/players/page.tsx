@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
 import { TableSkeleton } from "@/components/PortalSkeletons";
+import AdminPagination from "@/components/AdminPagination";
 import {
     Eye,
     MessageSquare,
@@ -46,6 +47,8 @@ export default function AdminPlayersPage() {
     const [reviewMode, setReviewMode] = useState<{ id: string, status: string } | null>(null);
     const [remarks, setRemarks] = useState("");
     const [activeTab, setActiveTab] = useState("general");
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 12;
 
     useEffect(() => {
         const fetchPlayers = async () => {
@@ -88,6 +91,7 @@ export default function AdminPlayersPage() {
     };
 
     const filteredPlayers = useMemo(() => {
+        if (!searchQuery.trim()) return players;
         return players.filter(p =>
             (p.surname + " " + p.firstName + " " + (p.otherNames || "")).toLowerCase().includes(searchQuery.toLowerCase()) ||
             p.playerName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -95,6 +99,13 @@ export default function AdminPlayersPage() {
             p.lga?.toLowerCase().includes(searchQuery.toLowerCase())
         );
     }, [players, searchQuery]);
+
+    const paginatedPlayers = useMemo(() => {
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
+        return filteredPlayers.slice(start, start + ITEMS_PER_PAGE);
+    }, [filteredPlayers, currentPage]);
+
+    useMemo(() => { setCurrentPage(1); }, [searchQuery]);
 
     if (loading) return <TableSkeleton />;
 
@@ -132,7 +143,7 @@ export default function AdminPlayersPage() {
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                            {filteredPlayers.map((player) => (
+                            {paginatedPlayers.map((player) => (
                                 <div key={player._id} className="bg-gray-50 border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg hover:border-primary/20 transition-all group">
                                     {/* Card Header */}
                                     <div className="relative bg-gradient-to-br from-primary/10 to-primary/5 p-5 flex flex-col items-center text-center">
@@ -195,6 +206,13 @@ export default function AdminPlayersPage() {
                         </div>
                     )}
                 </div>
+                <AdminPagination
+                    currentPage={currentPage}
+                    totalItems={filteredPlayers.length}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                    onPageChange={setCurrentPage}
+                    label="players"
+                />
             </div>
 
             {/* Player Details Modal */}

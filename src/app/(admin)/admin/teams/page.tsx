@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
 import { TableSkeleton } from "@/components/PortalSkeletons";
+import AdminPagination from "@/components/AdminPagination";
 import {
     Eye,
     MessageSquare,
@@ -37,12 +38,15 @@ export default function AdminTeamsPage() {
     const [remarks, setRemarks] = useState("");
     const [activeTab, setActiveTab] = useState("general");
     const [deleteTarget, setDeleteTarget] = useState<{ id: string, name: string } | null>(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 10;
 
     useEffect(() => {
         const fetchTeams = async () => {
             try {
-                const res = await api.get('/clubs/public');
+                const res = await api.get('/clubs');
                 setTeams(res.data);
+                console.log(res.data);
             } catch (error) {
                 toast.error("Failed to load clubs");
             } finally {
@@ -80,15 +84,24 @@ export default function AdminTeamsPage() {
     };
 
     const filteredTeams = useMemo(() => {
+        if (!searchQuery.trim()) return teams;
         return teams.filter(t =>
-            (t.name || t.clubName)?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            t.headCoachName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            t.lga?.toLowerCase().includes(searchQuery.toLowerCase())
+            (t?.name || t?.clubName)?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            t?.headCoachName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            t?.lga?.toLowerCase().includes(searchQuery.toLowerCase())
         );
     }, [teams, searchQuery]);
 
-    if (loading) return <TableSkeleton />;
+    const paginatedTeams = useMemo(() => {
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
+        return filteredTeams.slice(start, start + ITEMS_PER_PAGE);
+    }, [filteredTeams, currentPage]);
 
+    // Reset to page 1 when search changes
+    useMemo(() => { setCurrentPage(1); }, [searchQuery]);
+
+    if (loading) return <TableSkeleton />;
+    {console.log(filteredTeams)}
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -125,12 +138,12 @@ export default function AdminTeamsPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
-                            {filteredTeams.length === 0 ? (
+                            {paginatedTeams.length === 0 ? (
                                 <tr>
                                     <td colSpan={6} className="px-6 py-8 text-center text-gray-500">No clubs found</td>
                                 </tr>
                             ) : (
-                                filteredTeams.map((team) => (
+                                paginatedTeams.map((team) => (
                                     <tr key={team._id} className="hover:bg-gray-50/50 transition-colors">
                                         <td className="px-6 py-4 font-bold text-gray-800">
                                             <div className="flex items-center gap-3">
@@ -199,6 +212,13 @@ export default function AdminTeamsPage() {
                         </tbody>
                     </table>
                 </div>
+                <AdminPagination
+                    currentPage={currentPage}
+                    totalItems={filteredTeams.length}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                    onPageChange={setCurrentPage}
+                    label="clubs"
+                />
             </div>
 
             {/* Club Details Modal */}

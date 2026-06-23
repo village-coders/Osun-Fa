@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
 import { TableSkeleton } from "@/components/PortalSkeletons";
+import AdminPagination from "@/components/AdminPagination";
 import {
     Eye,
     FileText,
@@ -41,6 +42,8 @@ export default function AdminCoachesPage() {
     const [reviewMode, setReviewMode] = useState<{ id: string, status: string } | null>(null);
     const [remarks, setRemarks] = useState("");
     const [activeTab, setActiveTab] = useState("general");
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 12;
 
     useEffect(() => {
         const fetchCoaches = async () => {
@@ -83,12 +86,20 @@ export default function AdminCoachesPage() {
     };
 
     const filteredCoaches = useMemo(() => {
+        if (!searchQuery.trim()) return coaches;
         return coaches.filter(c =>
             (c.coachFullName || `${c.surname} ${c.firstName}`).toLowerCase().includes(searchQuery.toLowerCase()) ||
             c.highestCoachingQualification?.toLowerCase().includes(searchQuery.toLowerCase()) ||
             c.currentClub?.toLowerCase().includes(searchQuery.toLowerCase())
         );
     }, [coaches, searchQuery]);
+
+    const paginatedCoaches = useMemo(() => {
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
+        return filteredCoaches.slice(start, start + ITEMS_PER_PAGE);
+    }, [filteredCoaches, currentPage]);
+
+    useMemo(() => { setCurrentPage(1); }, [searchQuery]);
 
     if (loading) return <TableSkeleton />;
 
@@ -126,7 +137,7 @@ export default function AdminCoachesPage() {
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                            {filteredCoaches.map((coach) => (
+                            {paginatedCoaches.map((coach) => (
                                 <div key={coach._id} className="bg-gray-50 border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg hover:border-primary/20 transition-all group">
                                     {/* Card Header */}
                                     <div className="relative bg-gradient-to-br from-secondary/10 to-secondary/5 p-5 flex flex-col items-center text-center">
@@ -189,6 +200,13 @@ export default function AdminCoachesPage() {
                         </div>
                     )}
                 </div>
+                <AdminPagination
+                    currentPage={currentPage}
+                    totalItems={filteredCoaches.length}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                    onPageChange={setCurrentPage}
+                    label="coaches"
+                />
             </div>
 
             {/* Coach Details Modal */}

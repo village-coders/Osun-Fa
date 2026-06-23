@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
 import { TableSkeleton } from "@/components/PortalSkeletons";
+import AdminPagination from "@/components/AdminPagination";
 import {
     Eye,
     FileText,
@@ -39,6 +40,8 @@ export default function AdminRefereesPage() {
     const [reviewMode, setReviewMode] = useState<{ id: string, status: string } | null>(null);
     const [remarks, setRemarks] = useState("");
     const [activeTab, setActiveTab] = useState("general");
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 12;
 
     useEffect(() => {
         const fetchReferees = async () => {
@@ -81,12 +84,20 @@ export default function AdminRefereesPage() {
     };
 
     const filteredReferees = useMemo(() => {
+        if (!searchQuery.trim()) return referees;
         return referees.filter(r =>
             (r.refereeFullName || `${r.surname} ${r.firstName}`).toLowerCase().includes(searchQuery.toLowerCase()) ||
             r.currentGrade?.toLowerCase().includes(searchQuery.toLowerCase()) ||
             r.lga?.toLowerCase().includes(searchQuery.toLowerCase())
         );
     }, [referees, searchQuery]);
+
+    const paginatedReferees = useMemo(() => {
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
+        return filteredReferees.slice(start, start + ITEMS_PER_PAGE);
+    }, [filteredReferees, currentPage]);
+
+    useMemo(() => { setCurrentPage(1); }, [searchQuery]);
 
     if (loading) return <TableSkeleton />;
 
@@ -124,7 +135,7 @@ export default function AdminRefereesPage() {
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                            {filteredReferees.map((ref) => (
+                            {paginatedReferees.map((ref) => (
                                 <div key={ref._id} className="bg-gray-50 border border-gray-100 rounded-2xl overflow-hidden hover:shadow-lg hover:border-primary/20 transition-all group">
                                     {/* Card Header */}
                                     <div className="relative bg-gradient-to-br from-blue-500/10 to-blue-500/5 p-5 flex flex-col items-center text-center">
@@ -187,6 +198,13 @@ export default function AdminRefereesPage() {
                         </div>
                     )}
                 </div>
+                <AdminPagination
+                    currentPage={currentPage}
+                    totalItems={filteredReferees.length}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                    onPageChange={setCurrentPage}
+                    label="referees"
+                />
             </div>
 
             <AdminModal

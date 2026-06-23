@@ -1,15 +1,18 @@
 "use client";
 
 import { Plus, Edit, Trash2, Search, Filter, Image as ImageIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
 import { TableSkeleton } from "@/components/PortalSkeletons";
+import AdminPagination from "@/components/AdminPagination";
 
 export default function AdminNewsPage() {
     const [newsItems, setNewsItems] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 10;
 
     useEffect(() => {
         const fetchNews = async () => {
@@ -36,10 +39,20 @@ export default function AdminNewsPage() {
         }
     };
 
-    const filteredNews = newsItems.filter(n =>
-        n.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        n.category?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filteredNews = useMemo(() => {
+        if (!searchQuery.trim()) return newsItems;
+        return newsItems.filter(n =>
+            n.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            n.category?.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    }, [newsItems, searchQuery]);
+
+    const paginatedNews = useMemo(() => {
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
+        return filteredNews.slice(start, start + ITEMS_PER_PAGE);
+    }, [filteredNews, currentPage]);
+
+    useMemo(() => { setCurrentPage(1); }, [searchQuery]);
 
     if (loading) {
         return <TableSkeleton />;
@@ -94,7 +107,7 @@ export default function AdminNewsPage() {
                                     <td colSpan={6} className="px-6 py-8 text-center text-gray-500">No news articles found</td>
                                 </tr>
                             ) : (
-                                filteredNews.map((item) => (
+                                paginatedNews.map((item) => (
                                     <tr key={item._id} className="hover:bg-gray-50/50 transition-colors">
                                         <td className="px-6 py-4">
                                             <div className="w-12 h-10 rounded bg-gray-100 flex shrink-0 items-center justify-center text-gray-400 overflow-hidden">
@@ -135,17 +148,13 @@ export default function AdminNewsPage() {
                     </table>
                 </div>
 
-                {/* Pagination placeholder */}
-                {!loading && filteredNews.length > 0 && (
-                    <div className="p-4 border-t border-gray-100 flex items-center justify-between text-sm text-gray-500 bg-gray-50/50 mt-auto">
-                        <span>Showing {filteredNews.length} articles</span>
-                        <div className="flex gap-1">
-                            <button className="px-3 py-1 border border-gray-200 rounded hover:bg-white transition-colors" disabled>Prev</button>
-                            <button className="px-3 py-1 border border-gray-200 rounded bg-white font-bold text-primary">1</button>
-                            <button className="px-3 py-1 border border-gray-200 rounded hover:bg-white transition-colors" disabled>Next</button>
-                        </div>
-                    </div>
-                )}
+                <AdminPagination
+                    currentPage={currentPage}
+                    totalItems={filteredNews.length}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                    onPageChange={setCurrentPage}
+                    label="articles"
+                />
             </div>
         </div>
     );
