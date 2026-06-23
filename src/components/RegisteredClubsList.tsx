@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import userApi from "@/lib/api";
 import { ShieldCheck, MapPin, Building2, UserCog, CalendarDays } from "lucide-react";
+import Link from "next/link";
 
 export default function RegisteredClubsList() {
     const [clubs, setClubs] = useState<any[]>([]);
@@ -48,7 +49,7 @@ export default function RegisteredClubsList() {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {clubs.map((club) => (
-                <div key={club._id} className="bg-white rounded-3xl border border-gray-100 shadow-xl hover:shadow-2xl transition-all duration-500 group overflow-hidden flex flex-col relative hover:-translate-y-2">
+                <Link href={`/affiliations/registered-club/${club.slug || club._id}`} key={club._id} className="bg-white rounded-3xl border border-gray-100 shadow-xl hover:shadow-2xl transition-all duration-500 group overflow-hidden flex flex-col relative hover:-translate-y-2 cursor-pointer">
                     <div className="h-24 bg-linear-to-r from-primary-dark via-primary to-accent relative">
                         <div className="absolute inset-0 opacity-20 bg-[url('/pattern.svg')]"></div>
                     </div>
@@ -93,7 +94,7 @@ export default function RegisteredClubsList() {
                             </div>
                         </div>
                     </div>
-                </div>
+                </Link>
             ))}
         </div>
     );

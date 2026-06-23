@@ -5,11 +5,14 @@ import { useEffect, useState } from "react";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
 import { TableSkeleton } from "@/components/PortalSkeletons";
+import AdminPagination from "@/components/AdminPagination";
 
 export default function AdminCompetitionsPage() {
     const [competitions, setCompetitions] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 10;
 
     useEffect(() => {
         const fetchCompetitions = async () => {
@@ -57,10 +60,20 @@ export default function AdminCompetitionsPage() {
         }
     };
 
-    const filteredCompetitions = competitions.filter(c =>
-        c.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        c.season?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filteredCompetitions = useMemo(() => {
+        if (!searchQuery.trim()) return competitions;
+        return competitions.filter(c =>
+            c.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            c.season?.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    }, [competitions, searchQuery]);
+
+    const paginatedCompetitions = useMemo(() => {
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
+        return filteredCompetitions.slice(start, start + ITEMS_PER_PAGE);
+    }, [filteredCompetitions, currentPage]);
+
+    useMemo(() => { setCurrentPage(1); }, [searchQuery]);
 
     if (loading) return <TableSkeleton />;
 
@@ -112,7 +125,7 @@ export default function AdminCompetitionsPage() {
                                     <td colSpan={6} className="px-6 py-8 text-center text-gray-500">No competitions found</td>
                                 </tr>
                             ) : (
-                                filteredCompetitions.map((comp) => (
+                                paginatedCompetitions.map((comp) => (
                                     <tr key={comp._id} className="hover:bg-gray-50/50 transition-colors">
                                         <td className="px-6 py-4 font-bold text-gray-800">
                                             <div className="flex items-center gap-3">
@@ -167,6 +180,13 @@ export default function AdminCompetitionsPage() {
                         </tbody>
                     </table>
                 </div>
+                <AdminPagination
+                    currentPage={currentPage}
+                    totalItems={filteredCompetitions.length}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                    onPageChange={setCurrentPage}
+                    label="competitions"
+                />
             </div>
         </div>
     );

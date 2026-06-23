@@ -1,15 +1,18 @@
 "use client";
 
 import { Plus, Edit, Trash2, Search, Calendar as CalendarIcon, Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
 import { TableSkeleton } from "@/components/PortalSkeletons";
+import AdminPagination from "@/components/AdminPagination";
 
 export default function AdminMatchesPage() {
     const [matches, setMatches] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const ITEMS_PER_PAGE = 10;
 
     useEffect(() => {
         const fetchMatches = async () => {
@@ -36,12 +39,22 @@ export default function AdminMatchesPage() {
         }
     };
 
-    const filteredMatches = matches.filter(m =>
-        m.homeTeam?.clubName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        m.awayTeam?.clubName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        m.competition?.proposedName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        m.venue?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filteredMatches = useMemo(() => {
+        if (!searchQuery.trim()) return matches;
+        return matches.filter(m =>
+            m.homeTeam?.clubName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            m.awayTeam?.clubName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            m.competition?.proposedName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            m.venue?.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    }, [matches, searchQuery]);
+
+    const paginatedMatches = useMemo(() => {
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
+        return filteredMatches.slice(start, start + ITEMS_PER_PAGE);
+    }, [filteredMatches, currentPage]);
+
+    useMemo(() => { setCurrentPage(1); }, [searchQuery]);
 
     if (loading) return <TableSkeleton />;
 
@@ -108,7 +121,7 @@ export default function AdminMatchesPage() {
                                     <td colSpan={5} className="px-6 py-8 text-center text-gray-500">No matches found</td>
                                 </tr>
                             ) : (
-                                filteredMatches.map((match) => (
+                                paginatedMatches.map((match) => (
                                     <tr key={match._id} className="hover:bg-gray-50/50 transition-colors">
                                         <td className="px-6 py-4">
                                             <div className="font-bold text-gray-800">
@@ -152,6 +165,13 @@ export default function AdminMatchesPage() {
                         </tbody>
                     </table>
                 </div>
+                <AdminPagination
+                    currentPage={currentPage}
+                    totalItems={filteredMatches.length}
+                    itemsPerPage={ITEMS_PER_PAGE}
+                    onPageChange={setCurrentPage}
+                    label="matches"
+                />
             </div>
         </div>
     );
