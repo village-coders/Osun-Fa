@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Mail, Lock, User, CheckCircle2, Loader2, Users, ArrowLeft } from "lucide-react";
@@ -24,6 +24,15 @@ export default function PortalRegisterPage() {
         { id: "coach", label: "Coach", icon: User, desc: "Register as an independent certified coach" },
         { id: "referee", label: "Referee", icon: User, desc: "Register as an official match referee" },
     ];
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const roleParam = params.get("role");
+        if (roleParam && roles.some(r => r.id === roleParam)) {
+            setFormData(prev => ({ ...prev, role: roleParam }));
+            setStep(2);
+        }
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

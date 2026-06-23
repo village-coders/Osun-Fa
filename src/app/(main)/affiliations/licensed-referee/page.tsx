@@ -1,5 +1,6 @@
 import { Activity, BookOpen, ScrollText } from "lucide-react";
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
     title: "Licensed Referees | Officiating Pathway",
@@ -74,9 +75,9 @@ export default function LicensedRefereePage() {
                     <p className="text-gray-400 mb-8">
                         Registration is now open for the next quarterly fitness test for Grade 2 and Grade 3 referees. Mandatory for all active officials.
                     </p>
-                    <button className="bg-accent text-black font-bold px-8 py-3 rounded-full hover:bg-secondary transition-colors">
-                        Register for Seminar
-                    </button>
+                    <Link href="/portal/register?role=referee" className="bg-accent text-black font-bold px-8 py-3 rounded-full hover:bg-secondary transition-colors inline-block">
+                        Register as a Referee
+                    </Link>
                 </div>
             </div>
         </div>

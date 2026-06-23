@@ -1,5 +1,6 @@
 import { ShieldCheck, FileText, CheckCircle2, ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
+import Link from "next/link";
 import RegisteredClubsList from "@/components/RegisteredClubsList";
 
 export const metadata: Metadata = {
@@ -77,10 +78,10 @@ export default function RegisteredClubPage() {
                             ))}
                         </ul>
 
-                        <button className="w-full bg-primary hover:bg-primary-light text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 shadow-[0_5px_15px_rgba(2,89,40,0.3)] hover:-translate-y-1">
+                        <Link href="/portal/register?role=team" className="w-full bg-primary hover:bg-primary-light text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 shadow-[0_5px_15px_rgba(2,89,40,0.3)] hover:-translate-y-1">
                             Start Club Registration
                             <ChevronRight className="w-5 h-5" />
-                        </button>
+                        </Link>
                     </div>
                 </div>
 

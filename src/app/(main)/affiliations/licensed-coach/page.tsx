@@ -1,5 +1,6 @@
 import { GraduationCap, Award, PlaySquare } from "lucide-react";
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
     title: "Licensed Coaches | Technical Department",
@@ -81,9 +82,9 @@ export default function LicensedCoachPage() {
                         </div>
                     </div>
                     <div>
-                        <button className="bg-primary hover:bg-primary-light px-8 py-4 rounded-full font-bold shadow-[0_5px_15px_rgba(2,89,40,0.5)] transition-all transform hover:-translate-y-1 whitespace-nowrap">
+                        <Link href="/portal/register?role=coach" className="bg-primary hover:bg-primary-light px-8 py-4 rounded-full font-bold shadow-[0_5px_15px_rgba(2,89,40,0.5)] transition-all transform hover:-translate-y-1 whitespace-nowrap inline-block">
                             Register Now
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>
